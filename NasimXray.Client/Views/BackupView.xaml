@@ -1,0 +1,41 @@
+<UserControl x:Class="NasimXray.Client.Views.BackupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,0,1" Padding="24,16">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource Backup.Title}" FontSize="20" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock x:Name="LastBackupText" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
+                </StackPanel>
+                <Button x:Name="CreateButton" Content="{DynamicResource Backup.CreateNow}" Style="{StaticResource PrimaryButton}"
+                        HorizontalAlignment="Right" Click="Create_Click"/>
+            </Grid>
+        </Border>
+
+        <Grid>
+            <DataGrid x:Name="Grid" Style="{StaticResource ModernDataGrid}" Margin="24"
+                      AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource Backup.FileName}" Binding="{Binding FileName}" Width="2*"/>
+                    <DataGridTextColumn Header="{DynamicResource Backup.Size}" Binding="{Binding SizeBytes, Converter={StaticResource FileSizeConverter}}" Width="100"/>
+                    <DataGridTextColumn Header="{DynamicResource Backup.Created}" Binding="{Binding CreatedAtUtc, StringFormat=yyyy-MM-dd HH:mm}" Width="150"/>
+                    <DataGridTemplateColumn Header="" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{DynamicResource Backup.Restore}" Style="{StaticResource DangerButton}"
+                                        Height="28" Padding="10,0" FontSize="11" Click="Restore_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock x:Name="EmptyText" Text="{DynamicResource Backup.Empty}" Visibility="Collapsed"
+                       FontSize="13" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap" MaxWidth="400"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

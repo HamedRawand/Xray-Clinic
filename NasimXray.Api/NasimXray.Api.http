@@ -1,0 +1,6 @@
+@NasimXray.Api_HostAddress = http://localhost:5042
+
+GET {{NasimXray.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

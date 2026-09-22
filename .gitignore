@@ -1,0 +1,32 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+
+## Publish output
+publish/
+installer_output/
+*.pdb
+
+## VS / Rider
+.vs/
+.idea/
+*.userosscache
+*.sln.docstates
+
+## Secrets — never commit real connection strings or JWT secrets
+appsettings.*.local.json
+*.pfx
+
+## Logs
+Logs/
+*.log
+
+## OS
+Thumbs.db
+.DS_Store
+
+## Misc leftovers found in this folder
+.Rhistory
+ARCHITECTURE_PLAN.html

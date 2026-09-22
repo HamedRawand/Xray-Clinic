@@ -1,0 +1,31 @@
+<Window x:Class="NasimXray.Client.Views.ServerSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource Login.ServerSettings}"
+        Height="260" Width="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <Border Style="{StaticResource CardBorder}" Margin="16">
+        <StackPanel>
+            <TextBlock Text="{DynamicResource ServerSettings.Title}" FontSize="15" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="{DynamicResource ServerSettings.Description}"
+                       FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                       TextWrapping="Wrap" Margin="0,0,0,16" FlowDirection="LeftToRight" TextAlignment="Left"/>
+
+            <TextBox x:Name="ServerUrlBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,8"
+                     FlowDirection="LeftToRight" HorizontalContentAlignment="Left"/>
+
+            <TextBlock x:Name="StatusText" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="{DynamicResource ServerSettings.TestConnection}" Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,8,0" Click="TestConnection_Click"/>
+                <Button Content="{DynamicResource ServerSettings.Save}" Style="{StaticResource PrimaryButton}"
+                        Click="Save_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

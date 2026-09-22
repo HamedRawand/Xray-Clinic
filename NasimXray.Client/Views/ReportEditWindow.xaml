@@ -1,0 +1,77 @@
+<Window x:Class="NasimXray.Client.Views.ReportEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource Report.Title}"
+        Height="720" Width="820" MinHeight="500" MinWidth="640"
+        WindowStartupLocation="CenterOwner"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <DockPanel Margin="16">
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <TextBlock x:Name="HeaderText" FontSize="18" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock x:Name="SubHeaderText" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
+
+            <Border x:Name="FinalizedBanner" Background="#DBEAFE" CornerRadius="6" Padding="10,8" Margin="0,10,0,0" Visibility="Collapsed">
+                <TextBlock Text="{DynamicResource Report.FinalizedBanner}" FontSize="12" Foreground="{DynamicResource AccentBrush}" TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button x:Name="PrintButton" Content="{DynamicResource Report.Print}" Style="{StaticResource SecondaryButton}"
+                    Margin="0,0,8,0" Click="Print_Click" Visibility="Collapsed"/>
+            <Button x:Name="AmendReasonPanelToggle" Content="{DynamicResource Report.Amend}" Style="{StaticResource SecondaryButton}"
+                    Margin="0,0,8,0" Click="AmendToggle_Click" Visibility="Collapsed"/>
+            <Button x:Name="SaveDraftButton" Content="{DynamicResource Report.SaveDraft}" Style="{StaticResource SecondaryButton}"
+                    Margin="0,0,8,0" Click="SaveDraft_Click"/>
+            <Button x:Name="FinalizeButton" Content="{DynamicResource Report.Finalize}" Style="{StaticResource PrimaryButton}"
+                    Margin="0,0,8,0" Click="Finalize_Click"/>
+            <Button x:Name="SubmitAmendButton" Content="{DynamicResource Report.Amend}" Style="{StaticResource PrimaryButton}"
+                    Margin="0,0,8,0" Click="SubmitAmend_Click" Visibility="Collapsed"/>
+            <Button Content="{DynamicResource Report.Close}" Style="{StaticResource SecondaryButton}" Click="Close_Click"/>
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border x:Name="AmendReasonPanel" Style="{StaticResource CardBorder}" Margin="0,0,0,12" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Report.AmendReason}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox x:Name="AmendReasonBox" Style="{StaticResource ModernTextBox}" Height="60"
+                                 TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"/>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="MeasurementsSection" Style="{StaticResource CardBorder}" Margin="0,0,0,12" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Report.Measurements}" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+                        <ItemsControl x:Name="MeasurementsPanel"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Report.Findings}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox x:Name="FindingsBox" Style="{StaticResource ModernTextBox}" Height="120"
+                                 TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Margin="0,0,0,12"/>
+
+                        <TextBlock Text="{DynamicResource Report.Impression}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox x:Name="ImpressionBox" Style="{StaticResource ModernTextBox}" Height="100"
+                                 TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top"/>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="HistorySection" Style="{StaticResource CardBorder}" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="{DynamicResource Report.History}" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+                        <ItemsControl x:Name="HistoryPanel"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

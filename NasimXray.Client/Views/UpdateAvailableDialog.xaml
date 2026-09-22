@@ -1,0 +1,48 @@
+<Window x:Class="NasimXray.Client.Views.UpdateAvailableDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource Update.Title}"
+        Height="440" Width="420"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <Border Style="{StaticResource CardBorder}" Margin="16">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Update.Title}" FontSize="16" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+
+            <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+                <TextBlock FlowDirection="LeftToRight">
+                    <Run Text="{DynamicResource Update.NewVersion}" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <Run x:Name="NewVersionRun" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}"/>
+                </TextBlock>
+                <TextBlock FlowDirection="LeftToRight" Margin="0,2,0,0">
+                    <Run Text="{DynamicResource Update.CurrentVersion}" Foreground="{DynamicResource TextMutedBrush}"/>
+                    <Run x:Name="CurrentVersionRun" Foreground="{DynamicResource TextMutedBrush}"/>
+                </TextBlock>
+            </StackPanel>
+
+            <TextBlock DockPanel.Dock="Top" Text="{DynamicResource Update.Notes}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+
+            <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+                <ProgressBar x:Name="DownloadProgress" Height="6" Minimum="0" Maximum="1" Visibility="Collapsed" Margin="0,0,0,8"/>
+                <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerBrush}"
+                           FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8" Visibility="Collapsed"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="LaterButton" Content="{DynamicResource Update.Later}" Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0" Click="Later_Click"/>
+                    <Button x:Name="UpdateNowButton" Content="{DynamicResource Update.Now}" Style="{StaticResource PrimaryButton}"
+                            Click="UpdateNow_Click"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Border Background="{DynamicResource InputBackgroundBrush}" CornerRadius="6" Padding="10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="ReleaseNotesText" FontSize="12" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextPrimaryBrush}" FlowDirection="LeftToRight"/>
+                </ScrollViewer>
+            </Border>
+        </DockPanel>
+    </Border>
+</Window>

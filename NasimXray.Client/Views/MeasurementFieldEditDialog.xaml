@@ -1,0 +1,54 @@
+<Window x:Class="NasimXray.Client.Views.MeasurementFieldEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource ExamTypes.AddField}"
+        Height="440" Width="380"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <Border Style="{StaticResource CardBorder}" Margin="16">
+        <StackPanel>
+            <TextBlock Text="{DynamicResource ExamTypes.FieldLabel}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <TextBox x:Name="LabelBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10"/>
+
+            <TextBlock Text="{DynamicResource ExamTypes.FieldKey}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <TextBox x:Name="KeyBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10" FlowDirection="LeftToRight"/>
+
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{DynamicResource ExamTypes.FieldUnit}" FontSize="12" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                    <TextBox x:Name="UnitBox" Style="{StaticResource ModernTextBox}" FlowDirection="LeftToRight"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="{DynamicResource ExamTypes.FieldType}" FontSize="12" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                    <ComboBox x:Name="DataTypeBox" Style="{StaticResource ModernComboBox}"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="{DynamicResource ExamTypes.FieldOrder}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <TextBox x:Name="OrderBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10" FlowDirection="LeftToRight"/>
+
+            <CheckBox x:Name="ActiveBox" Content="{DynamicResource ExamTypes.Active}" IsChecked="True" Margin="0,0,0,4"/>
+
+            <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerBrush}"
+                       FontSize="12" TextWrapping="Wrap" Margin="0,8,0,0" Visibility="Collapsed"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="{DynamicResource PatientEdit.Cancel}" Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,8,0" IsCancel="True"/>
+                <Button Content="{DynamicResource PatientEdit.Save}" Style="{StaticResource PrimaryButton}"
+                        Click="Save_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

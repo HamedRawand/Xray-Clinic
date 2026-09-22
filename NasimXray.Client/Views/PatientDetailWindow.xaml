@@ -1,0 +1,52 @@
+<Window x:Class="NasimXray.Client.Views.PatientDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource PatientDetail.TitlePrefix}"
+        Height="600" Width="900" MinHeight="450" MinWidth="700"
+        WindowStartupLocation="CenterOwner"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <DockPanel Margin="16">
+        <Grid DockPanel.Dock="Top" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PatientNameText" FontSize="20" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                <Border Background="{DynamicResource AccentBrush20}" CornerRadius="10" Padding="8,3" Margin="12,0,0,0" VerticalAlignment="Center">
+                    <TextBlock x:Name="PatientCodeText" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                </Border>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="{DynamicResource PatientDetail.NewInvoice}" Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,8,0" Click="NewInvoice_Click"/>
+                <Button Content="{DynamicResource PatientDetail.NewExamOrder}" Style="{StaticResource PrimaryButton}"
+                        Margin="0,0,8,0" Click="NewExamOrder_Click"/>
+                <Button Content="{DynamicResource PatientDetail.Close}" Style="{StaticResource SecondaryButton}"
+                        Click="Close_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid>
+            <DataGrid x:Name="Grid" Style="{StaticResource ModernDataGrid}"
+                      AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource PatientDetail.ExamType}" Binding="{Binding ExamTypeName}" Width="2*"/>
+                    <DataGridTextColumn Header="{DynamicResource PatientDetail.Status}" Binding="{Binding Status, Converter={StaticResource StatusToLocalizedConverter}}" Width="*"/>
+                    <DataGridTextColumn Header="{DynamicResource PatientDetail.Referring}" Binding="{Binding ReferringPhysicianName}" Width="*"/>
+                    <DataGridTextColumn Header="{DynamicResource PatientDetail.Requested}" Binding="{Binding CreatedAt, StringFormat=yyyy-MM-dd}" Width="110"/>
+                    <DataGridTemplateColumn Header="" Width="90">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{DynamicResource PatientDetail.OpenReport}" Style="{StaticResource SecondaryButton}"
+                                        Height="28" Padding="10,0" FontSize="11" Click="OpenReport_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock x:Name="EmptyText" Text="{DynamicResource PatientDetail.Empty}" Visibility="Collapsed"
+                       FontSize="13" Foreground="{DynamicResource TextMutedBrush}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </DockPanel>
+</Window>

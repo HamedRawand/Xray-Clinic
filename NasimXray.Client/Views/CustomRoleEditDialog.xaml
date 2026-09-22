@@ -1,0 +1,38 @@
+<Window x:Class="NasimXray.Client.Views.CustomRoleEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource CustomRoles.New}"
+        Height="600" Width="440"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <Border Style="{StaticResource CardBorder}" Margin="16">
+        <DockPanel>
+            <TextBlock DockPanel.Dock="Top" Text="{DynamicResource CustomRoles.Name}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <TextBox x:Name="NameBox" DockPanel.Dock="Top" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10"/>
+
+            <TextBlock DockPanel.Dock="Top" Text="{DynamicResource CustomRoles.Description}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <TextBox x:Name="DescriptionBox" DockPanel.Dock="Top" Style="{StaticResource ModernTextBox}" Margin="0,0,0,10"/>
+
+            <TextBlock DockPanel.Dock="Top" Text="{DynamicResource CustomRoles.Permissions}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+
+            <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+                <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerBrush}"
+                           FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8" Visibility="Collapsed"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{DynamicResource PatientEdit.Cancel}" Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0" IsCancel="True"/>
+                    <Button Content="{DynamicResource PatientEdit.Save}" Style="{StaticResource PrimaryButton}"
+                            Click="Save_Click"/>
+                </StackPanel>
+            </StackPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="PermissionsPanel"/>
+            </ScrollViewer>
+        </DockPanel>
+    </Border>
+</Window>

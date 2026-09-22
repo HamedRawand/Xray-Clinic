@@ -1,0 +1,68 @@
+using System.Windows;
+using NasimXray.Client.Helpers;
+using NasimXray.Client.Services;
+using NasimXray.Client.Views;
+using Serilog;
+
+namespace NasimXray.Client;
+
+public partial class App : Application
+{
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
+        var logPath = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "NasimXrayClinic", "Logs", "client_.log");
+
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        DispatcherUnhandledException += (_, args) =>
+        {
+            Log.Error(args.Exception, "Unhandled UI exception");
+            MessageBox.Show($"An unexpected error occurred:\n{args.Exception.Message}",
+                "Nasim Diagnostic X-ray Clinic", MessageBoxButton.OK, MessageBoxImage.Error);
+            args.Handled = true;
+        };
+
+        ApplyStartupPreferences();
+
+        var login = new LoginWindow();
+        MainWindow = login;
+        login.Show();
+
+        _ = CheckForUpdateInBackgroundAsync();
+    }
+
+    private static async Task CheckForUpdateInBackgroundAsync()
+    {
+        try
+        {
+            var update = await UpdateService.CheckForUpdateAsync();
+            if (update is null) return;
+
+            Current.Dispatcher.Invoke(() => new UpdateAvailableDialog(update).Show());
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Update check failed");
+        }
+    }
+
+    private static void ApplyStartupPreferences()
+    {
+        var settings = ClientSettings.Load();
+
+        var language = settings.Language == "Dari" ? AppLanguage.Dari : AppLanguage.English;
+        LanguageService.Apply(language);
+
+        AppSession.CalendarType = settings.CalendarType == "Shamsi"
+            ? Helpers.CalendarType.Shamsi
+            : Helpers.CalendarType.Gregorian;
+    }
+}

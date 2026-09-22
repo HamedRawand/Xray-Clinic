@@ -1,0 +1,269 @@
+<!-- Machine-assisted Dari translation — have a native speaker review before this reaches real users. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="App.Title">کلینیک تشخیصی ایکسری نسیم</system:String>
+
+    <system:String x:Key="Login.Subtitle">برای ادامه وارد شوید</system:String>
+    <system:String x:Key="Login.Username">نام کاربری</system:String>
+    <system:String x:Key="Login.Password">رمز عبور</system:String>
+    <system:String x:Key="Login.SignIn">ورود</system:String>
+    <system:String x:Key="Login.ServerSettings">تنظیمات سرور</system:String>
+    <system:String x:Key="Login.ServerNotConfigured">سرور تنظیم نشده است</system:String>
+    <system:String x:Key="Login.ServerPrefix">سرور: </system:String>
+    <system:String x:Key="Login.ConfigureServerFirst">لطفاً ابتدا آدرس سرور را تنظیم کنید (تنظیمات سرور).</system:String>
+    <system:String x:Key="Login.EnterCredentials">نام کاربری و رمز عبور خود را وارد کنید.</system:String>
+    <system:String x:Key="Login.Language">English</system:String>
+
+    <system:String x:Key="ServerSettings.Title">آدرس سرور کلینیک</system:String>
+    <system:String x:Key="ServerSettings.Description">آدرس رایانه سرور را وارد کنید، مثال: http://192.168.1.10:5001</system:String>
+    <system:String x:Key="ServerSettings.TestConnection">آزمایش اتصال</system:String>
+    <system:String x:Key="ServerSettings.Save">ذخیره</system:String>
+    <system:String x:Key="ServerSettings.Testing">در حال آزمایش اتصال…</system:String>
+    <system:String x:Key="ServerSettings.Connected">اتصال موفقانه برقرار شد.</system:String>
+    <system:String x:Key="ServerSettings.ConnectFailed">اتصال به سرور در این آدرس ممکن نشد.</system:String>
+    <system:String x:Key="ServerSettings.EnterAddressFirst">ابتدا آدرس سرور را وارد کنید.</system:String>
+
+    <system:String x:Key="Common.SignOut">خروج</system:String>
+
+    <system:String x:Key="Api.ServerUnreachable">اتصال به سرور ممکن نشد. آدرس سرور در تنظیمات و اتصال شبکه خود را بررسی کنید.</system:String>
+    <system:String x:Key="Api.Timeout">سرور در زمان معین پاسخ نداد.</system:String>
+    <system:String x:Key="Api.InvalidCredentials">نام کاربری یا رمز عبور نادرست است.</system:String>
+    <system:String x:Key="Api.AccountLocked">حساب کاربری قفل شده است. با مدیر سیستم تماس بگیرید.</system:String>
+    <system:String x:Key="Api.Conflict">این ریکارد توسط شخص دیگری تغییر یافته است. دوباره بارگذاری کرده و تلاش کنید.</system:String>
+    <system:String x:Key="Api.NotFound">این ریکارد یافت نشد. ممکن است حذف شده باشد.</system:String>
+    <system:String x:Key="Api.BadRequest">سرور این درخواست را رد کرد.</system:String>
+    <system:String x:Key="Api.Forbidden">شما صلاحیت انجام این کار را ندارید.</system:String>
+    <system:String x:Key="Api.Other">مشکلی رخ داد. لطفاً دوباره تلاش کنید.</system:String>
+
+    <system:String x:Key="Nav.Patients">مریضان</system:String>
+    <system:String x:Key="Nav.ExamTypes">انواع معاینات</system:String>
+    <system:String x:Key="Nav.ReferringPhysicians">داکتران رجعت‌دهنده</system:String>
+
+    <system:String x:Key="Patients.Title">مریضان</system:String>
+    <system:String x:Key="Patients.Search">جستجو با نام، کد یا شماره تلفون…</system:String>
+    <system:String x:Key="Patients.New">+ مریض جدید</system:String>
+    <system:String x:Key="Patients.Code">کد</system:String>
+    <system:String x:Key="Patients.Name">نام</system:String>
+    <system:String x:Key="Patients.Phone">تلفون</system:String>
+    <system:String x:Key="Patients.Sex">جنسیت</system:String>
+    <system:String x:Key="Patients.DateOfBirth">تاریخ تولد</system:String>
+    <system:String x:Key="Patients.Open">باز کردن</system:String>
+    <system:String x:Key="Patients.Empty">هنوز مریضی ثبت نشده — روی «مریض جدید» کلیک کنید.</system:String>
+
+    <system:String x:Key="PatientEdit.NewTitle">مریض جدید</system:String>
+    <system:String x:Key="PatientEdit.EditTitle">ویرایش مریض</system:String>
+    <system:String x:Key="PatientEdit.FullName">نام کامل</system:String>
+    <system:String x:Key="PatientEdit.Address">آدرس</system:String>
+    <system:String x:Key="PatientEdit.Save">ذخیره</system:String>
+    <system:String x:Key="PatientEdit.Cancel">لغو</system:String>
+    <system:String x:Key="PatientEdit.NameRequired">نام کامل الزامی است.</system:String>
+    <system:String x:Key="Sex.Male">مذکر</system:String>
+    <system:String x:Key="Sex.Female">مؤنث</system:String>
+
+    <system:String x:Key="PatientDetail.TitlePrefix">مریض: </system:String>
+    <system:String x:Key="PatientDetail.NewExamOrder">+ درخواست معاینه جدید</system:String>
+    <system:String x:Key="PatientDetail.ExamType">نوع معاینه</system:String>
+    <system:String x:Key="PatientDetail.Status">وضعیت</system:String>
+    <system:String x:Key="PatientDetail.Referring">داکتر رجعت‌دهنده</system:String>
+    <system:String x:Key="PatientDetail.Requested">تاریخ درخواست</system:String>
+    <system:String x:Key="PatientDetail.OpenReport">راپور</system:String>
+    <system:String x:Key="PatientDetail.Empty">هنوز معاینه‌ای برای این مریض ثبت نشده.</system:String>
+    <system:String x:Key="PatientDetail.Close">بستن</system:String>
+
+    <system:String x:Key="NewExamOrder.Title">درخواست معاینه جدید</system:String>
+    <system:String x:Key="NewExamOrder.ExamType">نوع معاینه</system:String>
+    <system:String x:Key="NewExamOrder.ReferringPhysician">داکتر رجعت‌دهنده (اختیاری)</system:String>
+    <system:String x:Key="NewExamOrder.Create">ایجاد</system:String>
+    <system:String x:Key="NewExamOrder.SelectExamType">یک نوع معاینه را انتخاب کنید.</system:String>
+    <system:String x:Key="NewExamOrder.None">— هیچکدام —</system:String>
+
+    <system:String x:Key="Status.Pending">در انتظار</system:String>
+    <system:String x:Key="Status.InProgress">در حال انجام</system:String>
+    <system:String x:Key="Status.Completed">تکمیل شده</system:String>
+    <system:String x:Key="Status.Reported">راپور شده</system:String>
+    <system:String x:Key="Status.Cancelled">لغو شده</system:String>
+
+    <system:String x:Key="Report.Title">راپور</system:String>
+    <system:String x:Key="Report.Findings">یافته‌ها</system:String>
+    <system:String x:Key="Report.Impression">نتیجه‌گیری</system:String>
+    <system:String x:Key="Report.Measurements">اندازه‌گیری‌ها</system:String>
+    <system:String x:Key="Report.SaveDraft">ذخیره پیش‌نویس</system:String>
+    <system:String x:Key="Report.Print">چاپ / خروجی PDF</system:String>
+    <system:String x:Key="Report.NothingToPrint">لطفاً ابتدا راپور را ذخیره کنید.</system:String>
+    <system:String x:Key="Report.Finalize">نهایی کردن</system:String>
+    <system:String x:Key="Report.Amend">اصلاح</system:String>
+    <system:String x:Key="Report.FinalizedBanner">این راپور نهایی و فقط قابل خواندن است. برای تغییر از «اصلاح» استفاده کنید.</system:String>
+    <system:String x:Key="Report.AmendReason">دلیل اصلاح</system:String>
+    <system:String x:Key="Report.AmendReasonRequired">برای اصلاح یک راپور نهایی‌شده، ذکر دلیل الزامی است.</system:String>
+    <system:String x:Key="Report.Saved">پیش‌نویس ذخیره شد.</system:String>
+    <system:String x:Key="Report.FinalizedMessage">راپور نهایی شد.</system:String>
+    <system:String x:Key="Report.AmendedMessage">راپور اصلاح شد.</system:String>
+    <system:String x:Key="Report.History">تاریخچه اصلاحات</system:String>
+    <system:String x:Key="Report.Close">بستن</system:String>
+    <system:String x:Key="Report.ConfirmFinalize">این راپور نهایی شود؟ پس از آن فقط قابل خواندن خواهد بود.</system:String>
+
+    <system:String x:Key="ExamTypes.Title">انواع معاینات</system:String>
+    <system:String x:Key="ExamTypes.New">+ نوع معاینه جدید</system:String>
+    <system:String x:Key="ExamTypes.Name">نام</system:String>
+    <system:String x:Key="ExamTypes.Modality">شیوه تصویربرداری</system:String>
+    <system:String x:Key="ExamTypes.BodyPart">عضو بدن</system:String>
+    <system:String x:Key="ExamTypes.Price">قیمت</system:String>
+    <system:String x:Key="ExamTypes.Active">فعال</system:String>
+    <system:String x:Key="ExamTypes.Edit">ویرایش</system:String>
+    <system:String x:Key="ExamTypes.Fields">فیلدهای اندازه‌گیری</system:String>
+    <system:String x:Key="ExamTypes.AddField">+ افزودن فیلد</system:String>
+    <system:String x:Key="ExamTypes.FieldKey">کلید</system:String>
+    <system:String x:Key="ExamTypes.FieldLabel">عنوان</system:String>
+    <system:String x:Key="ExamTypes.FieldUnit">واحد</system:String>
+    <system:String x:Key="ExamTypes.FieldType">نوعیت</system:String>
+    <system:String x:Key="ExamTypes.FieldOrder">ترتیب</system:String>
+    <system:String x:Key="ExamTypes.NoFields">هیچ فیلد اندازه‌گیری وجود ندارد — راپورهای این نوع معاینه فقط متن آزاد خواهند داشت.</system:String>
+    <system:String x:Key="ExamTypes.NameRequired">نام الزامی است.</system:String>
+
+    <system:String x:Key="RefPhysicians.Title">داکتران رجعت‌دهنده</system:String>
+    <system:String x:Key="RefPhysicians.New">+ داکتر جدید</system:String>
+    <system:String x:Key="RefPhysicians.Name">نام</system:String>
+    <system:String x:Key="RefPhysicians.Clinic">کلینیک</system:String>
+    <system:String x:Key="RefPhysicians.Phone">تلفون</system:String>
+    <system:String x:Key="RefPhysicians.NameRequired">نام الزامی است.</system:String>
+
+    <system:String x:Key="Nav.Invoices">فاکتورها</system:String>
+    <system:String x:Key="Invoices.Title">فاکتورها</system:String>
+    <system:String x:Key="Invoices.Patient">مریض</system:String>
+    <system:String x:Key="Invoices.Total">مجموع</system:String>
+    <system:String x:Key="Invoices.Paid">پرداخت شده</system:String>
+    <system:String x:Key="Invoices.Balance">باقیمانده</system:String>
+    <system:String x:Key="Invoices.Status">وضعیت</system:String>
+    <system:String x:Key="Invoices.Date">تاریخ</system:String>
+    <system:String x:Key="Invoices.Open">باز کردن</system:String>
+    <system:String x:Key="Invoices.Empty">هنوز فاکتوری ثبت نشده.</system:String>
+    <system:String x:Key="InvoiceStatus.Unpaid">پرداخت نشده</system:String>
+    <system:String x:Key="InvoiceStatus.PartiallyPaid">قسمی پرداخت شده</system:String>
+    <system:String x:Key="InvoiceStatus.Paid">پرداخت شده</system:String>
+
+    <system:String x:Key="PatientDetail.NewInvoice">+ فاکتور جدید</system:String>
+    <system:String x:Key="PatientDetail.Billed">فاکتور شده</system:String>
+
+    <system:String x:Key="NewInvoice.Title">فاکتور جدید</system:String>
+    <system:String x:Key="NewInvoice.SelectOrders">معایناتی را که در این فاکتور شامل شود انتخاب کنید:</system:String>
+    <system:String x:Key="NewInvoice.None">هیچ معاینه فاکتور نشده‌ای برای این مریض وجود ندارد.</system:String>
+    <system:String x:Key="NewInvoice.Create">ایجاد فاکتور</system:String>
+    <system:String x:Key="NewInvoice.SelectAtLeastOne">حد اقل یک معاینه را انتخاب کنید.</system:String>
+    <system:String x:Key="NewInvoice.Total">مجموع: </system:String>
+
+    <system:String x:Key="InvoiceDetail.TitlePrefix">فاکتور شماره </system:String>
+    <system:String x:Key="InvoiceDetail.Lines">معاینات</system:String>
+    <system:String x:Key="InvoiceDetail.Payments">پرداخت‌ها</system:String>
+    <system:String x:Key="InvoiceDetail.RecordPayment">ثبت پرداخت</system:String>
+    <system:String x:Key="InvoiceDetail.NoPayments">هنوز پرداختی ثبت نشده.</system:String>
+    <system:String x:Key="InvoiceDetail.Method">شیوه پرداخت</system:String>
+    <system:String x:Key="InvoiceDetail.ReceivedBy">دریافت‌کننده</system:String>
+    <system:String x:Key="InvoiceDetail.PrintReceipt">چاپ رسید</system:String>
+    <system:String x:Key="InvoiceDetail.FullyPaid">این فاکتور بطور کامل پرداخت شده است.</system:String>
+
+    <system:String x:Key="RecordPayment.Title">ثبت پرداخت</system:String>
+    <system:String x:Key="RecordPayment.Amount">مبلغ</system:String>
+    <system:String x:Key="RecordPayment.Method">شیوه پرداخت</system:String>
+    <system:String x:Key="RecordPayment.Balance">باقیمانده: </system:String>
+    <system:String x:Key="RecordPayment.Submit">ثبت</system:String>
+    <system:String x:Key="RecordPayment.InvalidAmount">یک مبلغ معتبر بزرگتر از صفر وارد کنید.</system:String>
+
+    <system:String x:Key="PaymentMethod.Cash">نقدی</system:String>
+    <system:String x:Key="PaymentMethod.Card">کارت</system:String>
+    <system:String x:Key="PaymentMethod.Other">دیگر</system:String>
+
+    <system:String x:Key="Receipt.Title">رسید پرداخت</system:String>
+
+    <system:String x:Key="Nav.Users">کاربران</system:String>
+    <system:String x:Key="Nav.CustomRoles">رول‌های سفارشی</system:String>
+    <system:String x:Key="Nav.AuditLog">تاریخچه فعالیت</system:String>
+
+    <system:String x:Key="Users.Title">کاربران</system:String>
+    <system:String x:Key="Users.New">+ کاربر جدید</system:String>
+    <system:String x:Key="Users.Username">نام کاربری</system:String>
+    <system:String x:Key="Users.FullName">نام کامل</system:String>
+    <system:String x:Key="Users.Role">رول</system:String>
+    <system:String x:Key="Users.Active">فعال</system:String>
+    <system:String x:Key="Users.Locked">قفل شده</system:String>
+    <system:String x:Key="Users.Unlock">بازکردن قفل</system:String>
+    <system:String x:Key="Users.ResetPassword">بازنشانی رمز عبور</system:String>
+    <system:String x:Key="Users.Edit">ویرایش</system:String>
+    <system:String x:Key="Users.None">— فقط رول پیش‌فرض —</system:String>
+    <system:String x:Key="Users.Unlocked">قفل کاربر باز شد.</system:String>
+
+    <system:String x:Key="UserEdit.NewTitle">کاربر جدید</system:String>
+    <system:String x:Key="UserEdit.EditTitle">ویرایش کاربر</system:String>
+    <system:String x:Key="UserEdit.Password">رمز عبور</system:String>
+    <system:String x:Key="UserEdit.BuiltInRole">رول پیش‌فرض</system:String>
+    <system:String x:Key="UserEdit.CustomRole">رول سفارشی (اختیاری)</system:String>
+    <system:String x:Key="UserEdit.UsernameRequired">نام کاربری الزامی است.</system:String>
+    <system:String x:Key="UserEdit.PasswordTooShort">رمز عبور باید حد اقل ۸ حرف باشد.</system:String>
+    <system:String x:Key="UserEdit.NameRequired">نام کامل الزامی است.</system:String>
+
+    <system:String x:Key="Role.Admin">مدیر</system:String>
+    <system:String x:Key="Role.Radiologist">رادیولوژیست</system:String>
+    <system:String x:Key="Role.Technician">تکنیشن</system:String>
+    <system:String x:Key="Role.Receptionist">منشی</system:String>
+
+    <system:String x:Key="ResetPassword.Title">بازنشانی رمز عبور</system:String>
+    <system:String x:Key="ResetPassword.NewPassword">رمز عبور جدید</system:String>
+    <system:String x:Key="ResetPassword.Submit">بازنشانی</system:String>
+    <system:String x:Key="ResetPassword.Note">کاربر باید در ورود بعدی این رمز عبور را تغییر دهد.</system:String>
+
+    <system:String x:Key="ChangePassword.Title">تغییر رمز عبور</system:String>
+    <system:String x:Key="ChangePassword.Required">قبل از ادامه باید رمز عبور خود را تغییر دهید.</system:String>
+    <system:String x:Key="ChangePassword.Current">رمز عبور فعلی</system:String>
+    <system:String x:Key="ChangePassword.New">رمز عبور جدید</system:String>
+    <system:String x:Key="ChangePassword.Confirm">تأیید رمز عبور جدید</system:String>
+    <system:String x:Key="ChangePassword.Submit">تغییر رمز عبور</system:String>
+    <system:String x:Key="ChangePassword.Mismatch">رمز عبور جدید و تأیید آن مطابقت ندارند.</system:String>
+    <system:String x:Key="ChangePassword.MenuItem">تغییر رمز عبور</system:String>
+
+    <system:String x:Key="CustomRoles.Title">رول‌های سفارشی</system:String>
+    <system:String x:Key="CustomRoles.New">+ رول جدید</system:String>
+    <system:String x:Key="CustomRoles.Name">نام</system:String>
+    <system:String x:Key="CustomRoles.Description">توضیحات</system:String>
+    <system:String x:Key="CustomRoles.Permissions">صلاحیت‌ها</system:String>
+    <system:String x:Key="CustomRoles.NameRequired">نام الزامی است.</system:String>
+
+    <system:String x:Key="AuditLog.Title">تاریخچه فعالیت</system:String>
+    <system:String x:Key="AuditLog.Time">زمان</system:String>
+    <system:String x:Key="AuditLog.User">کاربر</system:String>
+    <system:String x:Key="AuditLog.Action">فعالیت</system:String>
+    <system:String x:Key="AuditLog.Entity">عنصر</system:String>
+    <system:String x:Key="AuditLog.Details">جزئیات</system:String>
+    <system:String x:Key="AuditLog.Empty">هنوز ثبتی در تاریخچه وجود ندارد.</system:String>
+
+    <system:String x:Key="Nav.Backup">بکاپ و بازیابی</system:String>
+    <system:String x:Key="Backup.Title">بکاپ و بازیابی</system:String>
+    <system:String x:Key="Backup.CreateNow">ایجاد بکاپ اکنون</system:String>
+    <system:String x:Key="Backup.FileName">فایل</system:String>
+    <system:String x:Key="Backup.Size">حجم</system:String>
+    <system:String x:Key="Backup.Created">تاریخ ایجاد</system:String>
+    <system:String x:Key="Backup.Restore">بازیابی</system:String>
+    <system:String x:Key="Backup.Empty">هنوز بکاپی وجود ندارد — روی «ایجاد بکاپ اکنون» کلیک کنید یا منتظر بکاپ شبانه باشید.</system:String>
+    <system:String x:Key="Backup.LastBackup">آخرین بکاپ: </system:String>
+    <system:String x:Key="Backup.Never">هیچ‌وقت</system:String>
+    <system:String x:Key="Backup.Created.Success">بکاپ با موفقیت ایجاد شد.</system:String>
+
+    <system:String x:Key="RestoreConfirm.Title">بازیابی دیتابیس</system:String>
+    <system:String x:Key="RestoreConfirm.Warning">این عملیات تمام معلومات فعلی را با محتوای این بکاپ به صورت دایمی جابجا می‌کند. این عملیات قابل بازگشت نیست. تمام کاربران باید دوباره وصل شوند.</system:String>
+    <system:String x:Key="RestoreConfirm.FileLabel">فایل بکاپ: </system:String>
+    <system:String x:Key="RestoreConfirm.Password">رمز عبور رمزگذاری بکاپ</system:String>
+    <system:String x:Key="RestoreConfirm.TypeToConfirm">برای تأیید کلمه RESTORE را (به حروف بزرگ) تایپ کنید:</system:String>
+    <system:String x:Key="RestoreConfirm.ConfirmationMismatch">برای تأیید دقیقاً RESTORE را تایپ کنید.</system:String>
+    <system:String x:Key="RestoreConfirm.Submit">بازیابی اکنون</system:String>
+    <system:String x:Key="RestoreConfirm.Success">دیتابیس بازیابی شد. لطفاً خارج شده و دوباره وارد شوید.</system:String>
+
+    <system:String x:Key="Update.Title">آپدیت جدید</system:String>
+    <system:String x:Key="Update.NewVersion">یک نسخه جدید موجود است: </system:String>
+    <system:String x:Key="Update.CurrentVersion">نسخه فعلی شما: </system:String>
+    <system:String x:Key="Update.Notes">تازه‌ها</system:String>
+    <system:String x:Key="Update.Later">بعداً</system:String>
+    <system:String x:Key="Update.Now">اکنون آپدیت کن</system:String>
+    <system:String x:Key="Update.Downloading">در حال دانلود آپدیت…</system:String>
+    <system:String x:Key="Update.DownloadFailed">دانلود آپدیت ممکن نشد. لطفاً بعداً دوباره تلاش کنید.</system:String>
+
+</ResourceDictionary>

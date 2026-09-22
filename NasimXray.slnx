@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="NasimXray.Api/NasimXray.Api.csproj" />
+  <Project Path="NasimXray.Client/NasimXray.Client.csproj" />
+  <Project Path="NasimXray.Shared/NasimXray.Shared.csproj" />
+</Solution>

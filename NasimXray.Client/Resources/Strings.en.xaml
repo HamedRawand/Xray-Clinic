@@ -1,0 +1,268 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="App.Title">Nasim Diagnostic X-ray Clinic</system:String>
+
+    <system:String x:Key="Login.Subtitle">Sign in to continue</system:String>
+    <system:String x:Key="Login.Username">Username</system:String>
+    <system:String x:Key="Login.Password">Password</system:String>
+    <system:String x:Key="Login.SignIn">Sign In</system:String>
+    <system:String x:Key="Login.ServerSettings">Server Settings</system:String>
+    <system:String x:Key="Login.ServerNotConfigured">Server not configured</system:String>
+    <system:String x:Key="Login.ServerPrefix">Server: </system:String>
+    <system:String x:Key="Login.ConfigureServerFirst">Configure the server address first (Server Settings).</system:String>
+    <system:String x:Key="Login.EnterCredentials">Enter your username and password.</system:String>
+    <system:String x:Key="Login.Language">دری</system:String>
+
+    <system:String x:Key="ServerSettings.Title">Clinic Server Address</system:String>
+    <system:String x:Key="ServerSettings.Description">Enter the server PC's address, e.g. http://192.168.1.10:5001</system:String>
+    <system:String x:Key="ServerSettings.TestConnection">Test Connection</system:String>
+    <system:String x:Key="ServerSettings.Save">Save</system:String>
+    <system:String x:Key="ServerSettings.Testing">Testing connection…</system:String>
+    <system:String x:Key="ServerSettings.Connected">Connected successfully.</system:String>
+    <system:String x:Key="ServerSettings.ConnectFailed">Could not reach the server at that address.</system:String>
+    <system:String x:Key="ServerSettings.EnterAddressFirst">Enter a server address first.</system:String>
+
+    <system:String x:Key="Common.SignOut">Sign Out</system:String>
+
+    <system:String x:Key="Api.ServerUnreachable">Cannot reach the server. Check the server address in Settings and your network connection.</system:String>
+    <system:String x:Key="Api.Timeout">The server did not respond in time.</system:String>
+    <system:String x:Key="Api.InvalidCredentials">Invalid username or password.</system:String>
+    <system:String x:Key="Api.AccountLocked">Account is locked. Contact an administrator.</system:String>
+    <system:String x:Key="Api.Conflict">This record was changed by someone else. Reload and try again.</system:String>
+    <system:String x:Key="Api.NotFound">That record could not be found. It may have been removed.</system:String>
+    <system:String x:Key="Api.BadRequest">The server rejected that request.</system:String>
+    <system:String x:Key="Api.Forbidden">You don't have permission to do that.</system:String>
+    <system:String x:Key="Api.Other">Something went wrong. Please try again.</system:String>
+
+    <system:String x:Key="Nav.Patients">Patients</system:String>
+    <system:String x:Key="Nav.ExamTypes">Exam Types</system:String>
+    <system:String x:Key="Nav.ReferringPhysicians">Referring Physicians</system:String>
+
+    <system:String x:Key="Patients.Title">Patients</system:String>
+    <system:String x:Key="Patients.Search">Search by name, code, or phone…</system:String>
+    <system:String x:Key="Patients.New">+ New Patient</system:String>
+    <system:String x:Key="Patients.Code">Code</system:String>
+    <system:String x:Key="Patients.Name">Name</system:String>
+    <system:String x:Key="Patients.Phone">Phone</system:String>
+    <system:String x:Key="Patients.Sex">Sex</system:String>
+    <system:String x:Key="Patients.DateOfBirth">Date of Birth</system:String>
+    <system:String x:Key="Patients.Open">Open</system:String>
+    <system:String x:Key="Patients.Empty">No patients yet — click "New Patient" to add one.</system:String>
+
+    <system:String x:Key="PatientEdit.NewTitle">New Patient</system:String>
+    <system:String x:Key="PatientEdit.EditTitle">Edit Patient</system:String>
+    <system:String x:Key="PatientEdit.FullName">Full Name</system:String>
+    <system:String x:Key="PatientEdit.Address">Address</system:String>
+    <system:String x:Key="PatientEdit.Save">Save</system:String>
+    <system:String x:Key="PatientEdit.Cancel">Cancel</system:String>
+    <system:String x:Key="PatientEdit.NameRequired">Full name is required.</system:String>
+    <system:String x:Key="Sex.Male">Male</system:String>
+    <system:String x:Key="Sex.Female">Female</system:String>
+
+    <system:String x:Key="PatientDetail.TitlePrefix">Patient: </system:String>
+    <system:String x:Key="PatientDetail.NewExamOrder">+ New Exam Order</system:String>
+    <system:String x:Key="PatientDetail.ExamType">Exam Type</system:String>
+    <system:String x:Key="PatientDetail.Status">Status</system:String>
+    <system:String x:Key="PatientDetail.Referring">Referring Physician</system:String>
+    <system:String x:Key="PatientDetail.Requested">Requested</system:String>
+    <system:String x:Key="PatientDetail.OpenReport">Report</system:String>
+    <system:String x:Key="PatientDetail.Empty">No exams yet for this patient.</system:String>
+    <system:String x:Key="PatientDetail.Close">Close</system:String>
+
+    <system:String x:Key="NewExamOrder.Title">New Exam Order</system:String>
+    <system:String x:Key="NewExamOrder.ExamType">Exam Type</system:String>
+    <system:String x:Key="NewExamOrder.ReferringPhysician">Referring Physician (optional)</system:String>
+    <system:String x:Key="NewExamOrder.Create">Create</system:String>
+    <system:String x:Key="NewExamOrder.SelectExamType">Select an exam type.</system:String>
+    <system:String x:Key="NewExamOrder.None">— None —</system:String>
+
+    <system:String x:Key="Status.Pending">Pending</system:String>
+    <system:String x:Key="Status.InProgress">In Progress</system:String>
+    <system:String x:Key="Status.Completed">Completed</system:String>
+    <system:String x:Key="Status.Reported">Reported</system:String>
+    <system:String x:Key="Status.Cancelled">Cancelled</system:String>
+
+    <system:String x:Key="Report.Title">Report</system:String>
+    <system:String x:Key="Report.Findings">Findings</system:String>
+    <system:String x:Key="Report.Impression">Impression</system:String>
+    <system:String x:Key="Report.Measurements">Measurements</system:String>
+    <system:String x:Key="Report.SaveDraft">Save Draft</system:String>
+    <system:String x:Key="Report.Print">Print / Export PDF</system:String>
+    <system:String x:Key="Report.NothingToPrint">Save the report first before printing.</system:String>
+    <system:String x:Key="Report.Finalize">Finalize</system:String>
+    <system:String x:Key="Report.Amend">Amend</system:String>
+    <system:String x:Key="Report.FinalizedBanner">This report is finalized and read-only. Use Amend to make a change.</system:String>
+    <system:String x:Key="Report.AmendReason">Reason for amendment</system:String>
+    <system:String x:Key="Report.AmendReasonRequired">A reason is required to amend a finalized report.</system:String>
+    <system:String x:Key="Report.Saved">Draft saved.</system:String>
+    <system:String x:Key="Report.FinalizedMessage">Report finalized.</system:String>
+    <system:String x:Key="Report.AmendedMessage">Report amended.</system:String>
+    <system:String x:Key="Report.History">Amendment History</system:String>
+    <system:String x:Key="Report.Close">Close</system:String>
+    <system:String x:Key="Report.ConfirmFinalize">Finalize this report? It will become read-only.</system:String>
+
+    <system:String x:Key="ExamTypes.Title">Exam Types</system:String>
+    <system:String x:Key="ExamTypes.New">+ New Exam Type</system:String>
+    <system:String x:Key="ExamTypes.Name">Name</system:String>
+    <system:String x:Key="ExamTypes.Modality">Modality</system:String>
+    <system:String x:Key="ExamTypes.BodyPart">Body Part</system:String>
+    <system:String x:Key="ExamTypes.Price">Price</system:String>
+    <system:String x:Key="ExamTypes.Active">Active</system:String>
+    <system:String x:Key="ExamTypes.Edit">Edit</system:String>
+    <system:String x:Key="ExamTypes.Fields">Measurement Fields</system:String>
+    <system:String x:Key="ExamTypes.AddField">+ Add Field</system:String>
+    <system:String x:Key="ExamTypes.FieldKey">Key</system:String>
+    <system:String x:Key="ExamTypes.FieldLabel">Label</system:String>
+    <system:String x:Key="ExamTypes.FieldUnit">Unit</system:String>
+    <system:String x:Key="ExamTypes.FieldType">Type</system:String>
+    <system:String x:Key="ExamTypes.FieldOrder">Order</system:String>
+    <system:String x:Key="ExamTypes.NoFields">No measurement fields — reports for this exam type will use free-text findings only.</system:String>
+    <system:String x:Key="ExamTypes.NameRequired">Name is required.</system:String>
+
+    <system:String x:Key="RefPhysicians.Title">Referring Physicians</system:String>
+    <system:String x:Key="RefPhysicians.New">+ New Physician</system:String>
+    <system:String x:Key="RefPhysicians.Name">Name</system:String>
+    <system:String x:Key="RefPhysicians.Clinic">Clinic</system:String>
+    <system:String x:Key="RefPhysicians.Phone">Phone</system:String>
+    <system:String x:Key="RefPhysicians.NameRequired">Name is required.</system:String>
+
+    <system:String x:Key="Nav.Invoices">Invoices</system:String>
+    <system:String x:Key="Invoices.Title">Invoices</system:String>
+    <system:String x:Key="Invoices.Patient">Patient</system:String>
+    <system:String x:Key="Invoices.Total">Total</system:String>
+    <system:String x:Key="Invoices.Paid">Paid</system:String>
+    <system:String x:Key="Invoices.Balance">Balance</system:String>
+    <system:String x:Key="Invoices.Status">Status</system:String>
+    <system:String x:Key="Invoices.Date">Date</system:String>
+    <system:String x:Key="Invoices.Open">Open</system:String>
+    <system:String x:Key="Invoices.Empty">No invoices yet.</system:String>
+    <system:String x:Key="InvoiceStatus.Unpaid">Unpaid</system:String>
+    <system:String x:Key="InvoiceStatus.PartiallyPaid">Partially Paid</system:String>
+    <system:String x:Key="InvoiceStatus.Paid">Paid</system:String>
+
+    <system:String x:Key="PatientDetail.NewInvoice">+ New Invoice</system:String>
+    <system:String x:Key="PatientDetail.Billed">Billed</system:String>
+
+    <system:String x:Key="NewInvoice.Title">New Invoice</system:String>
+    <system:String x:Key="NewInvoice.SelectOrders">Select the exam orders to include on this invoice:</system:String>
+    <system:String x:Key="NewInvoice.None">No un-invoiced exam orders for this patient.</system:String>
+    <system:String x:Key="NewInvoice.Create">Create Invoice</system:String>
+    <system:String x:Key="NewInvoice.SelectAtLeastOne">Select at least one exam order.</system:String>
+    <system:String x:Key="NewInvoice.Total">Total: </system:String>
+
+    <system:String x:Key="InvoiceDetail.TitlePrefix">Invoice #</system:String>
+    <system:String x:Key="InvoiceDetail.Lines">Exam Orders</system:String>
+    <system:String x:Key="InvoiceDetail.Payments">Payments</system:String>
+    <system:String x:Key="InvoiceDetail.RecordPayment">Record Payment</system:String>
+    <system:String x:Key="InvoiceDetail.NoPayments">No payments recorded yet.</system:String>
+    <system:String x:Key="InvoiceDetail.Method">Method</system:String>
+    <system:String x:Key="InvoiceDetail.ReceivedBy">Received By</system:String>
+    <system:String x:Key="InvoiceDetail.PrintReceipt">Print Receipt</system:String>
+    <system:String x:Key="InvoiceDetail.FullyPaid">This invoice is fully paid.</system:String>
+
+    <system:String x:Key="RecordPayment.Title">Record Payment</system:String>
+    <system:String x:Key="RecordPayment.Amount">Amount</system:String>
+    <system:String x:Key="RecordPayment.Method">Payment Method</system:String>
+    <system:String x:Key="RecordPayment.Balance">Remaining balance: </system:String>
+    <system:String x:Key="RecordPayment.Submit">Record</system:String>
+    <system:String x:Key="RecordPayment.InvalidAmount">Enter a valid amount greater than zero.</system:String>
+
+    <system:String x:Key="PaymentMethod.Cash">Cash</system:String>
+    <system:String x:Key="PaymentMethod.Card">Card</system:String>
+    <system:String x:Key="PaymentMethod.Other">Other</system:String>
+
+    <system:String x:Key="Receipt.Title">Payment Receipt</system:String>
+
+    <system:String x:Key="Nav.Users">Users</system:String>
+    <system:String x:Key="Nav.CustomRoles">Custom Roles</system:String>
+    <system:String x:Key="Nav.AuditLog">Audit Log</system:String>
+
+    <system:String x:Key="Users.Title">Users</system:String>
+    <system:String x:Key="Users.New">+ New User</system:String>
+    <system:String x:Key="Users.Username">Username</system:String>
+    <system:String x:Key="Users.FullName">Full Name</system:String>
+    <system:String x:Key="Users.Role">Role</system:String>
+    <system:String x:Key="Users.Active">Active</system:String>
+    <system:String x:Key="Users.Locked">Locked</system:String>
+    <system:String x:Key="Users.Unlock">Unlock</system:String>
+    <system:String x:Key="Users.ResetPassword">Reset Password</system:String>
+    <system:String x:Key="Users.Edit">Edit</system:String>
+    <system:String x:Key="Users.None">— Built-in role only —</system:String>
+    <system:String x:Key="Users.Unlocked">User unlocked.</system:String>
+
+    <system:String x:Key="UserEdit.NewTitle">New User</system:String>
+    <system:String x:Key="UserEdit.EditTitle">Edit User</system:String>
+    <system:String x:Key="UserEdit.Password">Password</system:String>
+    <system:String x:Key="UserEdit.BuiltInRole">Built-in Role</system:String>
+    <system:String x:Key="UserEdit.CustomRole">Custom Role (optional override)</system:String>
+    <system:String x:Key="UserEdit.UsernameRequired">Username is required.</system:String>
+    <system:String x:Key="UserEdit.PasswordTooShort">Password must be at least 8 characters.</system:String>
+    <system:String x:Key="UserEdit.NameRequired">Full name is required.</system:String>
+
+    <system:String x:Key="Role.Admin">Admin</system:String>
+    <system:String x:Key="Role.Radiologist">Radiologist</system:String>
+    <system:String x:Key="Role.Technician">Technician</system:String>
+    <system:String x:Key="Role.Receptionist">Receptionist</system:String>
+
+    <system:String x:Key="ResetPassword.Title">Reset Password</system:String>
+    <system:String x:Key="ResetPassword.NewPassword">New Password</system:String>
+    <system:String x:Key="ResetPassword.Submit">Reset</system:String>
+    <system:String x:Key="ResetPassword.Note">The user will be required to change this password on next login.</system:String>
+
+    <system:String x:Key="ChangePassword.Title">Change Password</system:String>
+    <system:String x:Key="ChangePassword.Required">You must change your password before continuing.</system:String>
+    <system:String x:Key="ChangePassword.Current">Current Password</system:String>
+    <system:String x:Key="ChangePassword.New">New Password</system:String>
+    <system:String x:Key="ChangePassword.Confirm">Confirm New Password</system:String>
+    <system:String x:Key="ChangePassword.Submit">Change Password</system:String>
+    <system:String x:Key="ChangePassword.Mismatch">New password and confirmation do not match.</system:String>
+    <system:String x:Key="ChangePassword.MenuItem">Change Password</system:String>
+
+    <system:String x:Key="CustomRoles.Title">Custom Roles</system:String>
+    <system:String x:Key="CustomRoles.New">+ New Role</system:String>
+    <system:String x:Key="CustomRoles.Name">Name</system:String>
+    <system:String x:Key="CustomRoles.Description">Description</system:String>
+    <system:String x:Key="CustomRoles.Permissions">Permissions</system:String>
+    <system:String x:Key="CustomRoles.NameRequired">Name is required.</system:String>
+
+    <system:String x:Key="AuditLog.Title">Audit Log</system:String>
+    <system:String x:Key="AuditLog.Time">Time</system:String>
+    <system:String x:Key="AuditLog.User">User</system:String>
+    <system:String x:Key="AuditLog.Action">Action</system:String>
+    <system:String x:Key="AuditLog.Entity">Entity</system:String>
+    <system:String x:Key="AuditLog.Details">Details</system:String>
+    <system:String x:Key="AuditLog.Empty">No audit entries yet.</system:String>
+
+    <system:String x:Key="Nav.Backup">Backup &amp; Restore</system:String>
+    <system:String x:Key="Backup.Title">Backup &amp; Restore</system:String>
+    <system:String x:Key="Backup.CreateNow">Create Backup Now</system:String>
+    <system:String x:Key="Backup.FileName">File</system:String>
+    <system:String x:Key="Backup.Size">Size</system:String>
+    <system:String x:Key="Backup.Created">Created</system:String>
+    <system:String x:Key="Backup.Restore">Restore</system:String>
+    <system:String x:Key="Backup.Empty">No backups yet — click "Create Backup Now" or wait for the nightly scheduled backup.</system:String>
+    <system:String x:Key="Backup.LastBackup">Last backup: </system:String>
+    <system:String x:Key="Backup.Never">Never</system:String>
+    <system:String x:Key="Backup.Created.Success">Backup created successfully.</system:String>
+
+    <system:String x:Key="RestoreConfirm.Title">Restore Database</system:String>
+    <system:String x:Key="RestoreConfirm.Warning">This will PERMANENTLY REPLACE all current data with the contents of this backup. This cannot be undone. Every user will need to reconnect.</system:String>
+    <system:String x:Key="RestoreConfirm.FileLabel">Backup file: </system:String>
+    <system:String x:Key="RestoreConfirm.Password">Backup encryption password</system:String>
+    <system:String x:Key="RestoreConfirm.TypeToConfirm">Type RESTORE (in capitals) to confirm:</system:String>
+    <system:String x:Key="RestoreConfirm.ConfirmationMismatch">Type RESTORE exactly to confirm.</system:String>
+    <system:String x:Key="RestoreConfirm.Submit">Restore Now</system:String>
+    <system:String x:Key="RestoreConfirm.Success">Database restored. Please sign out and back in.</system:String>
+
+    <system:String x:Key="Update.Title">Update Available</system:String>
+    <system:String x:Key="Update.NewVersion">A new version is available: </system:String>
+    <system:String x:Key="Update.CurrentVersion">You are running: </system:String>
+    <system:String x:Key="Update.Notes">What's new</system:String>
+    <system:String x:Key="Update.Later">Later</system:String>
+    <system:String x:Key="Update.Now">Update Now</system:String>
+    <system:String x:Key="Update.Downloading">Downloading update…</system:String>
+    <system:String x:Key="Update.DownloadFailed">Could not download the update. Please try again later.</system:String>
+
+</ResourceDictionary>

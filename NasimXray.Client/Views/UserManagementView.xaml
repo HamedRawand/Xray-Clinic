@@ -1,0 +1,41 @@
+<UserControl x:Class="NasimXray.Client.Views.UserManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,0,1" Padding="24,16">
+            <Grid>
+                <TextBlock Text="{DynamicResource Users.Title}" FontSize="20" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                <Button Content="{DynamicResource Users.New}" Style="{StaticResource PrimaryButton}"
+                        HorizontalAlignment="Right" Click="New_Click"/>
+            </Grid>
+        </Border>
+
+        <DataGrid x:Name="Grid" Style="{StaticResource ModernDataGrid}" Margin="24"
+                  AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource Users.Username}" Binding="{Binding Username}" Width="*"/>
+                <DataGridTextColumn Header="{DynamicResource Users.FullName}" Binding="{Binding FullName}" Width="2*"/>
+                <DataGridTextColumn Header="{DynamicResource Users.Role}" Binding="{Binding RoleDisplayName}" Width="*"/>
+                <DataGridCheckBoxColumn Header="{DynamicResource Users.Active}" Binding="{Binding IsActive}" Width="70"/>
+                <DataGridCheckBoxColumn Header="{DynamicResource Users.Locked}" Binding="{Binding IsLocked}" Width="70"/>
+                <DataGridTemplateColumn Header="" Width="220">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="{DynamicResource Users.Edit}" Style="{StaticResource SecondaryButton}"
+                                        Height="28" Padding="8,0" FontSize="11" Margin="0,0,4,0" Click="Edit_Click"/>
+                                <Button Content="{DynamicResource Users.ResetPassword}" Style="{StaticResource SecondaryButton}"
+                                        Height="28" Padding="8,0" FontSize="11" Margin="0,0,4,0" Click="ResetPassword_Click"/>
+                                <Button Content="{DynamicResource Users.Unlock}" Style="{StaticResource SecondaryButton}"
+                                        Height="28" Padding="8,0" FontSize="11" Click="Unlock_Click"
+                                        Visibility="{Binding IsLocked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

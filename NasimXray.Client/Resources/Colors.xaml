@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Ocean Breeze palette — see ARCHITECTURE_PLAN.md §10.1 -->
+    <SolidColorBrush x:Key="PrimaryBrush"         Color="#F8FAFC"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush"  Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#F1F5F9"/>
+    <SolidColorBrush x:Key="TableHeaderBrush"     Color="#F1F5F9"/>
+    <SolidColorBrush x:Key="TextPrimaryBrush"     Color="#0F172A"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush"   Color="#334155"/>
+    <SolidColorBrush x:Key="TextMutedBrush"       Color="#64748B"/>
+    <SolidColorBrush x:Key="InputBorderBrush"     Color="#94A3B8"/>
+    <SolidColorBrush x:Key="InputFocusBorderBrush" Color="#1D4ED8"/>
+    <SolidColorBrush x:Key="AccentBrush"          Color="#1D4ED8"/>
+    <SolidColorBrush x:Key="AccentBrush20"        Color="#DBEAFE"/>
+    <SolidColorBrush x:Key="SeparatorBrush"       Color="#E2E8F0"/>
+    <SolidColorBrush x:Key="DangerBrush"          Color="#DC2626"/>
+    <SolidColorBrush x:Key="SuccessBrush"         Color="#16A34A"/>
+    <SolidColorBrush x:Key="WarningBrush"         Color="#D97706"/>
+
+</ResourceDictionary>
