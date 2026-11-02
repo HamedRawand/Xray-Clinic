@@ -5,6 +5,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>feebb321-8427-4fc8-9cc1-a49ec02111d4</UserSecretsId>
+    <!-- Product name in the exe / Task Manager / Services list; namespaces keep the original NasimXray.* names. -->
+    <AssemblyName>DiagnosticClinicManager.Server</AssemblyName>
+    <RootNamespace>NasimXray.Api</RootNamespace>
+    <Product>Diagnostic Clinic Manager Server</Product>
+    <Description>Diagnostic Clinic Manager Server</Description>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
 
@@ -16,6 +24,7 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

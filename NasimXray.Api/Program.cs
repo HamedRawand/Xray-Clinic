@@ -9,7 +9,21 @@ using NasimXray.Api.Services;
 using NasimXray.Shared.Enums;
 using Serilog;
 
+// As a Windows Service the working directory is System32, so anchor everything (appsettings.json, relative paths)
+// to the folder the exe lives in.
+if (Microsoft.Extensions.Hosting.WindowsServices.WindowsServiceHelpers.IsWindowsService())
+    Directory.SetCurrentDirectory(AppContext.BaseDirectory);
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseWindowsService(options => options.ServiceName = "DiagnosticClinicManagerServer");
+
+// Per-server settings and secrets (database password, JWT secret, backup password, HTTPS certificate) live in
+// %ProgramData%\DiagnosticClinicManager\server.settings.json — outside the install folder so upgrades never touch it,
+// and written by the server setup script with an administrators-only ACL. Absent on a development machine.
+var serverSettingsPath = Environment.GetEnvironmentVariable("DCM_SERVER_SETTINGS") // lets a test install use its own file
+    ?? Path.Combine(NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.CommonApplicationData), "server.settings.json");
+if (File.Exists(serverSettingsPath))
+    builder.Configuration.AddJsonFile(serverSettingsPath, optional: false, reloadOnChange: false);
 
 // Calling ConfigureKestrel with any explicit Listen call replaces --urls/ASPNETCORE_URLS entirely
 // (confirmed via Kestrel's own startup warning) rather than adding to it — so once HTTPS needs
@@ -35,7 +49,8 @@ Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .WriteTo.Console()
     .WriteTo.File(
-        Path.Combine(NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.LocalApplicationData), "Logs", "api_.log"),
+        // ProgramData (not LocalAppData): a service account has no useful profile folder, and an admin needs one known place to look.
+        Path.Combine(NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.CommonApplicationData), "Logs", "api_.log"),
         rollingInterval: RollingInterval.Day)
     .Enrich.FromLogContext()
     .CreateLogger();
@@ -118,7 +133,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await DbSeeder.SeedAsync(db);
+    await DbSeeder.SeedAsync(db, builder.Configuration["Seed:InitialAdminPassword"]);
 }
 
 if (app.Environment.IsDevelopment())

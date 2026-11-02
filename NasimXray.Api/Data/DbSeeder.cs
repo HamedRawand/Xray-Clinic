@@ -6,16 +6,21 @@ namespace NasimXray.Api.Data;
 
 public static class DbSeeder
 {
-    public static async Task SeedAsync(AppDbContext db)
+    // The well-known development password. A real deployment must pass its own initialAdminPassword (the server
+    // setup script generates a random one) so a fresh server never exposes a published default credential.
+    private const string DevelopmentAdminPassword = "Admin@1234";
+
+    public static async Task SeedAsync(AppDbContext db, string? initialAdminPassword = null)
     {
         await db.Database.MigrateAsync();
 
         if (!await db.Users.AnyAsync())
         {
+            var password = string.IsNullOrWhiteSpace(initialAdminPassword) ? DevelopmentAdminPassword : initialAdminPassword;
             db.Users.Add(new User
             {
                 Username = "admin",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@1234", workFactor: 12),
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12),
                 FullName = "Administrator",
                 Role = UserRole.Admin,
                 MustChangePassword = true,

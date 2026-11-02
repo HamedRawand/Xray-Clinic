@@ -266,6 +266,17 @@ None outstanding for the built system. Deliberately **deferred** ideas (raised d
   collisions or lost writes under concurrent load), completed in ~3 seconds.
 - **Lockout policy**: already built and verified in Phase 1/6 — no new work needed here.
 
+### 14.0 Server package (built 2026-11-02 — see `DEPLOYMENT.md` for the runbook)
+
+`deploy\server.iss` builds `DiagnosticClinicManager_Server_Setup_v<ver>.exe` (self-contained API, no .NET needed on the server). It runs `deploy\Install-Server.ps1`, which:
+installs PostgreSQL 17 silently if absent (EnterpriseDB installer, signature checked) → creates the `clinic` database + its own login → generates the JWT secret, the backup encryption password and a random initial `admin` password
+→ issues a 5-year self-signed certificate (SANs: host name, FQDN, localhost, all LAN IPs) → writes `%ProgramData%\DiagnosticClinicManager\server.settings.json` (admins + service only) →
+registers the `DiagnosticClinicManagerServer` service (delayed auto-start, depends on PostgreSQL, auto-restart on crash, **Local Service** account) → firewall rule for TCP 5443 from the local subnet only → starts it and
+health-checks it over HTTPS. Re-running a newer installer is the **upgrade** path (keeps DB/secrets/certificate, takes a `pre-upgrade-*.dump` first).
+API changes that made this possible: `UseWindowsService`, optional external `server.settings.json` (env var `DCM_SERVER_SETTINGS` overrides its path), `Seed:InitialAdminPassword` (the published default `Admin@1234` is used only on dev machines), API logs moved to `%ProgramData%`, API assembly renamed `DiagnosticClinicManager.Server`, version 1.1.0.
+**Verified 2026-11-02:** published server run against the dev DB with generated cert + settings file (HTTP + HTTPS, thumbprint matches); elevated dry-run on the dev PC (temporary service `DcmTestServer`, ports 6080/6443): fresh install, restart, upgrade pass with safety dump — 25/25 checks (service account, auto-start, PostgreSQL dependency, failure actions, firewall scope, folder ACLs, settings/secrets/cert files, seed password removed, clean uninstall).
+**NOT verified (needs a clean PC):** the silent PostgreSQL install itself (the `--superpassword … --unattendedmodeui none` flag set is the documented BitRock/EDB one but could not be exercised here), the Inno wizard end to end, and reboot auto-start.
+
 ### 14.1 Still manual (not automatable from a dev session) — checklist for the real deployment
 
 - [ ] Confirm the clinic's actual router supports VPN server mode (WireGuard/OpenVPN) — see §7.
