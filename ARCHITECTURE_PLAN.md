@@ -277,7 +277,7 @@ None outstanding for the built system. Deliberately **deferred** ideas (raised d
       the real server is deployed — this is by design (TOFU), not a gap to close later.
 - [ ] Decide whether to eventually re-enable `app.UseHttpsRedirection()` once every clinic PC has
       completed the trust step, to stop accepting plain HTTP entirely.
-- [ ] (added 2026-11-01) Everything in §15–§23 is uncommitted — when releasing, the user names which parts to commit; then cut `client-v1.1.0` (three-field version bump + `installer.iss` + two-step `gh release create` / `upload`).
+- [x] (done 2026-11-02, client-v1.1.0) Everything in §15–§23 was uncommitted — when releasing, the user names which parts to commit; then cut `client-v1.1.0` (three-field version bump + `installer.iss` + two-step `gh release create` / `upload`).
 - [ ] (added 2026-11-01) After upgrading, **users must sign out and back in** to receive the new `ApplyDiscount` permission claim; custom roles need it ticked in Custom Roles.
 - [ ] (added 2026-11-01) The database migrates itself on API start (`AddExamRegister`, `AddExamWorkflow`, `AddExamPrice`, `AddExamDiscount`) — take a backup first on the real server.
 
@@ -398,7 +398,7 @@ ProcessPayment, ManageUsers, ManageRoles, ManageExamTypes, ManageReferringPhysic
 1. **Real-server deployment** (§14.1): router VPN support, regenerate the HTTPS certificate on the real server PC, server installer / Windows Service, firewall rule, first backup, then each clinic PC's one-time "Trust This Certificate".
 2. **Native-speaker review of the Dari text** (all new screens included).
 3. **App icon** (BMP-only `.ico` + `Window.Icon` class handler for Win7, per §10.1) and an **x86 build** if the Win7/8 PC is 32-bit.
-4. **Commit and release** the uncommitted work (user names the parts; then `client-v1.1.0`).
+4. ~~Commit and release~~ — done 2026-11-02: five commits pushed to master, `client-v1.1.0` released (installer `DiagnosticClinicManager_Setup_v1.1.0.exe`, 54.8 MB).
 5. Optional later: discounts after payment (refunds), discount limits/approval, per-exam list-price edits, configurable currency.
 
 ## 25. Clinic profile — one installation per clinic (built 2026-11-01)
