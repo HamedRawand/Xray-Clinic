@@ -285,6 +285,7 @@ Known minor: two backups made in the same second share one file name (the second
 
 ### 14.1 Still manual (not automatable from a dev session) — checklist for the real deployment
 
+- Status 2026-11-02: the server package (§14.0) replaces the manual steps below (certificate, service, firewall are automated by `Install-Server.ps1`); the runbook is `DEPLOYMENT.md` and the PDF manual. Items still genuinely manual: the VPN/router item, "Trust This Certificate" on every PC, the first backup + an off-PC copy, and the reboot check.
 - [ ] Confirm the clinic's actual router supports VPN server mode (WireGuard/OpenVPN) — see §7.
       If not, fall back to the Windows VPN server role or a remote-support tool.
 - [ ] Once the server PC is physically deployed, regenerate the self-signed HTTPS certificate
@@ -409,14 +410,16 @@ ProcessPayment, ManageUsers, ManageRoles, ManageExamTypes, ManageReferringPhysic
 - **Known limitations:** Dari text is machine-assisted; the Exams/Dashboard/Statistics screens were verified by rendering with sample data and by the user, not with a stub server; discounts after payment and discount limits are not built;
   `Currency` is a constant; the stray `ARCHITECTURE_PLAN.html` next to this file is an old auto-generated preview (git-ignored) and is **out of date** — this markdown file is the source of truth.
 
-## 24. What remains
+## 24. What remains (updated 2026-11-02, end of day)
 
-0. ~~Product naming~~ — done 2026-11-02 (§25): "Diagnostic Clinic Manager"; only the GitHub repo name is left to decide at release time.
-1. **Real-server deployment** (§14.1): router VPN support, regenerate the HTTPS certificate on the real server PC, server installer / Windows Service, firewall rule, first backup, then each clinic PC's one-time "Trust This Certificate".
-2. **Native-speaker review of the Dari text** (all new screens included).
-3. **App icon** (BMP-only `.ico` + `Window.Icon` class handler for Win7, per §10.1) and an **x86 build** if the Win7/8 PC is 32-bit.
-4. ~~Commit and release~~ — done 2026-11-02: five commits pushed to master, `client-v1.1.0` released (installer `DiagnosticClinicManager_Setup_v1.1.0.exe`, 54.8 MB).
-5. Optional later: discounts after payment (refunds), discount limits/approval, per-exam list-price edits, configurable currency.
+Current releases: **client 1.1.3**, **server 1.1.2** (everything committed and pushed; see §14.0, §25, §26).
+
+0. ~~Product naming~~ — done 2026-11-02 (§25): "Diagnostic Clinic Manager"; only the GitHub repo name (`Xray-Clinic`) was left as is (GitHub redirects the old name; renaming is optional).
+1. **Real-server deployment — in progress.** The server installer, service, certificate, firewall rule, secrets and upgrade path are built and were exercised on the user's two spare PCs (a server and a client; first-run problems found and fixed in client 1.1.1–1.1.3 / server 1.1.1–1.1.2). **Still to check on real PCs:** service auto-start after a reboot, the full scenario run (check-in → workflow → report → invoice/discount → backup + restore), the client auto-update, and the router VPN / remote-access arrangement.
+2. **Native-speaker review of the Dari text** (all new screens included) and a **Dari version of the PDF manual** (the manual is English only).
+3. ~~App icon~~ — done in 1.1.3 (BMP-format multi-size ICO, §26). **x86 / Windows 7 client** is still open, and only matters if the clinic's older PC needs it (the current client is 64-bit Windows 10/11).
+4. ~~Commit and release~~ — done: client 1.1.0 → 1.1.3 and server 1.1.0 → 1.1.2 published as GitHub releases; the installer asset is verified against the local build each time.
+5. Optional later: discounts after payment (refunds), discount limits/approval, per-exam list-price edits, configurable currency, rebuilding the server installer to refresh its bundled manual copy.
 
 ## 25. Clinic profile — one installation per clinic (built 2026-11-01)
 
