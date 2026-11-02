@@ -14,7 +14,7 @@
     <system:String x:Key="Login.Language">دری</system:String>
 
     <system:String x:Key="ServerSettings.Title">Clinic Server Address</system:String>
-    <system:String x:Key="ServerSettings.Description">Enter the server PC's address, e.g. http://192.168.1.10:5001</system:String>
+    <system:String x:Key="ServerSettings.Description">Enter the server PC's address, e.g. https://CLINIC-SERVER:5443 (its computer name) or https://192.168.1.10:5443 (its IP address)</system:String>
     <system:String x:Key="ServerSettings.TestConnection">Test Connection</system:String>
     <system:String x:Key="ServerSettings.Save">Save</system:String>
     <system:String x:Key="ServerSettings.Testing">Testing connection…</system:String>

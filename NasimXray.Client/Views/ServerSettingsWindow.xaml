@@ -13,7 +13,7 @@
                        Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,4"/>
             <TextBlock Text="{DynamicResource ServerSettings.Description}"
                        FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
-                       TextWrapping="Wrap" Margin="0,0,0,16" FlowDirection="LeftToRight" TextAlignment="Left"/>
+                       TextWrapping="Wrap" Margin="0,0,0,16"/>
 
             <TextBox x:Name="ServerUrlBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,8"
                      FlowDirection="LeftToRight" HorizontalContentAlignment="Left" TextChanged="ServerUrlBox_TextChanged"/>

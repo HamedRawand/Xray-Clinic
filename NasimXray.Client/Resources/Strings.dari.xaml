@@ -15,7 +15,7 @@
     <system:String x:Key="Login.Language">English</system:String>
 
     <system:String x:Key="ServerSettings.Title">آدرس سرور کلینیک</system:String>
-    <system:String x:Key="ServerSettings.Description">آدرس رایانه سرور را وارد کنید، مثال: http://192.168.1.10:5001</system:String>
+    <system:String x:Key="ServerSettings.Description">آدرس رایانه سرور را وارد کنید. مثال: https://CLINIC-SERVER:5443 یا https://192.168.1.10:5443</system:String>
     <system:String x:Key="ServerSettings.TestConnection">آزمایش اتصال</system:String>
     <system:String x:Key="ServerSettings.Save">ذخیره</system:String>
     <system:String x:Key="ServerSettings.Testing">در حال آزمایش اتصال…</system:String>
