@@ -9,7 +9,7 @@ namespace NasimXray.Api.Controllers;
 [ApiController]
 [Route("api/backup")]
 [Authorize(Policy = nameof(Permission.ManageBackup))]
-public class BackupController(BackupService backupService, AuditService audit) : ControllerBase
+public class BackupController(BackupService backupService, AuditService audit, ILogger<BackupController> logger) : ControllerBase
 {
     [HttpGet]
     public ActionResult<List<BackupFileDto>> GetAll() =>
@@ -28,6 +28,8 @@ public class BackupController(BackupService backupService, AuditService audit) :
         }
         catch (InvalidOperationException ex)
         {
+            // The client is told why; the server log keeps it too so an admin can find it later.
+            logger.LogWarning("Backup could not be created: {Message}", ex.Message);
             return BadRequest(new { message = ex.Message });
         }
     }
@@ -43,10 +45,12 @@ public class BackupController(BackupService backupService, AuditService audit) :
         }
         catch (FileNotFoundException)
         {
+            logger.LogWarning("Restore refused: backup file {FileName} was not found", request.FileName);
             return NotFound(new { message = "Backup file not found." });
         }
         catch (InvalidOperationException ex)
         {
+            logger.LogWarning("Restore of {FileName} refused: {Message}", request.FileName, ex.Message);
             return BadRequest(new { message = ex.Message });
         }
     }

@@ -352,6 +352,7 @@ try {
 
     # ----------------------------------------------------------------------------------------- start + check
     Write-Step 'Starting the server (the database is created / upgraded on first start)'
+    Write-Note 'The very first start can take a few minutes: antivirus scans the newly installed files. Please wait...'
     Start-Service -Name $ServiceName
     $healthy = $false
     $url = "https://localhost:$HttpsPort/api/system/clinic"

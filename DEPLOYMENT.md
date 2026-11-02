@@ -21,7 +21,7 @@ One server PC per clinic runs PostgreSQL and the API as a Windows service; every
    - issues a 5-year self-signed HTTPS certificate for the PC's name and addresses,
    - registers the **Diagnostic Clinic Manager Server** Windows service (starts automatically with Windows, after PostgreSQL, restarts itself after a crash, runs as the low-privilege *Local Service* account),
    - opens inbound TCP **5443** to the local subnet only,
-   - starts the service, waits until it answers, and prints the address, the certificate fingerprint and the first sign-in.
+   - starts the service, waits until it answers, and prints the address, the certificate fingerprint and the first sign-in. **The very first start can take a few minutes** (antivirus scans the newly installed files) — wait for "Server is running".
 3. **Save the secrets.** The window and `C:\ProgramData\DiagnosticClinicManager\INSTALL-SECRETS.txt` show the first admin password and the backup encryption password. Copy them somewhere safe that is *not* this PC (printed copy in the safe, password manager), then delete the file.
    **If the backup password is lost, encrypted backups can never be restored.**
 

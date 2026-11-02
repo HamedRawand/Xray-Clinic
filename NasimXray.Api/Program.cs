@@ -133,7 +133,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await DbSeeder.SeedAsync(db, builder.Configuration["Seed:InitialAdminPassword"]);
+    await DbSeeder.SeedAsync(db, builder.Configuration["Seed:InitialAdminPassword"], allowDevelopmentDefault: app.Environment.IsDevelopment());
 }
 
 if (app.Environment.IsDevelopment())

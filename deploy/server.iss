@@ -2,7 +2,7 @@
 ; PostgreSQL, the database, secrets, the HTTPS certificate, the Windows service and the firewall rule.
 ; Re-running a newer installer over an existing one is the upgrade path.
 #define AppName "Diagnostic Clinic Manager Server"
-#define AppVersion "1.1.0"
+#define AppVersion "1.1.1"
 #define ServiceName "DiagnosticClinicManagerServer"
 
 [Setup]
