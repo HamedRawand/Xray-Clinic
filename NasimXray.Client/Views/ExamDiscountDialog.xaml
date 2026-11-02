@@ -1,0 +1,48 @@
+<Window x:Class="NasimXray.Client.Views.ExamDiscountDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        Title="{DynamicResource ExamDiscount.Title}"
+        Height="460" Width="460"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <Border Style="{StaticResource CardBorder}" Margin="16">
+        <StackPanel>
+            <TextBlock x:Name="ExamText" FontSize="14" FontWeight="SemiBold" TextWrapping="Wrap"
+                       Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,4"/>
+            <TextBlock x:Name="ListPriceText" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,14"/>
+
+            <TextBlock Text="{DynamicResource ExamDiscount.Charge}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="ChargeBox" Style="{StaticResource ModernTextBox}" FlowDirection="LeftToRight"/>
+                <Button Grid.Column="2" Content="{DynamicResource CheckIn.Free}" Style="{StaticResource SecondaryButton}"
+                        Padding="14,0" Click="Free_Click"/>
+            </Grid>
+
+            <TextBlock Text="{DynamicResource ExamDiscount.Reason}" FontSize="12" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+            <TextBox x:Name="ReasonBox" Style="{StaticResource ModernTextBox}" Height="70" MaxLength="250"
+                     TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="10,8"/>
+
+            <TextBlock x:Name="CurrentText" FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                       TextWrapping="Wrap" Margin="0,8,0,0" Visibility="Collapsed"/>
+
+            <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerBrush}"
+                       FontSize="12" TextWrapping="Wrap" Margin="0,8,0,0" Visibility="Collapsed"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="{DynamicResource PatientEdit.Cancel}" Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,8,0" IsCancel="True"/>
+                <Button x:Name="RemoveButton" Content="{DynamicResource ExamDiscount.Remove}" Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,8,0" Click="Remove_Click" Visibility="Collapsed"/>
+                <Button Content="{DynamicResource PatientEdit.Save}" Style="{StaticResource PrimaryButton}" Click="Save_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

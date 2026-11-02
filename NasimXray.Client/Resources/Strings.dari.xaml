@@ -3,15 +3,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="App.Title">کلینیک تشخیصی ایکسری نسیم</system:String>
-
     <system:String x:Key="Login.Subtitle">برای ادامه وارد شوید</system:String>
     <system:String x:Key="Login.Username">نام کاربری</system:String>
     <system:String x:Key="Login.Password">رمز عبور</system:String>
     <system:String x:Key="Login.SignIn">ورود</system:String>
     <system:String x:Key="Login.ServerSettings">تنظیمات سرور</system:String>
     <system:String x:Key="Login.ServerNotConfigured">سرور تنظیم نشده است</system:String>
-    <system:String x:Key="Login.ServerPrefix">سرور: </system:String>
+    <system:String x:Key="Login.ServerPrefix" xml:space="preserve">سرور: </system:String>
     <system:String x:Key="Login.ConfigureServerFirst">لطفاً ابتدا آدرس سرور را تنظیم کنید (تنظیمات سرور).</system:String>
     <system:String x:Key="Login.EnterCredentials">نام کاربری و رمز عبور خود را وارد کنید.</system:String>
     <system:String x:Key="Login.Language">English</system:String>
@@ -24,6 +22,10 @@
     <system:String x:Key="ServerSettings.Connected">اتصال موفقانه برقرار شد.</system:String>
     <system:String x:Key="ServerSettings.ConnectFailed">اتصال به سرور در این آدرس ممکن نشد.</system:String>
     <system:String x:Key="ServerSettings.EnterAddressFirst">ابتدا آدرس سرور را وارد کنید.</system:String>
+    <system:String x:Key="ServerSettings.CertPresented">این سرور گواهینامه‌ای با اثر انگشت ذیل ارائه کرد:</system:String>
+    <system:String x:Key="ServerSettings.CertTrustWarning">این را فقط زمانی تأیید کنید که مطمئن هستید متعلق به سرور کلینیک خودتان است. تأیید گواهینامه اشتباه می‌تواند معلومات ورود و مریضان شما را در معرض خطر قرار دهد.</system:String>
+    <system:String x:Key="ServerSettings.TrustCertificate">تأیید این گواهینامه</system:String>
+    <system:String x:Key="ServerSettings.Trusted" xml:space="preserve">گواهینامه تأیید شده: </system:String>
 
     <system:String x:Key="Common.SignOut">خروج</system:String>
 
@@ -48,6 +50,8 @@
     <system:String x:Key="Patients.Name">نام</system:String>
     <system:String x:Key="Patients.Phone">تلفون</system:String>
     <system:String x:Key="Patients.Sex">جنسیت</system:String>
+    <system:String x:Key="Patients.ExamCount">معاینات</system:String>
+    <system:String x:Key="Patients.LastVisit">آخرین مراجعه</system:String>
     <system:String x:Key="Patients.DateOfBirth">تاریخ تولد</system:String>
     <system:String x:Key="Patients.Open">باز کردن</system:String>
     <system:String x:Key="Patients.Empty">هنوز مریضی ثبت نشده — روی «مریض جدید» کلیک کنید.</system:String>
@@ -62,7 +66,7 @@
     <system:String x:Key="Sex.Male">مذکر</system:String>
     <system:String x:Key="Sex.Female">مؤنث</system:String>
 
-    <system:String x:Key="PatientDetail.TitlePrefix">مریض: </system:String>
+    <system:String x:Key="PatientDetail.TitlePrefix" xml:space="preserve">مریض: </system:String>
     <system:String x:Key="PatientDetail.NewExamOrder">+ درخواست معاینه جدید</system:String>
     <system:String x:Key="PatientDetail.ExamType">نوع معاینه</system:String>
     <system:String x:Key="PatientDetail.Status">وضعیت</system:String>
@@ -110,6 +114,7 @@
     <system:String x:Key="ExamTypes.Modality">شیوه تصویربرداری</system:String>
     <system:String x:Key="ExamTypes.BodyPart">عضو بدن</system:String>
     <system:String x:Key="ExamTypes.Price">قیمت</system:String>
+    <system:String x:Key="ExamTypes.PriceAfn">قیمت (AFN)</system:String>
     <system:String x:Key="ExamTypes.Active">فعال</system:String>
     <system:String x:Key="ExamTypes.Edit">ویرایش</system:String>
     <system:String x:Key="ExamTypes.Fields">فیلدهای اندازه‌گیری</system:String>
@@ -151,9 +156,9 @@
     <system:String x:Key="NewInvoice.None">هیچ معاینه فاکتور نشده‌ای برای این مریض وجود ندارد.</system:String>
     <system:String x:Key="NewInvoice.Create">ایجاد فاکتور</system:String>
     <system:String x:Key="NewInvoice.SelectAtLeastOne">حد اقل یک معاینه را انتخاب کنید.</system:String>
-    <system:String x:Key="NewInvoice.Total">مجموع: </system:String>
+    <system:String x:Key="NewInvoice.Total" xml:space="preserve">مجموع: </system:String>
 
-    <system:String x:Key="InvoiceDetail.TitlePrefix">فاکتور شماره </system:String>
+    <system:String x:Key="InvoiceDetail.TitlePrefix" xml:space="preserve">فاکتور شماره </system:String>
     <system:String x:Key="InvoiceDetail.Lines">معاینات</system:String>
     <system:String x:Key="InvoiceDetail.Payments">پرداخت‌ها</system:String>
     <system:String x:Key="InvoiceDetail.RecordPayment">ثبت پرداخت</system:String>
@@ -164,9 +169,9 @@
     <system:String x:Key="InvoiceDetail.FullyPaid">این فاکتور بطور کامل پرداخت شده است.</system:String>
 
     <system:String x:Key="RecordPayment.Title">ثبت پرداخت</system:String>
-    <system:String x:Key="RecordPayment.Amount">مبلغ</system:String>
+    <system:String x:Key="RecordPayment.Amount">مبلغ (AFN)</system:String>
     <system:String x:Key="RecordPayment.Method">شیوه پرداخت</system:String>
-    <system:String x:Key="RecordPayment.Balance">باقیمانده: </system:String>
+    <system:String x:Key="RecordPayment.Balance" xml:space="preserve">باقیمانده: </system:String>
     <system:String x:Key="RecordPayment.Submit">ثبت</system:String>
     <system:String x:Key="RecordPayment.InvalidAmount">یک مبلغ معتبر بزرگتر از صفر وارد کنید.</system:String>
 
@@ -244,13 +249,13 @@
     <system:String x:Key="Backup.Created">تاریخ ایجاد</system:String>
     <system:String x:Key="Backup.Restore">بازیابی</system:String>
     <system:String x:Key="Backup.Empty">هنوز بکاپی وجود ندارد — روی «ایجاد بکاپ اکنون» کلیک کنید یا منتظر بکاپ شبانه باشید.</system:String>
-    <system:String x:Key="Backup.LastBackup">آخرین بکاپ: </system:String>
+    <system:String x:Key="Backup.LastBackup" xml:space="preserve">آخرین بکاپ: </system:String>
     <system:String x:Key="Backup.Never">هیچ‌وقت</system:String>
     <system:String x:Key="Backup.Created.Success">بکاپ با موفقیت ایجاد شد.</system:String>
 
     <system:String x:Key="RestoreConfirm.Title">بازیابی دیتابیس</system:String>
     <system:String x:Key="RestoreConfirm.Warning">این عملیات تمام معلومات فعلی را با محتوای این بکاپ به صورت دایمی جابجا می‌کند. این عملیات قابل بازگشت نیست. تمام کاربران باید دوباره وصل شوند.</system:String>
-    <system:String x:Key="RestoreConfirm.FileLabel">فایل بکاپ: </system:String>
+    <system:String x:Key="RestoreConfirm.FileLabel" xml:space="preserve">فایل بکاپ: </system:String>
     <system:String x:Key="RestoreConfirm.Password">رمز عبور رمزگذاری بکاپ</system:String>
     <system:String x:Key="RestoreConfirm.TypeToConfirm">برای تأیید کلمه RESTORE را (به حروف بزرگ) تایپ کنید:</system:String>
     <system:String x:Key="RestoreConfirm.ConfirmationMismatch">برای تأیید دقیقاً RESTORE را تایپ کنید.</system:String>
@@ -258,12 +263,237 @@
     <system:String x:Key="RestoreConfirm.Success">دیتابیس بازیابی شد. لطفاً خارج شده و دوباره وارد شوید.</system:String>
 
     <system:String x:Key="Update.Title">آپدیت جدید</system:String>
-    <system:String x:Key="Update.NewVersion">یک نسخه جدید موجود است: </system:String>
-    <system:String x:Key="Update.CurrentVersion">نسخه فعلی شما: </system:String>
+    <system:String x:Key="Update.NewVersion" xml:space="preserve">یک نسخه جدید موجود است: </system:String>
+    <system:String x:Key="Update.CurrentVersion" xml:space="preserve">نسخه فعلی شما: </system:String>
     <system:String x:Key="Update.Notes">تازه‌ها</system:String>
     <system:String x:Key="Update.Later">بعداً</system:String>
     <system:String x:Key="Update.Now">اکنون آپدیت کن</system:String>
     <system:String x:Key="Update.Downloading">در حال دانلود آپدیت…</system:String>
     <system:String x:Key="Update.DownloadFailed">دانلود آپدیت ممکن نشد. لطفاً بعداً دوباره تلاش کنید.</system:String>
 
+    <system:String x:Key="Calendar.ToShamsi">تقویم شمسی</system:String>
+    <system:String x:Key="Calendar.ToGregorian">تقویم میلادی</system:String>
+
+    <system:String x:Key="Session.Expired">نشست شما به پایان رسیده است. لطفاً دوباره وارد شوید.</system:String>
+
+    <system:String x:Key="IdleLock.Title">نشست قفل شد</system:String>
+    <system:String x:Key="IdleLock.Message">این نشست به دلیل عدم فعالیت قفل شد.</system:String>
+    <system:String x:Key="IdleLock.Password">برای ادامه رمز عبور خود را وارد کنید</system:String>
+    <system:String x:Key="IdleLock.Unlock">بازکردن قفل</system:String>
+    <system:String x:Key="IdleLock.SignOutInstead">به جای آن خارج شوید</system:String>
+    <system:String x:Key="IdleLock.IncorrectPassword">رمز عبور نادرست است.</system:String>
+
+    <!-- Exams register -->
+    <system:String x:Key="Nav.Exams">معاینات</system:String>
+    <system:String x:Key="Exams.Title">ثبت معاینات</system:String>
+    <system:String x:Key="Exams.Search">جستجو (نام، آیدی مریض، شماره تماس، نمبر معاینه)</system:String>
+    <system:String x:Key="Exams.DateRange">دوره</system:String>
+    <system:String x:Key="Exams.From">از</system:String>
+    <system:String x:Key="Exams.To">تا</system:String>
+    <system:String x:Key="Exams.Preset.Today">امروز</system:String>
+    <system:String x:Key="Exams.Preset.Yesterday">دیروز</system:String>
+    <system:String x:Key="Exams.Preset.Week">این هفته</system:String>
+    <system:String x:Key="Exams.Preset.Month">این ماه</system:String>
+    <system:String x:Key="Exams.Preset.All">همه زمان‌ها</system:String>
+    <system:String x:Key="Exams.Preset.Custom">دلخواه</system:String>
+    <system:String x:Key="Exams.ExamType">نوع معاینه</system:String>
+    <system:String x:Key="Exams.Modality">مودالیتی</system:String>
+    <system:String x:Key="Exams.Status">وضعیت</system:String>
+    <system:String x:Key="Exams.Referring">داکتر رجعت‌دهنده</system:String>
+    <system:String x:Key="Exams.Billing">حسابداری</system:String>
+    <system:String x:Key="Exams.Billing.NotInvoiced">فاکتور نشده</system:String>
+    <system:String x:Key="Exams.Billing.Unpaid">فاکتور شده، کاملاً پرداخت نشده</system:String>
+    <system:String x:Key="Exams.Billing.Paid">پرداخت شده</system:String>
+    <system:String x:Key="Exams.NotInvoiced">فاکتور نشده</system:String>
+    <system:String x:Key="Exams.All">همه</system:String>
+    <system:String x:Key="Exams.Clear">بازنشانی</system:String>
+    <system:String x:Key="Exams.Number">نمبر معاینه</system:String>
+    <system:String x:Key="Exams.DateTime">تاریخ و وقت</system:String>
+    <system:String x:Key="Exams.Patient">مریض</system:String>
+    <system:String x:Key="Exams.PatientId">آیدی مریض</system:String>
+    <system:String x:Key="Exams.OpenPatient">مریض</system:String>
+    <system:String x:Key="Exams.SummaryFormat">{0} معاینه · {1} مریض</system:String>
+    <system:String x:Key="Exams.ExamsWord">معاینه</system:String>
+    <system:String x:Key="Exams.PatientsWord">مریض</system:String>
+    <system:String x:Key="Exams.PageFormat">صفحه {0} از {1}</system:String>
+    <system:String x:Key="Exams.Prev">‹ قبلی</system:String>
+    <system:String x:Key="Exams.Next">بعدی ›</system:String>
+    <system:String x:Key="Exams.Empty">هیچ معاینه‌ای با این فیلترها پیدا نشد.</system:String>
+
+    <!-- Exam workflow (step B) -->
+    <system:String x:Key="Exams.Actions">اقدامات</system:String>
+    <system:String x:Key="Exams.Start">شروع</system:String>
+    <system:String x:Key="Exams.Complete">تکمیل</system:String>
+    <system:String x:Key="Exams.Reopen">بازگشایی</system:String>
+    <system:String x:Key="Exams.Cancel">لغو معاینه</system:String>
+    <system:String x:Key="Exams.ConfirmReopen">این معاینه دوباره باز شود؟ به وضعیت «در حال انجام» برمی‌گردد و ثبت انجام‌دهنده پاک می‌شود.</system:String>
+    <system:String x:Key="Exams.PerformedBy">انجام‌دهنده</system:String>
+    <system:String x:Key="Exams.Refresh">تازه‌سازی</system:String>
+    <system:String x:Key="Exams.Queues">صف‌ها:</system:String>
+    <system:String x:Key="Exams.Queue.Tech">منتظر تکنیشن</system:String>
+    <system:String x:Key="Exams.Queue.Progress">در حال انجام</system:String>
+    <system:String x:Key="Exams.Queue.Report">منتظر راپور</system:String>
+    <system:String x:Key="Exams.Queue.Billing">نیاز به فاکتور</system:String>
+    <system:String x:Key="Exams.Queue.Unpaid">پرداخت نشده</system:String>
+    <system:String x:Key="CancelExam.Title">لغو معاینه</system:String>
+    <system:String x:Key="CancelExam.Reason">دلیل لغو</system:String>
+    <system:String x:Key="CancelExam.Note">معاینهٔ لغو شده دوباره باز، فاکتور یا راپور نمی‌شود. دلیل در تاریخچه فعالیت ثبت می‌ماند.</system:String>
+    <system:String x:Key="CancelExam.ReasonRequired">لطفاً دلیل را وارد کنید.</system:String>
+    <system:String x:Key="CancelExam.Keep">نگه داشتن معاینه</system:String>
+    <system:String x:Key="CancelExam.Submit">لغو معاینه</system:String>
+
+    <!-- Check-in wizard (step C) -->
+    <system:String x:Key="Nav.CheckIn">+ پذیرش جدید</system:String>
+    <system:String x:Key="CheckIn.Title">پذیرش جدید</system:String>
+    <system:String x:Key="CheckIn.Step1">۱. مریض</system:String>
+    <system:String x:Key="CheckIn.Step2">۲. معاینات</system:String>
+    <system:String x:Key="CheckIn.Step3">۳. حسابداری و پرداخت</system:String>
+    <system:String x:Key="CheckIn.NewPatient">+ مریض جدید</system:String>
+    <system:String x:Key="CheckIn.SearchHint">جستجو با نام، آیدی مریض یا شماره تماس.</system:String>
+    <system:String x:Key="CheckIn.NoResults">مریضی پیدا نشد. با «+ مریض جدید» ثبتش کنید.</system:String>
+    <system:String x:Key="CheckIn.Change">تغییر</system:String>
+    <system:String x:Key="CheckIn.BackToSearch">← بازگشت به جستجو</system:String>
+    <system:String x:Key="CheckIn.DuplicateWarning">مریضی با همین نام یا شماره تماس قبلاً ثبت شده. پیش از ثبت دوباره بررسی کنید:</system:String>
+    <system:String x:Key="CheckIn.UseThisPatient">همین مریض</system:String>
+    <system:String x:Key="CheckIn.FindExam">جستجوی معاینه</system:String>
+    <system:String x:Key="CheckIn.CreateInvoice">برای این معاینات فاکتور ساخته شود</system:String>
+    <system:String x:Key="CheckIn.AmountNow">مبلغ دریافتی اکنون (AFN)</system:String>
+    <system:String x:Key="CheckIn.FullAmount">مبلغ کامل</system:String>
+    <system:String x:Key="CheckIn.Total" xml:space="preserve">مجموع: </system:String>
+    <system:String x:Key="CheckIn.BalanceAfter" xml:space="preserve">باقیمانده پس از پرداخت: </system:String>
+    <system:String x:Key="CheckIn.Submit">ثبت پذیرش</system:String>
+    <system:String x:Key="CheckIn.ChoosePatient">مریض را جستجو کنید یا مریض جدید ثبت کنید.</system:String>
+    <system:String x:Key="CheckIn.ChooseExam">حداقل یک معاینه را انتخاب کنید.</system:String>
+    <system:String x:Key="CheckIn.InvalidAmount">مبلغی بین صفر و مجموع وارد کنید.</system:String>
+    <system:String x:Key="CheckIn.Done">پذیرش انجام شد</system:String>
+    <system:String x:Key="CheckIn.NewTag">مریض جدید</system:String>
+    <system:String x:Key="CheckIn.InvoiceNo" xml:space="preserve">فاکتور شماره </system:String>
+    <system:String x:Key="CheckIn.InvTotal" xml:space="preserve">مجموع </system:String>
+    <system:String x:Key="CheckIn.InvPaid" xml:space="preserve">پرداخت شده </system:String>
+    <system:String x:Key="CheckIn.InvBalance" xml:space="preserve">باقیمانده </system:String>
+    <system:String x:Key="CheckIn.NoInvoice">فاکتور ساخته نشد.</system:String>
+    <system:String x:Key="CheckIn.PrintReceipt">چاپ رسید</system:String>
+    <system:String x:Key="CheckIn.OpenPatient">باز کردن مریض</system:String>
+    <system:String x:Key="CheckIn.NewCheckIn">پذیرش بعدی</system:String>
+
+    <!-- Dashboard, statistics, export (step D) -->
+    <system:String x:Key="Nav.Dashboard">داشبورد</system:String>
+    <system:String x:Key="Nav.Statistics">احصائیه</system:String>
+    <system:String x:Key="Dash.Title">داشبورد</system:String>
+    <system:String x:Key="Dash.TodayFormat">امروز · {0}</system:String>
+    <system:String x:Key="Dash.UpdatedFormat">به‌روز شد {0}</system:String>
+    <system:String x:Key="Dash.ExamsToday">معاینات امروز</system:String>
+    <system:String x:Key="Dash.PatientsToday">مریضان امروز</system:String>
+    <system:String x:Key="Dash.NewPatients">مریضان جدید امروز</system:String>
+    <system:String x:Key="Dash.Collected">دریافتی امروز</system:String>
+    <system:String x:Key="Dash.Outstanding">باقیمانده (همه فاکتورها)</system:String>
+    <system:String x:Key="Dash.Invoiced">فاکتور شده امروز</system:String>
+    <system:String x:Key="Dash.ByType">معاینات امروز به تفکیک نوع</system:String>
+    <system:String x:Key="Dash.ByStatus">معاینات امروز به تفکیک وضعیت</system:String>
+    <system:String x:Key="Dash.Money">پول دریافتی امروز</system:String>
+    <system:String x:Key="Dash.NoExams">امروز هنوز معاینه‌ای ثبت نشده.</system:String>
+    <system:String x:Key="Stats.Title">احصائیه</system:String>
+    <system:String x:Key="Stats.Preset.Last30">۳۰ روز اخیر</system:String>
+    <system:String x:Key="Stats.Preset.Year">امسال</system:String>
+    <system:String x:Key="Stats.Export">خروجی اکسل</system:String>
+    <system:String x:Key="Stats.ExamsTotal">معاینات</system:String>
+    <system:String x:Key="Stats.Patients">مریضان</system:String>
+    <system:String x:Key="Stats.NewPatients">مریضان جدید</system:String>
+    <system:String x:Key="Stats.Cancelled">معاینات لغو شده</system:String>
+    <system:String x:Key="Stats.Billed">ارزش فاکتور شده</system:String>
+    <system:String x:Key="Stats.NotInvoiced">فاکتور نشده</system:String>
+    <system:String x:Key="Stats.Collected">دریافتی</system:String>
+    <system:String x:Key="Stats.ByType">به تفکیک نوع معاینه</system:String>
+    <system:String x:Key="Stats.ByModality">به تفکیک مودالیتی</system:String>
+    <system:String x:Key="Stats.ByDoctor">به تفکیک داکتر رجعت‌دهنده</system:String>
+    <system:String x:Key="Stats.ByDay">به تفکیک روز</system:String>
+    <system:String x:Key="Stats.CashByUser">پرداخت‌ها به تفکیک کارمند</system:String>
+    <system:String x:Key="Stats.Col.Exams">معاینات</system:String>
+    <system:String x:Key="Stats.Col.Patients">مریضان</system:String>
+    <system:String x:Key="Stats.Col.Revenue">ارزش فاکتور شده</system:String>
+    <system:String x:Key="Stats.Col.Date">تاریخ</system:String>
+    <system:String x:Key="Stats.Col.Collected">دریافتی</system:String>
+    <system:String x:Key="Stats.Col.User">کارمند</system:String>
+    <system:String x:Key="Stats.Col.Payments">پرداخت‌ها</system:String>
+    <system:String x:Key="Stats.Col.Total">مجموع</system:String>
+    <system:String x:Key="Stats.NoDoctor">بدون داکتر رجعت‌دهنده</system:String>
+    <system:String x:Key="Stats.NoModality">(ندارد)</system:String>
+    <system:String x:Key="Stats.Note">شمار معاینات، معاینات لغو شده را شامل نمی‌شود. ارزش فاکتور شده مبلغی است که برای معاینات فاکتور شده گرفته شد (قیمت هنگام ثبت منهای تخفیف)؛ «دریافتی» پولی است که واقعاً در این دوره دریافت شده.</system:String>
+    <system:String x:Key="Stats.Summary">خلاصه</system:String>
+    <system:String x:Key="Stats.Period">دوره</system:String>
+    <system:String x:Key="Stats.Item">مورد</system:String>
+    <system:String x:Key="Stats.Value">مقدار</system:String>
+    <system:String x:Key="Stats.FileInUse">فایل ذخیره نشد — شاید در اکسل باز باشد. آن را ببندید و دوباره تلاش کنید.</system:String>
+    <system:String x:Key="Exams.ExportEmpty">برای این فیلترها معاینه‌ای برای خروجی وجود ندارد.</system:String>
+    <system:String x:Key="Exams.CancelReason">دلیل لغو</system:String>
+
+    <!-- Discounts and free exams -->
+    <system:String x:Key="Exams.Charge">مبلغ دریافتی</system:String>
+    <system:String x:Key="Exams.Discount">تخفیف</system:String>
+    <system:String x:Key="Exams.Billing.Discounted">تخفیف‌دار (با رایگان)</system:String>
+    <system:String x:Key="Exams.Billing.Free">معاینات رایگان</system:String>
+    <system:String x:Key="Exams.ListPrice">قیمت اصلی</system:String>
+    <system:String x:Key="Exams.DiscountReason">دلیل تخفیف</system:String>
+    <system:String x:Key="Exams.DiscountedBy">تخفیف داده شده توسط</system:String>
+    <system:String x:Key="CheckIn.ChargeTip">مبلغی که مریض برای این معاینه می‌پردازد. کمتر از قیمت اصلی = تخفیف، ۰ = رایگان.</system:String>
+    <system:String x:Key="CheckIn.Free">رایگان</system:String>
+    <system:String x:Key="CheckIn.DiscountReason">دلیل تخفیف</system:String>
+    <system:String x:Key="CheckIn.DiscountReasonRequired">برای تخفیف {0} دلیل وارد کنید.</system:String>
+    <system:String x:Key="CheckIn.InvalidCharge">مبلغ {0} باید بین ۰ و {1} باشد.</system:String>
+    <system:String x:Key="CheckIn.DiscountedTag">تخفیف‌دار</system:String>
+    <system:String x:Key="ExamDiscount.Title">تخفیف / معاینهٔ رایگان</system:String>
+    <system:String x:Key="ExamDiscount.ListPrice" xml:space="preserve">قیمت اصلی: </system:String>
+    <system:String x:Key="ExamDiscount.Charge">مبلغ دریافتی از مریض (AFN)</system:String>
+    <system:String x:Key="ExamDiscount.Reason">دلیل</system:String>
+    <system:String x:Key="ExamDiscount.Remove">حذف تخفیف</system:String>
+    <system:String x:Key="ExamDiscount.InvalidCharge">مبلغی بین ۰ و {0} وارد کنید.</system:String>
+    <system:String x:Key="ExamDiscount.ReasonRequired">وقتی مبلغ کمتر از قیمت اصلی است، دلیل لازم است.</system:String>
+    <system:String x:Key="ExamDiscount.CurrentFormat">تخفیف فعلی: {0}، توسط {1} در {2}.</system:String>
+    <system:String x:Key="InvoiceDetail.DiscountFormat">قیمت اصلی {0} − تخفیف {1} ({2})</system:String>
+    <system:String x:Key="Stats.Discounts">تخفیف‌های داده شده</system:String>
+    <system:String x:Key="Stats.DiscountedExams">معاینات تخفیف‌دار</system:String>
+    <system:String x:Key="Stats.FreeExams">معاینات رایگان</system:String>
+    <system:String x:Key="Stats.Col.Discount">تخفیف‌ها</system:String>
+    <system:String x:Key="Stats.Col.FreeExams">معاینات رایگان</system:String>
+    <system:String x:Key="Stats.DiscountsByUser">تخفیف‌ها به تفکیک کارمند</system:String>
+    <system:String x:Key="Dash.Discounts">تخفیف‌های امروز</system:String>
+    <system:String x:Key="Dash.FreeExams">معاینات رایگان امروز</system:String>
+
+    <!-- Paging -->
+    <system:String x:Key="Pager.Format">صفحه {0} از {1}  ·  {2} رکورد</system:String>
+    <system:String x:Key="Invoices.Search">جستجو (نام مریض، آیدی مریض، شماره فاکتور)</system:String>
+    <system:String x:Key="Invoices.AllStatuses">همه وضعیت‌ها</system:String>
+    <system:String x:Key="AuditLog.Search">جستجو (کاربر، عمل، جزئیات)</system:String>
+    <system:String x:Key="AuditLog.AllActions">همه اعمال</system:String>
+
+    <!-- Invoices totals / export -->
+    <system:String x:Key="Invoices.TotalsFormat">مجموع همه {0} فاکتور مطابق با فیلترها</system:String>
+    <system:String x:Key="Invoices.Number">شماره فاکتور</system:String>
+    <system:String x:Key="Invoices.ListTotal">مجموع قیمت اصلی</system:String>
+    <system:String x:Key="Invoices.ExportEmpty">برای این فیلترها فاکتوری برای خروجی وجود ندارد.</system:String>
+
+    <!-- Clinic settings -->
+    <system:String x:Key="Nav.ClinicSettings">تنظیمات کلینیک</system:String>
+    <system:String x:Key="ClinicSettings.Title">تنظیمات کلینیک</system:String>
+    <system:String x:Key="ClinicSettings.Identity">مشخصات کلینیک</system:String>
+    <system:String x:Key="ClinicSettings.NameEnglish">نام کلینیک (انگلیسی) *</system:String>
+    <system:String x:Key="ClinicSettings.NameDari">نام کلینیک (دری)</system:String>
+    <system:String x:Key="ClinicSettings.Tagline">سطر زیر نام در چاپ‌ها</system:String>
+    <system:String x:Key="ClinicSettings.TaglineHint">مثلاً خدماتی که ارائه می‌کنید. در زیر نام کلینیک روی هر راپور و رسید چاپ می‌شود.</system:String>
+    <system:String x:Key="ClinicSettings.Contact">معلومات تماس</system:String>
+    <system:String x:Key="ClinicSettings.Address">آدرس</system:String>
+    <system:String x:Key="ClinicSettings.Phone">شماره تماس</system:String>
+    <system:String x:Key="ClinicSettings.Email">ایمیل</system:String>
+    <system:String x:Key="ClinicSettings.Logo">لوگو</system:String>
+    <system:String x:Key="ClinicSettings.NoLogo">بدون لوگو</system:String>
+    <system:String x:Key="ClinicSettings.ChooseLogo">انتخاب لوگو…</system:String>
+    <system:String x:Key="ClinicSettings.RemoveLogo">حذف لوگو</system:String>
+    <system:String x:Key="ClinicSettings.LogoHint">تصویر PNG یا JPEG تا ۳۰۰ کیلوبایت. در کنار نام کلینیک و روی راپورها و رسیدهای چاپی نشان داده می‌شود.</system:String>
+    <system:String x:Key="ClinicSettings.Save">ذخیره</system:String>
+    <system:String x:Key="ClinicSettings.Saved">ذخیره شد. این کمپیوتر همین حالا به‌روز شد؛ کمپیوترهای دیگر ظرف چند دقیقه به‌روز می‌شوند.</system:String>
+    <system:String x:Key="ClinicSettings.NameRequired">نام کلینیک را به انگلیسی وارد کنید.</system:String>
+    <system:String x:Key="ClinicSettings.LogoTooLarge">حجم این تصویر زیاد است. تصویر PNG یا JPEG تا ۳۰۰ کیلوبایت انتخاب کنید.</system:String>
+    <system:String x:Key="ClinicSettings.LogoBadType">این فایل به‌عنوان لوگو قابل استفاده نیست. تصویر PNG یا JPEG انتخاب کنید.</system:String>
+    <system:String x:Key="ClinicSettings.SetupPrompt">نام کلینیک شما هنوز تنظیم نشده است. یک بار وارد کنید تا روی همه صفحه‌ها، راپورها و رسیدها نمایش یابد.</system:String>
+    <system:String x:Key="ClinicSettings.OpenSettings">باز کردن تنظیمات کلینیک</system:String>
 </ResourceDictionary>

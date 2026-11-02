@@ -1,3 +1,4 @@
+using NasimXray.Shared;
 using System.Globalization;
 using System.Windows;
 using NasimXray.Client.Services;
@@ -17,11 +18,11 @@ public partial class RecordPaymentDialog : Window
         _apiClient = apiClient;
         _invoice = invoice;
 
-        BalanceText.Text = $"{(string)FindResource("RecordPayment.Balance")}{invoice.Balance:N2}";
+        BalanceText.Text = $"{(string)FindResource("RecordPayment.Balance")}{Currency.Format(invoice.Balance)}";
         AmountBox.Text = invoice.Balance.ToString("N2", CultureInfo.InvariantCulture);
 
         MethodBox.ItemsSource = Enum.GetValues<PaymentMethod>()
-            .Select(m => new { Value = m, Label = (string)FindResource($"PaymentMethod.{m}") })
+            .Select(m => new Helpers.ComboOption((string)FindResource($"PaymentMethod.{m}"), m))
             .ToList();
         MethodBox.DisplayMemberPath = "Label";
         MethodBox.SelectedValuePath = "Value";

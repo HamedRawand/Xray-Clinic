@@ -8,7 +8,7 @@
         FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
     <Border Style="{StaticResource CardBorder}" Margin="16">
         <StackPanel>
-            <Border Background="#FEE2E2" CornerRadius="6" Padding="10" Margin="0,0,0,12">
+            <Border Background="{DynamicResource BadgeDangerBg}" CornerRadius="6" Padding="10" Margin="0,0,0,12">
                 <TextBlock Text="{DynamicResource RestoreConfirm.Warning}" FontSize="12"
                            Foreground="{DynamicResource DangerBrush}" TextWrapping="Wrap" FontWeight="SemiBold"/>
             </Border>

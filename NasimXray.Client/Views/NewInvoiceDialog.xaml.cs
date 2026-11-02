@@ -1,3 +1,4 @@
+using NasimXray.Shared;
 using System.Windows;
 using System.Windows.Controls;
 using NasimXray.Client.Services;
@@ -27,8 +28,6 @@ public partial class NewInvoiceDialog : Window
         try
         {
             var orders = await _apiClient.GetExamOrdersAsync(patientId: _patientId, uninvoiced: true);
-            var examTypes = await _apiClient.GetExamTypesAsync(includeInactive: true);
-            var priceByExamType = examTypes.ToDictionary(t => t.Id, t => t.Price);
 
             OrdersPanel.Items.Clear();
             _checkboxes.Clear();
@@ -36,7 +35,7 @@ public partial class NewInvoiceDialog : Window
 
             foreach (var order in orders)
             {
-                var price = priceByExamType.GetValueOrDefault(order.ExamTypeId);
+                var price = order.NetPrice; // booked price minus any discount
                 _prices[order.Id] = price;
 
                 var row = new Grid { Margin = new Thickness(0, 0, 0, 8) };
@@ -45,7 +44,7 @@ public partial class NewInvoiceDialog : Window
 
                 var checkBox = new CheckBox
                 {
-                    Content = order.ExamTypeName,
+                    Content = order.IsDiscounted ? $"{order.ExamTypeName}  ({(string)FindResource("CheckIn.DiscountedTag")})" : order.ExamTypeName,
                     FontSize = 13,
                     Foreground = (System.Windows.Media.Brush)FindResource("TextPrimaryBrush"),
                     IsChecked = true,
@@ -56,7 +55,7 @@ public partial class NewInvoiceDialog : Window
 
                 var priceText = new TextBlock
                 {
-                    Text = price.ToString("N2"),
+                    Text = Currency.Format(price),
                     FontSize = 12,
                     Foreground = (System.Windows.Media.Brush)FindResource("TextMutedBrush"),
                     VerticalAlignment = VerticalAlignment.Center,
@@ -80,7 +79,7 @@ public partial class NewInvoiceDialog : Window
     private void UpdateTotal()
     {
         var total = _checkboxes.Where(kv => kv.Value.IsChecked == true).Sum(kv => _prices[kv.Key]);
-        TotalText.Text = $"{(string)FindResource("NewInvoice.Total")}{total:N2}";
+        TotalText.Text = $"{(string)FindResource("NewInvoice.Total")}{Currency.Format(total)}";
     }
 
     private async void Create_Click(object sender, RoutedEventArgs e)

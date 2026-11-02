@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        xmlns:shared="clr-namespace:NasimXray.Client.Views.Shared"
         Title="{DynamicResource App.Title}"
         Height="720" Width="1180" MinHeight="600" MinWidth="900"
         WindowStartupLocation="CenterScreen"
@@ -10,11 +11,27 @@
         <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
                 BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,0,1" Padding="24,0">
             <Grid Height="56">
-                <TextBlock Text="{DynamicResource App.Title}" FontSize="16" FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <shared:ClinicLogoImage Height="34" Margin="0,0,10,0"/>
+                    <TextBlock Text="{DynamicResource App.Title}" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock x:Name="UserText" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"
                                VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <Button x:Name="CalendarButton" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,0"
+                            Click="CalendarToggle_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
+                                <Setter Property="Content" Value="{DynamicResource Calendar.ToShamsi}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi}" Value="True">
+                                        <Setter Property="Content" Value="{DynamicResource Calendar.ToGregorian}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                     <Button x:Name="LanguageButton" Content="{DynamicResource Login.Language}"
                             Style="{StaticResource SecondaryButton}"
                             Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,0"
@@ -28,37 +45,62 @@
             </Grid>
         </Border>
 
-        <Border DockPanel.Dock="Left"
-                Width="200" Background="{DynamicResource CardBackgroundBrush}"
-                BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,1,0">
-            <StackPanel Margin="8">
-                <Button x:Name="NavPatients" Content="{DynamicResource Nav.Patients}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavPatients_Click"/>
-                <Button x:Name="NavInvoices" Content="{DynamicResource Nav.Invoices}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavInvoices_Click"/>
-                <Button x:Name="NavExamTypes" Content="{DynamicResource Nav.ExamTypes}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavExamTypes_Click"/>
-                <Button x:Name="NavReferringPhysicians" Content="{DynamicResource Nav.ReferringPhysicians}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavReferringPhysicians_Click"/>
+        <!-- Shown to admins until the clinic's own name has been saved once -->
+        <Border x:Name="SetupBanner" DockPanel.Dock="Top" Visibility="Collapsed"
+                Background="{DynamicResource BadgeWarnBg}" Padding="24,8">
+            <Grid>
+                <TextBlock Text="{DynamicResource ClinicSettings.SetupPrompt}" FontSize="13" TextWrapping="Wrap"
+                           Foreground="{DynamicResource BadgeWarnFg}" VerticalAlignment="Center" Margin="0,0,200,0"/>
+                <Button Content="{DynamicResource ClinicSettings.OpenSettings}" Style="{StaticResource SecondaryButton}"
+                        Height="30" Padding="14,0" FontSize="12" HorizontalAlignment="Right" Click="SetupBanner_Click"/>
+            </Grid>
+        </Border>
 
-                <Separator Margin="0,8" Background="{DynamicResource SeparatorBrush}"/>
+        <Border DockPanel.Dock="Left"
+                Width="212" Background="{DynamicResource SidebarBrush}">
+            <StackPanel Margin="10,12">
+                <Button x:Name="NavDashboard" Content="{DynamicResource Nav.Dashboard}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavDashboard_Click"/>
+                <Button x:Name="NavCheckIn" Content="{DynamicResource Nav.CheckIn}"
+                        Style="{StaticResource NavPrimaryButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2,0,14" Click="NavCheckIn_Click"/>
+                <Button x:Name="NavExams" Content="{DynamicResource Nav.Exams}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavExams_Click"/>
+                <Button x:Name="NavStatistics" Content="{DynamicResource Nav.Statistics}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavStatistics_Click"/>
+                <Button x:Name="NavPatients" Content="{DynamicResource Nav.Patients}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavPatients_Click"/>
+                <Button x:Name="NavInvoices" Content="{DynamicResource Nav.Invoices}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavInvoices_Click"/>
+                <Button x:Name="NavExamTypes" Content="{DynamicResource Nav.ExamTypes}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavExamTypes_Click"/>
+                <Button x:Name="NavReferringPhysicians" Content="{DynamicResource Nav.ReferringPhysicians}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavReferringPhysicians_Click"/>
+
+                <Separator Margin="6,10" Background="{DynamicResource SidebarLineBrush}"/>
 
                 <Button x:Name="NavUsers" Content="{DynamicResource Nav.Users}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavUsers_Click" Visibility="Collapsed"/>
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavUsers_Click" Visibility="Collapsed"/>
                 <Button x:Name="NavCustomRoles" Content="{DynamicResource Nav.CustomRoles}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavCustomRoles_Click" Visibility="Collapsed"/>
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavCustomRoles_Click" Visibility="Collapsed"/>
                 <Button x:Name="NavAuditLog" Content="{DynamicResource Nav.AuditLog}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavAuditLog_Click" Visibility="Collapsed"/>
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavAuditLog_Click" Visibility="Collapsed"/>
                 <Button x:Name="NavBackup" Content="{DynamicResource Nav.Backup}"
-                        Style="{StaticResource SecondaryButton}" HorizontalContentAlignment="Left"
-                        HorizontalAlignment="Stretch" Height="38" Margin="0,4" Click="NavBackup_Click" Visibility="Collapsed"/>
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavBackup_Click" Visibility="Collapsed"/>
+                <Button x:Name="NavClinicSettings" Content="{DynamicResource Nav.ClinicSettings}"
+                        Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavClinicSettings_Click" Visibility="Collapsed"/>
             </StackPanel>
         </Border>
 

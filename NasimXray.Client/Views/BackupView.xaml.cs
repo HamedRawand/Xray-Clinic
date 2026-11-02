@@ -26,7 +26,7 @@ public partial class BackupView : UserControl
 
             LastBackupText.Text = backups.Count == 0
                 ? $"{(string)FindResource("Backup.LastBackup")}{(string)FindResource("Backup.Never")}"
-                : $"{(string)FindResource("Backup.LastBackup")}{backups[0].CreatedAtUtc:yyyy-MM-dd HH:mm} UTC";
+                : $"{(string)FindResource("Backup.LastBackup")}{Helpers.CalendarFormat.Format(backups[0].CreatedAtUtc, "datetime")} UTC";
         }
         catch (ApiException ex)
         {

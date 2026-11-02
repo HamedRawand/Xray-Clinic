@@ -1,21 +1,69 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Ocean Breeze palette — see ARCHITECTURE_PLAN.md §10.1 -->
-    <SolidColorBrush x:Key="PrimaryBrush"         Color="#F8FAFC"/>
-    <SolidColorBrush x:Key="CardBackgroundBrush"  Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#F1F5F9"/>
-    <SolidColorBrush x:Key="TableHeaderBrush"     Color="#F1F5F9"/>
-    <SolidColorBrush x:Key="TextPrimaryBrush"     Color="#0F172A"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush"   Color="#334155"/>
-    <SolidColorBrush x:Key="TextMutedBrush"       Color="#64748B"/>
-    <SolidColorBrush x:Key="InputBorderBrush"     Color="#94A3B8"/>
-    <SolidColorBrush x:Key="InputFocusBorderBrush" Color="#1D4ED8"/>
-    <SolidColorBrush x:Key="AccentBrush"          Color="#1D4ED8"/>
-    <SolidColorBrush x:Key="AccentBrush20"        Color="#DBEAFE"/>
-    <SolidColorBrush x:Key="SeparatorBrush"       Color="#E2E8F0"/>
-    <SolidColorBrush x:Key="DangerBrush"          Color="#DC2626"/>
-    <SolidColorBrush x:Key="SuccessBrush"         Color="#16A34A"/>
-    <SolidColorBrush x:Key="WarningBrush"         Color="#D97706"/>
+    <!-- Clinical Teal palette: deep teal sidebar, cool grey-blue page, white cards, calm cyan accent.
+         Accent is cyan (not green) so it can't be mistaken for the green used for "paid"/"reported". -->
+
+    <!-- Surfaces -->
+    <SolidColorBrush x:Key="PrimaryBrush"          Color="#EEF3F5"/>   <!-- page background -->
+    <SolidColorBrush x:Key="CardBackgroundBrush"   Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="InputBackgroundBrush"  Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="TableHeaderBrush"      Color="#E9F1F4"/>
+    <SolidColorBrush x:Key="RowAltBrush"           Color="#F7FAFB"/>
+    <SolidColorBrush x:Key="SeparatorBrush"        Color="#DDE6EA"/>
+
+    <!-- Text -->
+    <SolidColorBrush x:Key="TextPrimaryBrush"      Color="#0F172A"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush"    Color="#475569"/>
+    <SolidColorBrush x:Key="TextMutedBrush"        Color="#64748B"/>
+
+    <!-- Inputs -->
+    <SolidColorBrush x:Key="InputBorderBrush"      Color="#CBD5E1"/>
+    <SolidColorBrush x:Key="InputFocusBorderBrush" Color="#0E7490"/>
+    <SolidColorBrush x:Key="SelectionBrush"        Color="#9ED9E6"/>
+
+    <!-- Accent -->
+    <SolidColorBrush x:Key="AccentBrush"           Color="#0E7490"/>
+    <SolidColorBrush x:Key="AccentHoverBrush"      Color="#155E75"/>
+    <SolidColorBrush x:Key="AccentPressedBrush"    Color="#164E63"/>
+    <SolidColorBrush x:Key="AccentBrush20"         Color="#D6F0F5"/>   <!-- selected row, hover tint -->
+    <SolidColorBrush x:Key="AccentBrush10"         Color="#EAF6F9"/>
+
+    <!-- Status colours -->
+    <SolidColorBrush x:Key="DangerBrush"           Color="#DC2626"/>
+    <SolidColorBrush x:Key="DangerHoverBrush"      Color="#B91C1C"/>
+    <SolidColorBrush x:Key="DangerPressedBrush"    Color="#991B1B"/>
+    <SolidColorBrush x:Key="SuccessBrush"          Color="#15803D"/>
+    <SolidColorBrush x:Key="WarningBrush"          Color="#B45309"/>
+
+    <!-- Sidebar (dark teal) -->
+    <SolidColorBrush x:Key="SidebarBrush"          Color="#0E3B43"/>
+    <SolidColorBrush x:Key="SidebarLineBrush"      Color="#1C5560"/>
+    <SolidColorBrush x:Key="SidebarTextBrush"      Color="#BFE3E6"/>
+    <SolidColorBrush x:Key="SidebarHoverBrush"     Color="#134A54"/>
+    <SolidColorBrush x:Key="SidebarActiveBrush"    Color="#16626E"/>
+    <SolidColorBrush x:Key="SidebarAccentBrush"    Color="#5EEAD4"/>
+
+    <!-- Badges / soft notices: background + the darkest shade of the same family for text -->
+    <SolidColorBrush x:Key="BadgeOkBg"             Color="#DCFCE7"/>
+    <SolidColorBrush x:Key="BadgeOkFg"             Color="#14532D"/>
+    <SolidColorBrush x:Key="BadgeWarnBg"           Color="#FEF3C7"/>
+    <SolidColorBrush x:Key="BadgeWarnFg"           Color="#78350F"/>
+    <SolidColorBrush x:Key="BadgeInfoBg"           Color="#B9E5EE"/>
+    <SolidColorBrush x:Key="BadgeInfoFg"           Color="#134E5E"/>
+    <SolidColorBrush x:Key="BadgeBlueBg"           Color="#DBEAFE"/>
+    <SolidColorBrush x:Key="BadgeBlueFg"           Color="#1E3A8A"/>
+    <SolidColorBrush x:Key="BadgeDangerBg"         Color="#FEE2E2"/>
+    <SolidColorBrush x:Key="BadgeDangerFg"         Color="#7F1D1D"/>
+    <SolidColorBrush x:Key="BadgeNeutralBg"        Color="#E2E8F0"/>
+    <SolidColorBrush x:Key="BadgeNeutralFg"        Color="#334155"/>
+
+    <!-- Windows' own selection colours (DataGrid rows, list items, combo items) would otherwise stay
+         Windows blue; overriding the system keys re-colours them all in one place. -->
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"                    Color="#D6F0F5"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"                Color="#0F172A"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"   Color="#E3F3F6"/>
+    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#0F172A"/>
 
 </ResourceDictionary>
+

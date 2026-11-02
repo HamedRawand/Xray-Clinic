@@ -42,7 +42,7 @@
                         <TextBox x:Name="BodyPartBox" Style="{StaticResource ModernTextBox}"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4">
-                        <TextBlock Text="{DynamicResource ExamTypes.Price}" FontSize="12" FontWeight="SemiBold"
+                        <TextBlock Text="{DynamicResource ExamTypes.PriceAfn}" FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
                         <TextBox x:Name="PriceBox" Style="{StaticResource ModernTextBox}" FlowDirection="LeftToRight"/>
                     </StackPanel>

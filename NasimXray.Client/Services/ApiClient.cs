@@ -5,7 +5,11 @@ using NasimXray.Shared.Dtos.Audit;
 using NasimXray.Shared.Dtos.Auth;
 using NasimXray.Shared.Dtos.Backup;
 using NasimXray.Shared.Dtos.Billing;
+using NasimXray.Shared.Dtos;
+using NasimXray.Shared.Dtos.CheckIn;
+using NasimXray.Shared.Dtos.Clinic;
 using NasimXray.Shared.Dtos.ExamOrders;
+using NasimXray.Shared.Dtos.Stats;
 using NasimXray.Shared.Dtos.ExamTypes;
 using NasimXray.Shared.Dtos.Patients;
 using NasimXray.Shared.Dtos.ReferringPhysicians;
@@ -40,16 +44,78 @@ public class ApiException(ApiErrorReason reason, string? detail = null) : Except
 public class ApiClient
 {
     private readonly HttpClient _http;
+    private string? _refreshToken;
+    private readonly SemaphoreSlim _refreshLock = new(1, 1);
 
-    public ApiClient(string baseUrl)
+    // Raised when the access token has expired AND the refresh token is also invalid/expired —
+    // the caller (App/MainWindow) should send the user back to LoginWindow. Network resilience
+    // §9 hardening: previously an expired access token just meant every subsequent action failed
+    // with "invalid credentials" and no recovery until the user noticed and manually signed out.
+    public event Action? SessionExpired;
+
+    // expectedCertThumbprint: for an https:// baseUrl, the server's certificate must match this
+    // exact thumbprint (trust-on-first-use pin — see ClientSettings.ServerCertificateThumbprint).
+    // Left null for an http:// baseUrl (no certificate involved) or when HTTPS hasn't been
+    // trusted yet, in which case any HTTPS connection attempt fails closed (safe default).
+    public ApiClient(string baseUrl, string? expectedCertThumbprint = null)
     {
-        _http = new HttpClient { BaseAddress = new Uri(baseUrl), Timeout = TimeSpan.FromSeconds(15) };
+        var handler = new HttpClientHandler();
+        if (baseUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+        {
+            handler.ServerCertificateCustomValidationCallback = (_, cert, _, _) =>
+                cert is not null &&
+                !string.IsNullOrEmpty(expectedCertThumbprint) &&
+                string.Equals(cert.Thumbprint, expectedCertThumbprint, StringComparison.OrdinalIgnoreCase);
+        }
+
+        _http = new HttpClient(handler) { BaseAddress = new Uri(baseUrl), Timeout = TimeSpan.FromSeconds(15) };
+    }
+
+    // Connects without validating the certificate at all, purely to read what thumbprint the
+    // server presents — used by ServerSettingsWindow's trust-on-first-use flow so the admin can
+    // see and confirm the cert BEFORE it's pinned for real use. Never used for any authenticated
+    // or data-carrying request.
+    public static async Task<string?> ProbeServerCertificateThumbprintAsync(string httpsBaseUrl)
+    {
+        string? thumbprint = null;
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (_, cert, _, _) =>
+            {
+                thumbprint = cert?.Thumbprint;
+                return true; // accept anything here — this call never sends credentials or data
+            },
+        };
+
+        try
+        {
+            using var http = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(10) };
+            await http.GetAsync(new Uri(new Uri(httpsBaseUrl), "api/system/version"));
+        }
+        catch
+        {
+            return null;
+        }
+
+        return thumbprint;
     }
 
     public void SetAccessToken(string? accessToken)
     {
         _http.DefaultRequestHeaders.Authorization =
             accessToken is null ? null : new AuthenticationHeaderValue("Bearer", accessToken);
+    }
+
+    public void SetSession(string accessToken, string refreshToken)
+    {
+        SetAccessToken(accessToken);
+        _refreshToken = refreshToken;
+    }
+
+    public void ClearSession()
+    {
+        SetAccessToken(null);
+        _refreshToken = null;
     }
 
     public async Task<bool> TestConnectionAsync()
@@ -84,8 +150,16 @@ public class ApiClient
 
     // ── Patients ──────────────────────────────────────────────────────────
 
-    public Task<List<PatientDto>> GetPatientsAsync(string? search = null) =>
-        SendAsync<List<PatientDto>>(HttpMethod.Get, $"api/patients{(string.IsNullOrWhiteSpace(search) ? "" : $"?search={Uri.EscapeDataString(search)}")}");
+    public Task<PagedResult<PatientDto>> GetPatientsAsync(string? search = null, int page = 1, int pageSize = 50) =>
+        SendAsync<PagedResult<PatientDto>>(HttpMethod.Get,
+            $"api/patients?page={page}&pageSize={pageSize}{(string.IsNullOrWhiteSpace(search) ? "" : $"&search={Uri.EscapeDataString(search.Trim())}")}");
+
+    public Task<List<PatientDto>> GetPossibleDuplicatePatientsAsync(string? fullName, string? phoneNumber) =>
+        SendAsync<List<PatientDto>>(HttpMethod.Get,
+            $"api/patients/possible-duplicates?fullName={Uri.EscapeDataString(fullName ?? "")}&phoneNumber={Uri.EscapeDataString(phoneNumber ?? "")}");
+
+    public Task<CheckInResponse> CheckInAsync(CheckInRequest request) =>
+        SendAsync<CheckInResponse>(HttpMethod.Post, "api/check-in", request);
 
     public Task<PatientDto> GetPatientAsync(int id) =>
         SendAsync<PatientDto>(HttpMethod.Get, $"api/patients/{id}");
@@ -139,6 +213,47 @@ public class ApiClient
         return SendAsync<List<ExamOrderDto>>(HttpMethod.Get, $"api/exam-orders{qs}");
     }
 
+    private static List<string> ExamFilterParts(ExamOrderSearchQuery q)
+    {
+        var parts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(q.Search)) parts.Add($"search={Uri.EscapeDataString(q.Search.Trim())}");
+        if (q.DateFrom.HasValue) parts.Add($"dateFrom={q.DateFrom.Value:yyyy-MM-dd}");
+        if (q.DateTo.HasValue) parts.Add($"dateTo={q.DateTo.Value:yyyy-MM-dd}");
+        if (q.ExamTypeId.HasValue) parts.Add($"examTypeId={q.ExamTypeId.Value}");
+        if (!string.IsNullOrWhiteSpace(q.Modality)) parts.Add($"modality={Uri.EscapeDataString(q.Modality)}");
+        if (q.Status.HasValue) parts.Add($"status={q.Status.Value}");
+        if (q.ReferringPhysicianId.HasValue) parts.Add($"referringPhysicianId={q.ReferringPhysicianId.Value}");
+        if (q.Billing != ExamBillingFilter.Any) parts.Add($"billing={q.Billing}");
+        return parts;
+    }
+
+    public Task<ExamOrderSearchResponse> SearchExamOrdersAsync(ExamOrderSearchQuery q)
+    {
+        var parts = ExamFilterParts(q);
+        parts.Add($"page={q.Page}");
+        parts.Add($"pageSize={q.PageSize}");
+        return SendAsync<ExamOrderSearchResponse>(HttpMethod.Get, $"api/exam-orders/search?{string.Join("&", parts)}");
+    }
+
+    // Every exam matching the filters (no paging) — for the Excel export.
+    public Task<List<ExamOrderDto>> ExportExamOrdersAsync(ExamOrderSearchQuery q)
+    {
+        var qs = string.Join("&", ExamFilterParts(q));
+        return SendAsync<List<ExamOrderDto>>(HttpMethod.Get, $"api/exam-orders/export{(qs.Length > 0 ? "?" + qs : "")}");
+    }
+
+    public Task<DashboardDto> GetDashboardAsync() =>
+        SendAsync<DashboardDto>(HttpMethod.Get, "api/stats/dashboard");
+
+    public Task<StatsReportDto> GetStatsReportAsync(DateOnly from, DateOnly to) =>
+        SendAsync<StatsReportDto>(HttpMethod.Get, $"api/stats/report?dateFrom={from:yyyy-MM-dd}&dateTo={to:yyyy-MM-dd}");
+
+    public Task<ExamOrderDto> UpdateExamDiscountAsync(int id, ExamDiscountRequest request) =>
+        SendAsync<ExamOrderDto>(HttpMethod.Put, $"api/exam-orders/{id}/discount", request);
+
+    public Task<ExamQueueCountsDto> GetExamQueueCountsAsync() =>
+        SendAsync<ExamQueueCountsDto>(HttpMethod.Get, "api/exam-orders/queue-counts");
+
     public Task<ExamOrderDto> GetExamOrderAsync(int id) =>
         SendAsync<ExamOrderDto>(HttpMethod.Get, $"api/exam-orders/{id}");
 
@@ -152,7 +267,7 @@ public class ApiClient
 
     public async Task<ReportDto?> GetReportAsync(int examOrderId)
     {
-        var response = await _http.GetAsync($"api/exam-orders/{examOrderId}/report");
+        var response = await SendCoreAsync(HttpMethod.Get, $"api/exam-orders/{examOrderId}/report");
         if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
         await ThrowIfError(response);
         return await response.Content.ReadFromJsonAsync<ReportDto>();
@@ -169,8 +284,24 @@ public class ApiClient
 
     // ── Billing ───────────────────────────────────────────────────────────
 
-    public Task<List<InvoiceDto>> GetInvoicesAsync(int? patientId = null) =>
-        SendAsync<List<InvoiceDto>>(HttpMethod.Get, $"api/invoices{(patientId.HasValue ? $"?patientId={patientId.Value}" : "")}");
+    public Task<InvoiceListResult> GetInvoicesAsync(int? patientId = null, string? search = null,
+        InvoiceStatus? status = null, int page = 1, int pageSize = 50)
+    {
+        var parts = new List<string> { $"page={page}", $"pageSize={pageSize}" };
+        if (patientId.HasValue) parts.Add($"patientId={patientId.Value}");
+        if (!string.IsNullOrWhiteSpace(search)) parts.Add($"search={Uri.EscapeDataString(search.Trim())}");
+        if (status.HasValue) parts.Add($"status={status.Value}");
+        return SendAsync<InvoiceListResult>(HttpMethod.Get, $"api/invoices?{string.Join("&", parts)}");
+    }
+
+    // Every invoice matching the filters (no paging) — for the Excel export.
+    public Task<List<InvoiceDto>> ExportInvoicesAsync(string? search = null, InvoiceStatus? status = null)
+    {
+        var parts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(search)) parts.Add($"search={Uri.EscapeDataString(search.Trim())}");
+        if (status.HasValue) parts.Add($"status={status.Value}");
+        return SendAsync<List<InvoiceDto>>(HttpMethod.Get, $"api/invoices/export{(parts.Count > 0 ? "?" + string.Join("&", parts) : "")}");
+    }
 
     public Task<InvoiceDto> GetInvoiceAsync(int id) =>
         SendAsync<InvoiceDto>(HttpMethod.Get, $"api/invoices/{id}");
@@ -182,6 +313,12 @@ public class ApiClient
         SendAsync<InvoiceDto>(HttpMethod.Post, $"api/invoices/{invoiceId}/payments", request);
 
     // ── Users, roles, audit ──────────────────────────────────────────────
+
+    public async Task<bool> VerifyPasswordAsync(string password)
+    {
+        var response = await SendCoreAsync(HttpMethod.Post, "api/auth/verify-password", new VerifyPasswordRequest { Password = password });
+        return response.IsSuccessStatusCode;
+    }
 
     public Task ChangePasswordAsync(string currentPassword, string newPassword) =>
         SendNoContentAsync(HttpMethod.Post, "api/auth/change-password",
@@ -211,8 +348,19 @@ public class ApiClient
     public Task<CustomRoleDto> UpdateCustomRoleAsync(int id, CustomRoleUpsertRequest request) =>
         SendAsync<CustomRoleDto>(HttpMethod.Put, $"api/custom-roles/{id}", request);
 
-    public Task<List<AuditLogDto>> GetAuditLogsAsync() =>
-        SendAsync<List<AuditLogDto>>(HttpMethod.Get, "api/audit-logs");
+    public Task<PagedResult<AuditLogDto>> GetAuditLogsAsync(string? search = null, string? action = null,
+        DateOnly? dateFrom = null, DateOnly? dateTo = null, int page = 1, int pageSize = 50)
+    {
+        var parts = new List<string> { $"page={page}", $"pageSize={pageSize}" };
+        if (!string.IsNullOrWhiteSpace(search)) parts.Add($"search={Uri.EscapeDataString(search.Trim())}");
+        if (!string.IsNullOrWhiteSpace(action)) parts.Add($"action={Uri.EscapeDataString(action)}");
+        if (dateFrom.HasValue) parts.Add($"dateFrom={dateFrom.Value:yyyy-MM-dd}");
+        if (dateTo.HasValue) parts.Add($"dateTo={dateTo.Value:yyyy-MM-dd}");
+        return SendAsync<PagedResult<AuditLogDto>>(HttpMethod.Get, $"api/audit-logs?{string.Join("&", parts)}");
+    }
+
+    public Task<List<string>> GetAuditActionsAsync() =>
+        SendAsync<List<string>>(HttpMethod.Get, "api/audit-logs/actions");
 
     // ── Backup ────────────────────────────────────────────────────────────
 
@@ -224,6 +372,29 @@ public class ApiClient
 
     public Task RestoreBackupAsync(string fileName, string password) =>
         SendNoContentAsync(HttpMethod.Post, "api/backup/restore", new RestoreBackupRequest { FileName = fileName, Password = password });
+
+    // ── Clinic profile ────────────────────────────────────────────────────
+
+    // Public (works before sign-in): the login screen shows the clinic name.
+    public Task<ClinicProfileDto> GetClinicProfileAsync() =>
+        SendAsync<ClinicProfileDto>(HttpMethod.Get, "api/system/clinic");
+
+    public async Task<byte[]?> GetClinicLogoAsync()
+    {
+        var response = await SendCoreAsync(HttpMethod.Get, "api/system/clinic/logo");
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound) return null;
+        await ThrowIfError(response);
+        return await response.Content.ReadAsByteArrayAsync();
+    }
+
+    public Task<ClinicProfileDto> UpdateClinicProfileAsync(ClinicProfileUpdateRequest request) =>
+        SendAsync<ClinicProfileDto>(HttpMethod.Put, "api/clinic", request);
+
+    public Task<ClinicProfileDto> UploadClinicLogoAsync(byte[] imageBytes) =>
+        SendAsync<ClinicProfileDto>(HttpMethod.Put, "api/clinic/logo", new RawBody(imageBytes, "application/octet-stream"));
+
+    public Task<ClinicProfileDto> RemoveClinicLogoAsync() =>
+        SendAsync<ClinicProfileDto>(HttpMethod.Delete, "api/clinic/logo");
 
     // ── Plumbing ──────────────────────────────────────────────────────────
 
@@ -241,13 +412,14 @@ public class ApiClient
         await ThrowIfError(response);
     }
 
+    private static readonly HashSet<string> AuthEndpoints = ["api/auth/login", "api/auth/refresh", "api/auth/verify-password"];
+
     private async Task<HttpResponseMessage> SendCoreAsync(HttpMethod method, string url, object? body = null)
     {
+        HttpResponseMessage response;
         try
         {
-            var request = new HttpRequestMessage(method, url);
-            if (body is not null) request.Content = JsonContent.Create(body);
-            return await _http.SendAsync(request);
+            response = await _http.SendAsync(BuildRequest(method, url, body));
         }
         catch (HttpRequestException)
         {
@@ -257,6 +429,75 @@ public class ApiClient
         {
             throw new ApiException(ApiErrorReason.Timeout);
         }
+
+        if (response.StatusCode != System.Net.HttpStatusCode.Unauthorized || AuthEndpoints.Contains(url) || _refreshToken is null)
+            return response;
+
+        // Access token expired mid-session — try a silent refresh once, then retry the original
+        // call. A semaphore ensures concurrent requests that all hit a 401 at once share a single
+        // refresh instead of each racing to use the same (single-use) refresh token.
+        var refreshed = await TryRefreshTokenAsync();
+        if (!refreshed)
+        {
+            ClearSession();
+            SessionExpired?.Invoke();
+            return response;
+        }
+
+        try
+        {
+            return await _http.SendAsync(BuildRequest(method, url, body));
+        }
+        catch (HttpRequestException)
+        {
+            throw new ApiException(ApiErrorReason.ServerUnreachable);
+        }
+        catch (TaskCanceledException)
+        {
+            throw new ApiException(ApiErrorReason.Timeout);
+        }
+    }
+
+    private async Task<bool> TryRefreshTokenAsync()
+    {
+        await _refreshLock.WaitAsync();
+        try
+        {
+            if (_refreshToken is null) return false;
+
+            HttpResponseMessage response;
+            try
+            {
+                response = await _http.SendAsync(BuildRequest(HttpMethod.Post, "api/auth/refresh", new RefreshRequest { RefreshToken = _refreshToken }));
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (!response.IsSuccessStatusCode) return false;
+
+            var login = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            if (login is null) return false;
+
+            SetSession(login.AccessToken, login.RefreshToken);
+            SessionService.UpdateTokens(login);
+            return true;
+        }
+        finally
+        {
+            _refreshLock.Release();
+        }
+    }
+
+    private static HttpRequestMessage BuildRequest(HttpMethod method, string url, object? body)
+    {
+        var request = new HttpRequestMessage(method, url);
+        if (body is RawBody raw)
+            request.Content = new ByteArrayContent(raw.Bytes) { Headers = { ContentType = new MediaTypeHeaderValue(raw.ContentType) } };
+        else if (body is not null)
+            request.Content = JsonContent.Create(body);
+        return request;
     }
 
     private static async Task ThrowIfError(HttpResponseMessage response)
@@ -289,3 +530,6 @@ public class ApiClient
         public string? Message { get; set; }
     }
 }
+
+// A request body that is raw bytes (an image), not JSON.
+internal sealed record RawBody(byte[] Bytes, string ContentType);

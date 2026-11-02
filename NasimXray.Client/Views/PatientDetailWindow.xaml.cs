@@ -15,6 +15,12 @@ public partial class PatientDetailWindow : Window
         InitializeComponent();
         _apiClient = apiClient;
         _patientId = patientId;
+
+        NewInvoiceButton.Visibility = SessionService.Can(NasimXray.Shared.Enums.Permission.ManageBilling) ? Visibility.Visible : Visibility.Collapsed;
+        NewExamOrderButton.Visibility = SessionService.Can(NasimXray.Shared.Enums.Permission.ManageExamOrders) ? Visibility.Visible : Visibility.Collapsed;
+        DiscountColumn.Visibility = SessionService.Can(NasimXray.Shared.Enums.Permission.ApplyDiscount) ? Visibility.Visible : Visibility.Collapsed;
+        ReportColumn.Visibility = SessionService.Can(NasimXray.Shared.Enums.Permission.ViewReports) ? Visibility.Visible : Visibility.Collapsed;
+
         _ = LoadAsync();
     }
 
@@ -47,6 +53,14 @@ public partial class PatientDetailWindow : Window
     private async void NewExamOrder_Click(object sender, RoutedEventArgs e)
     {
         var dialog = new NewExamOrderDialog(_apiClient, _patientId) { Owner = this };
+        if (dialog.ShowDialog() == true)
+            await LoadAsync();
+    }
+
+    private async void Discount_Click(object sender, RoutedEventArgs e)
+    {
+        if (((FrameworkElement)sender).DataContext is not ExamOrderDto order) return;
+        var dialog = new ExamDiscountDialog(_apiClient, order) { Owner = this };
         if (dialog.ShowDialog() == true)
             await LoadAsync();
     }

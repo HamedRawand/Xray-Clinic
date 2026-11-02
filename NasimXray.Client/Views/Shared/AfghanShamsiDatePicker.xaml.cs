@@ -18,11 +18,11 @@ public partial class AfghanShamsiDatePicker : UserControl
 
     private static readonly string[] _dayAbbrev = { "ش", "ی", "د", "س", "چ", "پ", "ج" };
 
-    private static readonly SolidColorBrush _accentBrush = new(Color.FromRgb(0x1D, 0x4E, 0xD8));
+    private static readonly SolidColorBrush _accentBrush = new(Color.FromRgb(0x0E, 0x74, 0x90));
     private static readonly SolidColorBrush _whiteBrush = new(Colors.White);
-    private static readonly SolidColorBrush _normalFg = new(Color.FromRgb(0x1E, 0x29, 0x3B));
+    private static readonly SolidColorBrush _normalFg = new(Color.FromRgb(0x0F, 0x17, 0x2A));
     private static readonly SolidColorBrush _transparentBrush = new(Colors.Transparent);
-    private static readonly SolidColorBrush _todayBorder = new(Color.FromRgb(0x1D, 0x4E, 0xD8));
+    private static readonly SolidColorBrush _todayBorder = new(Color.FromRgb(0x0E, 0x74, 0x90));
     private static readonly SolidColorBrush _mutedFg = new(Color.FromRgb(0x94, 0xA3, 0xB8));
 
     private int _displayYear;

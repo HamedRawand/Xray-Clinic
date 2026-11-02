@@ -1,3 +1,4 @@
+using NasimXray.Shared;
 using System.Globalization;
 using NasimXray.Client.Helpers;
 using NasimXray.Shared.Dtos.Billing;
@@ -12,7 +13,7 @@ namespace NasimXray.Client.Services;
 
 public static class PdfService
 {
-    private const string Accent = "#1565C0";
+    private const string Accent = "#0E7490";
     private const string BoxHeaderBg = "#E4E4E4";
     private const string PatientBg = "#EBEBEB";
     private const string DarkText = "#111111";
@@ -110,8 +111,14 @@ public static class PdfService
                     });
                     foreach (var line in invoice.Lines)
                     {
-                        table.Cell().PaddingVertical(2).Text(line.ExamTypeName).FontSize(10);
-                        table.Cell().PaddingVertical(2).Text(line.Price.ToString("N2")).FontSize(10);
+                        table.Cell().PaddingVertical(2).Text(string.IsNullOrEmpty(line.ExamNumber) ? line.ExamTypeName : $"{line.ExamNumber}  {line.ExamTypeName}").FontSize(10);
+                        table.Cell().PaddingVertical(2).Text(Currency.Format(line.ListPrice)).FontSize(10);
+                        if (line.DiscountAmount > 0)
+                        {
+                            table.Cell().PaddingVertical(1).PaddingLeft(10)
+                                .Text($"{L(isDari, "Discount", "تخفیف")}: {line.DiscountReason}").FontSize(9).FontColor(GrayText);
+                            table.Cell().PaddingVertical(1).Text("-" + Currency.Format(line.DiscountAmount)).FontSize(9).FontColor(GrayText);
+                        }
                     }
                 });
             });
@@ -128,33 +135,55 @@ public static class PdfService
                     });
                     foreach (var payment in invoice.Payments)
                     {
-                        table.Cell().PaddingVertical(2).Text($"{payment.Timestamp:yyyy-MM-dd} — {payment.Method}").FontSize(9);
-                        table.Cell().PaddingVertical(2).Text(payment.Amount.ToString("N2")).FontSize(10).Bold();
+                        table.Cell().PaddingVertical(2).Text($"{FormatDate(payment.Timestamp)} — {payment.Method}").FontSize(9);
+                        table.Cell().PaddingVertical(2).Text(Currency.Format(payment.Amount)).FontSize(10).Bold();
                     }
                 });
             });
 
             col.Item().Row(row =>
             {
-                row.RelativeItem().Text($"{L(isDari, "Total", "مجموع")}: {invoice.Total:N2}").FontSize(11).Bold();
-                row.RelativeItem().AlignRight().Text($"{L(isDari, "Balance", "باقیمانده")}: {invoice.Balance:N2}")
+                row.RelativeItem().Text($"{L(isDari, "Total", "مجموع")}: {Currency.Format(invoice.Total)}").FontSize(11).Bold();
+                row.RelativeItem().AlignRight().Text($"{L(isDari, "Balance", "باقیمانده")}: {Currency.Format(invoice.Balance)}")
                     .FontSize(11).Bold().FontColor(invoice.Balance > 0 ? "#DC2626" : "#16A34A");
             });
         });
     }
 
+    // Letterhead from the clinic's own profile (Clinic Settings): optional logo, English and Dari names side by side,
+    // the tagline (e.g. the services offered) and the contact line.
     private static void ComposeHeader(IContainer container)
     {
+        var profile = ClinicInfoService.Profile;
+        var logo = ClinicInfoService.LogoBytes;
+        var english = profile?.NameEnglish;
+        var dari = profile?.NameDari;
+        if (string.IsNullOrWhiteSpace(english) && string.IsNullOrWhiteSpace(dari)) english = ClinicInfoService.Title;
+
+        var contact = string.Join("  ·  ", new[] { profile?.Address, profile?.Phone, profile?.Email }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
         container.Column(col =>
         {
             col.Item().Row(row =>
             {
-                row.RelativeItem().AlignLeft().Text("Nasim Diagnostic X-ray Clinic")
-                    .FontSize(16).Bold().FontColor(Accent);
-                row.RelativeItem().AlignRight().Text("کلینیک تشخیصی ایکسری نسیم")
-                    .FontSize(16).Bold().FontColor(Accent).DirectionFromRightToLeft();
+                if (logo is { Length: > 0 })
+                    row.ConstantItem(60).PaddingRight(10).Height(48).Image(logo).FitArea();
+
+                row.RelativeItem().Row(names =>
+                {
+                    if (!string.IsNullOrWhiteSpace(english))
+                        names.RelativeItem().AlignLeft().AlignMiddle().Text(english)
+                            .FontSize(16).Bold().FontColor(Accent);
+                    if (!string.IsNullOrWhiteSpace(dari))
+                        names.RelativeItem().AlignRight().AlignMiddle().Text(dari)
+                            .FontSize(16).Bold().FontColor(Accent).DirectionFromRightToLeft();
+                });
             });
-            col.Item().PaddingTop(2).Text("X-ray · Ultrasound · Echocardiography").FontSize(9).FontColor(GrayText);
+            if (!string.IsNullOrWhiteSpace(profile?.Tagline))
+                col.Item().PaddingTop(2).Text(profile!.Tagline).FontSize(9).FontColor(GrayText);
+            if (contact.Length > 0)
+                col.Item().PaddingTop(1).Text(contact).FontSize(8).FontColor(GrayText);
             col.Item().PaddingTop(6).LineHorizontal(1).LineColor(Accent);
         });
     }

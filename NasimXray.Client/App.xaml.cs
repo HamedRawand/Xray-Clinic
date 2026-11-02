@@ -15,8 +15,7 @@ public partial class App : Application
         QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
         var logPath = System.IO.Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "NasimXrayClinic", "Logs", "client_.log");
+            NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.LocalApplicationData), "Logs", "client_.log");
 
         Log.Logger = new LoggerConfiguration()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
@@ -26,11 +25,12 @@ public partial class App : Application
         {
             Log.Error(args.Exception, "Unhandled UI exception");
             MessageBox.Show($"An unexpected error occurred:\n{args.Exception.Message}",
-                "Nasim Diagnostic X-ray Clinic", MessageBoxButton.OK, MessageBoxImage.Error);
+                ClinicInfoService.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             args.Handled = true;
         };
 
         ApplyStartupPreferences();
+        ClinicInfoService.LoadCache(); // shows the clinic name straight away, even if the server is not reachable yet
 
         var login = new LoginWindow();
         MainWindow = login;

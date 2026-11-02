@@ -19,10 +19,10 @@
                         <Condition Property="IsMouseOver" Value="True"/>
                         <Condition Property="Tag" Value="normal"/>
                     </MultiTrigger.Conditions>
-                    <Setter TargetName="Bd" Property="Background" Value="#DBEAFE"/>
+                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBrush20}"/>
                 </MultiTrigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="Bd" Property="Background" Value="#BFDBFE"/>
+                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBrush20}"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -34,10 +34,10 @@
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Bd" Property="Background" Value="#EFF6FF"/>
+                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBrush10}"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="Bd" Property="Background" Value="#DBEAFE"/>
+                    <Setter TargetName="Bd" Property="Background" Value="{DynamicResource AccentBrush20}"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -85,14 +85,14 @@
                    VerticalOffset="2">
                 <Border Background="#FFFFFF"
                         CornerRadius="8"
-                        BorderBrush="#E2E8F0"
+                        BorderBrush="{DynamicResource SeparatorBrush}"
                         BorderThickness="1"
                         Padding="10"
                         Width="268"
                         FlowDirection="LeftToRight">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="14" ShadowDepth="3"
-                                          Color="#1E3A8A" Opacity="0.12"/>
+                                          Color="#0E3B43" Opacity="0.12"/>
                     </Border.Effect>
                     <StackPanel>
                         <Grid Margin="0,0,0,8">
@@ -107,7 +107,7 @@
                                     Click="PrevMonth_Click" ToolTip="ماه قبل">
                                 <Viewbox Width="10" Height="10">
                                     <Canvas Width="24" Height="24">
-                                        <Path Fill="#475569"
+                                        <Path Fill="{DynamicResource TextSecondaryBrush}"
                                               Data="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
                                     </Canvas>
                                 </Viewbox>
@@ -115,14 +115,14 @@
                             <TextBlock x:Name="MonthYearLabel" Grid.Column="1"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                        FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold"
-                                       Foreground="#1E293B" FlowDirection="RightToLeft"/>
+                                       Foreground="{DynamicResource TextPrimaryBrush}" FlowDirection="RightToLeft"/>
                             <Button Grid.Column="2" x:Name="NextMonthBtn"
                                     Template="{StaticResource NavBtnTemplate}"
                                     Cursor="Hand" Focusable="False"
                                     Click="NextMonth_Click" ToolTip="ماه بعد">
                                 <Viewbox Width="10" Height="10">
                                     <Canvas Width="24" Height="24">
-                                        <Path Fill="#475569"
+                                        <Path Fill="{DynamicResource TextSecondaryBrush}"
                                               Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
                                     </Canvas>
                                 </Viewbox>

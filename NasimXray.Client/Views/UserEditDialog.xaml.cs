@@ -11,8 +11,14 @@ public partial class UserEditDialog : Window
     private readonly ApiClient _apiClient;
     private readonly int? _userId;
 
-    private record RoleOption(UserRole Value, string Label);
-    private record CustomRoleOption(int? Id, string Name);
+    private record RoleOption(UserRole Value, string Label)
+    {
+        public override string ToString() => Label;
+    }
+    private record CustomRoleOption(int? Id, string Name)
+    {
+        public override string ToString() => Name;
+    }
 
     public UserEditDialog(ApiClient apiClient, UserDto? existing = null)
     {

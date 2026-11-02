@@ -1,3 +1,4 @@
+using NasimXray.Shared;
 using System.Windows;
 using System.Windows.Controls;
 using NasimXray.Client.Services;
@@ -40,9 +41,9 @@ public partial class InvoiceDetailWindow : Window
         Title = HeaderText.Text;
         PatientText.Text = $"{_invoice.PatientName} ({_invoice.PatientCode})";
 
-        TotalText.Text = _invoice.Total.ToString("N2");
-        PaidText.Text = _invoice.AmountPaid.ToString("N2");
-        BalanceText.Text = _invoice.Balance.ToString("N2");
+        TotalText.Text = Currency.Format(_invoice.Total);
+        PaidText.Text = Currency.Format(_invoice.AmountPaid);
+        BalanceText.Text = Currency.Format(_invoice.Balance);
 
         LinesPanel.Items.Clear();
         foreach (var line in _invoice.Lines)
@@ -50,8 +51,23 @@ public partial class InvoiceDetailWindow : Window
             var row = new Grid { Margin = new Thickness(0, 0, 0, 6) };
             row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
-            var name = new TextBlock { Text = line.ExamTypeName, FontSize = 12, Foreground = (System.Windows.Media.Brush)FindResource("TextPrimaryBrush") };
-            var price = new TextBlock { Text = line.Price.ToString("N2"), FontSize = 12, FontWeight = FontWeights.SemiBold, Foreground = (System.Windows.Media.Brush)FindResource("TextPrimaryBrush") };
+            var name = new StackPanel();
+            name.Children.Add(new TextBlock
+            {
+                Text = string.IsNullOrEmpty(line.ExamNumber) ? line.ExamTypeName : $"{line.ExamNumber}  {line.ExamTypeName}",
+                FontSize = 12, Foreground = (System.Windows.Media.Brush)FindResource("TextPrimaryBrush"),
+            });
+            if (line.DiscountAmount > 0)
+            {
+                name.Children.Add(new TextBlock
+                {
+                    Text = string.Format((string)FindResource("InvoiceDetail.DiscountFormat"),
+                        Currency.Format(line.ListPrice), Currency.Format(line.DiscountAmount), line.DiscountReason),
+                    FontSize = 11, TextWrapping = TextWrapping.Wrap,
+                    Foreground = (System.Windows.Media.Brush)FindResource("WarningBrush"),
+                });
+            }
+            var price = new TextBlock { Text = Currency.Format(line.Price), FontSize = 12, FontWeight = FontWeights.SemiBold, Foreground = (System.Windows.Media.Brush)FindResource("TextPrimaryBrush") };
             Grid.SetColumn(price, 1);
             row.Children.Add(name);
             row.Children.Add(price);
@@ -60,7 +76,7 @@ public partial class InvoiceDetailWindow : Window
 
         var isFullyPaid = _invoice.Balance <= 0;
         FullyPaidText.Visibility = isFullyPaid ? Visibility.Visible : Visibility.Collapsed;
-        RecordPaymentButton.Visibility = isFullyPaid ? Visibility.Collapsed : Visibility.Visible;
+        RecordPaymentButton.Visibility = isFullyPaid || !SessionService.Can(NasimXray.Shared.Enums.Permission.ProcessPayment) ? Visibility.Collapsed : Visibility.Visible;
         NoPaymentsText.Visibility = _invoice.Payments.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
         PaymentsPanel.Items.Clear();
@@ -74,12 +90,12 @@ public partial class InvoiceDetailWindow : Window
             var methodKey = $"PaymentMethod.{payment.Method}";
             var info = new TextBlock
             {
-                Text = $"{payment.Timestamp:yyyy-MM-dd HH:mm} — {(string)FindResource(methodKey)} — {payment.ReceivedByName}",
+                Text = $"{Helpers.CalendarFormat.Format(payment.Timestamp, "datetime")} — {(string)FindResource(methodKey)} — {payment.ReceivedByName}",
                 FontSize = 11, Foreground = (System.Windows.Media.Brush)FindResource("TextSecondaryBrush"),
             };
             var amount = new TextBlock
             {
-                Text = payment.Amount.ToString("N2"), FontSize = 12, FontWeight = FontWeights.SemiBold,
+                Text = Currency.Format(payment.Amount), FontSize = 12, FontWeight = FontWeights.SemiBold,
                 Foreground = (System.Windows.Media.Brush)FindResource("SuccessBrush"),
             };
             Grid.SetColumn(amount, 2);

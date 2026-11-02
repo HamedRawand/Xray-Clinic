@@ -12,7 +12,7 @@
                        Foreground="{DynamicResource TextPrimaryBrush}"/>
             <TextBlock x:Name="SubHeaderText" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
 
-            <Border x:Name="FinalizedBanner" Background="#DBEAFE" CornerRadius="6" Padding="10,8" Margin="0,10,0,0" Visibility="Collapsed">
+            <Border x:Name="FinalizedBanner" Background="{DynamicResource BadgeInfoBg}" CornerRadius="6" Padding="10,8" Margin="0,10,0,0" Visibility="Collapsed">
                 <TextBlock Text="{DynamicResource Report.FinalizedBanner}" FontSize="12" Foreground="{DynamicResource AccentBrush}" TextWrapping="Wrap"/>
             </Border>
         </StackPanel>

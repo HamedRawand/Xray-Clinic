@@ -23,12 +23,10 @@ public partial class PatientEditDialog : Window
             new SexOption("Male", "Sex.Male"),
             new SexOption("Female", "Sex.Female"),
         };
-        SexBox.ItemsSource = sexOptions.Select(o => new
-        {
-            o.Value,
-            DisplayLabel = (string)FindResource(o.DisplayKey),
-        }).ToList();
-        SexBox.DisplayMemberPath = "DisplayLabel";
+        SexBox.ItemsSource = sexOptions
+            .Select(o => new Helpers.ComboOption((string)FindResource(o.DisplayKey), o.Value))
+            .ToList();
+        SexBox.DisplayMemberPath = "Label";
         SexBox.SelectedValuePath = "Value";
 
         if (existing is not null)

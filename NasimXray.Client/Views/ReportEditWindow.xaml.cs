@@ -117,7 +117,7 @@ public partial class ReportEditWindow : Window
             var entry = new StackPanel { Margin = new Thickness(0, 0, 0, 10) };
             entry.Children.Add(new TextBlock
             {
-                Text = $"{amendment.AmendedAt:yyyy-MM-dd HH:mm} — {amendment.AmendedByName}",
+                Text = $"{Helpers.CalendarFormat.Format(amendment.AmendedAt, "datetime")} — {amendment.AmendedByName}",
                 FontSize = 11, FontWeight = FontWeights.SemiBold,
                 Foreground = (System.Windows.Media.Brush)FindResource("TextSecondaryBrush"),
             });
@@ -133,7 +133,13 @@ public partial class ReportEditWindow : Window
     private void ApplyUiState()
     {
         var isFinalized = _report?.IsFinalized == true;
-        var editable = !isFinalized || _amendMode;
+        var canEdit = SessionService.Can(Permission.CreateReport);
+        var canFinalize = SessionService.Can(Permission.FinalizeReport);
+        var canAmend = SessionService.Can(Permission.AmendReport);
+
+        // Read-only for anyone who can't write the report (e.g. technicians), and for a locked report
+        // unless an authorised user has started an amendment.
+        var editable = _amendMode || (!isFinalized && canEdit);
 
         FindingsBox.IsReadOnly = !editable;
         ImpressionBox.IsReadOnly = !editable;
@@ -142,10 +148,10 @@ public partial class ReportEditWindow : Window
         FinalizedBanner.Visibility = isFinalized && !_amendMode ? Visibility.Visible : Visibility.Collapsed;
         AmendReasonPanel.Visibility = _amendMode ? Visibility.Visible : Visibility.Collapsed;
 
-        SaveDraftButton.Visibility = !isFinalized ? Visibility.Visible : Visibility.Collapsed;
-        FinalizeButton.Visibility = !isFinalized ? Visibility.Visible : Visibility.Collapsed;
-        AmendReasonPanelToggle.Visibility = isFinalized && !_amendMode ? Visibility.Visible : Visibility.Collapsed;
-        SubmitAmendButton.Visibility = _amendMode ? Visibility.Visible : Visibility.Collapsed;
+        SaveDraftButton.Visibility = !isFinalized && canEdit ? Visibility.Visible : Visibility.Collapsed;
+        FinalizeButton.Visibility = !isFinalized && canFinalize ? Visibility.Visible : Visibility.Collapsed;
+        AmendReasonPanelToggle.Visibility = isFinalized && !_amendMode && canAmend ? Visibility.Visible : Visibility.Collapsed;
+        SubmitAmendButton.Visibility = _amendMode && canAmend ? Visibility.Visible : Visibility.Collapsed;
         PrintButton.Visibility = _report is not null ? Visibility.Visible : Visibility.Collapsed;
     }
 

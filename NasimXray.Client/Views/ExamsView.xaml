@@ -1,0 +1,282 @@
+<UserControl x:Class="NasimXray.Client.Views.ExamsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+             xmlns:shared="clr-namespace:NasimXray.Client.Views.Shared">
+    <DockPanel>
+        <!-- Filters -->
+        <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,0,1" Padding="24,14,24,6">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource Exams.Title}" FontSize="20" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+
+                <!-- Work queues: one-click filters across ALL time, with live sizes. -->
+                <WrapPanel Margin="0,0,0,10">
+                    <TextBlock Text="{DynamicResource Exams.Queues}" FontSize="12" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Button x:Name="QueueTech" Tag="tech" Click="Queue_Click" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,4"/>
+                    <Button x:Name="QueueProgress" Tag="progress" Click="Queue_Click" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,4"/>
+                    <Button x:Name="QueueReport" Tag="report" Click="Queue_Click" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,4"/>
+                    <Button x:Name="QueueBilling" Tag="billing" Click="Queue_Click" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,4"/>
+                    <Button x:Name="QueueUnpaid" Tag="unpaid" Click="Queue_Click" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,4"/>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.Search}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <TextBox x:Name="SearchBox" Style="{StaticResource ModernTextBox}" Width="240"
+                                 TextChanged="SearchBox_TextChanged"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.DateRange}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="PresetBox" Style="{StaticResource ModernComboBox}" Width="130"
+                                  SelectionChanged="PresetBox_SelectionChanged">
+                            <ComboBoxItem Tag="today" Content="{DynamicResource Exams.Preset.Today}"/>
+                            <ComboBoxItem Tag="yesterday" Content="{DynamicResource Exams.Preset.Yesterday}"/>
+                            <ComboBoxItem Tag="week" Content="{DynamicResource Exams.Preset.Week}"/>
+                            <ComboBoxItem Tag="month" Content="{DynamicResource Exams.Preset.Month}"/>
+                            <ComboBoxItem Tag="all" Content="{DynamicResource Exams.Preset.All}"/>
+                            <ComboBoxItem Tag="custom" Content="{DynamicResource Exams.Preset.Custom}"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.From}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <!-- Dual-control pattern: the Shamsi picker binds to the Gregorian one, so the
+                             code-behind reads/writes the DatePicker alone. -->
+                        <Grid Width="140">
+                            <DatePicker x:Name="FromPicker" Height="38" SelectedDateChanged="DatePicker_Changed"
+                                        Visibility="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                            <shared:AfghanShamsiDatePicker Height="38"
+                                        SelectedDate="{Binding SelectedDate, ElementName=FromPicker, Mode=TwoWay}"
+                                        Visibility="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.To}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <Grid Width="140">
+                            <DatePicker x:Name="ToPicker" Height="38" SelectedDateChanged="DatePicker_Changed"
+                                        Visibility="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                            <shared:AfghanShamsiDatePicker Height="38"
+                                        SelectedDate="{Binding SelectedDate, ElementName=ToPicker, Mode=TwoWay}"
+                                        Visibility="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.ExamType}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="ExamTypeBox" Style="{StaticResource ModernComboBox}" Width="180"
+                                  DisplayMemberPath="Label" SelectionChanged="Filter_Changed"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.Modality}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="ModalityBox" Style="{StaticResource ModernComboBox}" Width="140"
+                                  DisplayMemberPath="Label" SelectionChanged="Filter_Changed"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.Status}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="StatusBox" Style="{StaticResource ModernComboBox}" Width="140"
+                                  SelectedIndex="0" SelectionChanged="Filter_Changed">
+                            <ComboBoxItem Content="{DynamicResource Exams.All}"/>
+                            <ComboBoxItem Tag="Pending" Content="{DynamicResource Status.Pending}"/>
+                            <ComboBoxItem Tag="InProgress" Content="{DynamicResource Status.InProgress}"/>
+                            <ComboBoxItem Tag="Completed" Content="{DynamicResource Status.Completed}"/>
+                            <ComboBoxItem Tag="Reported" Content="{DynamicResource Status.Reported}"/>
+                            <ComboBoxItem Tag="Cancelled" Content="{DynamicResource Status.Cancelled}"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.Referring}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="PhysicianBox" Style="{StaticResource ModernComboBox}" Width="180"
+                                  DisplayMemberPath="Label" SelectionChanged="Filter_Changed"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,12,8">
+                        <TextBlock Text="{DynamicResource Exams.Billing}" FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="BillingBox" Style="{StaticResource ModernComboBox}" Width="160"
+                                  SelectedIndex="0" SelectionChanged="Filter_Changed">
+                            <ComboBoxItem Content="{DynamicResource Exams.All}"/>
+                            <ComboBoxItem Tag="NotInvoiced" Content="{DynamicResource Exams.Billing.NotInvoiced}"/>
+                            <ComboBoxItem Tag="Unpaid" Content="{DynamicResource Exams.Billing.Unpaid}"/>
+                            <ComboBoxItem Tag="Paid" Content="{DynamicResource Exams.Billing.Paid}"/>
+                            <ComboBoxItem Tag="Discounted" Content="{DynamicResource Exams.Billing.Discounted}"/>
+                            <ComboBoxItem Tag="Free" Content="{DynamicResource Exams.Billing.Free}"/>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,8" VerticalAlignment="Bottom" Orientation="Horizontal">
+                        <Button Content="{DynamicResource Exams.Clear}" Style="{StaticResource SecondaryButton}"
+                                Height="38" Padding="14,0" Margin="0,0,8,0" Click="Clear_Click"/>
+                        <Button Content="{DynamicResource Exams.Refresh}" Style="{StaticResource SecondaryButton}"
+                                Height="38" Padding="14,0" Margin="0,0,8,0" Click="Refresh_Click"/>
+                        <Button Content="{DynamicResource Stats.Export}" Style="{StaticResource SecondaryButton}"
+                                Height="38" Padding="14,0" Click="Export_Click"/>
+                    </StackPanel>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Paging footer -->
+        <Border DockPanel.Dock="Bottom" Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,1,0,0" Padding="24,8">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="PrevButton" Content="{DynamicResource Exams.Prev}" Style="{StaticResource SecondaryButton}"
+                        Height="30" Padding="14,0" Click="Prev_Click"/>
+                <TextBlock x:Name="PageText" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center" Margin="16,0"/>
+                <Button x:Name="NextButton" Content="{DynamicResource Exams.Next}" Style="{StaticResource SecondaryButton}"
+                        Height="30" Padding="14,0" Click="Next_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Summary + per-exam-type counts -->
+        <Border DockPanel.Dock="Top" Padding="24,12,24,0">
+            <StackPanel>
+                <TextBlock x:Name="SummaryText" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <ItemsControl x:Name="TypeChips" Margin="0,8,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource SecondaryButton}" Height="auto" Padding="10,5" Margin="0,0,8,6"
+                                    Click="TypeChip_Click">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding ExamTypeName}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}">
+                                        <Run Text="{Binding ExamCount, Mode=OneWay}"/>
+                                        <Run Text="{DynamicResource Exams.ExamsWord}"/>
+                                        <Run Text="·"/>
+                                        <Run Text="{Binding PatientCount, Mode=OneWay}"/>
+                                        <Run Text="{DynamicResource Exams.PatientsWord}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <Grid>
+            <DataGrid x:Name="Grid" Style="{StaticResource ModernDataGrid}" Margin="24,8,24,12"
+                      AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Grid_MouseDoubleClick"
+                      HorizontalScrollBarVisibility="Auto">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource Exams.Number}" Binding="{Binding ExamNumber}" Width="88"/>
+                    <DataGridTextColumn Header="{DynamicResource Exams.DateTime}" Width="130">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding Converter="{StaticResource DateToCalendarConverter}" ConverterParameter="datetime" Mode="OneWay">
+                                <Binding Path="CreatedAt"/>
+                                <Binding Source="{x:Static helpers:AppSessionProxy.Instance}" Path="IsShamsi"/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="{DynamicResource Exams.Patient}" Width="2*" MinWidth="130">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding PatientName}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding PatientCode}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Hover the exam type to see the referring physician -->
+                    <DataGridTemplateColumn Header="{DynamicResource Exams.ExamType}" Width="1.5*" MinWidth="120">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center" ToolTip="{Binding ReferringPhysicianName}">
+                                    <TextBlock Text="{Binding ExamTypeName}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Modality}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="{DynamicResource Exams.Status}" Width="105">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <shared:StatusBadge Margin="8,0" ToolTip="{Binding PerformedByName}"
+                                    Text="{Binding Status, Converter={StaticResource StatusToLocalizedConverter}}"
+                                    Kind="{Binding Status, Converter={StaticResource StatusToBadgeKindConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="{DynamicResource Exams.Charge}" Width="108">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NetPrice, Converter={StaticResource MoneyConverter}}" VerticalAlignment="Center" Margin="8,0"
+                                           ToolTip="{Binding DiscountReason}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsDiscounted}" Value="True">
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource WarningBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="{DynamicResource Exams.Billing}" Width="115">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{DynamicResource Exams.NotInvoiced}" VerticalAlignment="Center" Margin="8,0"
+                                               Foreground="{DynamicResource TextMutedBrush}"
+                                               Visibility="{Binding InvoiceStatus, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                    <shared:StatusBadge Margin="8,0"
+                                        Text="{Binding InvoiceStatus, Converter={StaticResource InvoiceStatusToLocalizedConverter}}"
+                                        Kind="{Binding InvoiceStatus, Converter={StaticResource StatusToBadgeKindConverter}}"
+                                        Visibility="{Binding InvoiceStatus, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="WorkflowColumn" Header="{DynamicResource Exams.Actions}" Width="105">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="{DynamicResource Exams.Start}" Style="{StaticResource PrimaryButton}"
+                                            Height="28" Padding="10,0" FontSize="11" Click="Start_Click"
+                                            Visibility="{Binding Status, Converter={StaticResource StatusVisibilityConverter}, ConverterParameter=Pending}"/>
+                                    <Button Content="{DynamicResource Exams.Complete}" Style="{StaticResource PrimaryButton}"
+                                            Height="28" Padding="10,0" FontSize="11" Click="Complete_Click"
+                                            Visibility="{Binding Status, Converter={StaticResource StatusVisibilityConverter}, ConverterParameter=InProgress}"/>
+                                    <Button Content="{DynamicResource Exams.Reopen}" Style="{StaticResource SecondaryButton}"
+                                            Height="28" Padding="10,0" FontSize="11" Click="Reopen_Click"
+                                            Visibility="{Binding Status, Converter={StaticResource StatusVisibilityConverter}, ConverterParameter=Completed}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Less frequent actions (report, patient, discount, cancel) live in this row menu -->
+                    <DataGridTemplateColumn Header="" Width="52">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="⋯" Style="{StaticResource SecondaryButton}" Height="28" Width="36" Padding="0,0,0,3"
+                                        FontSize="16" Click="More_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock x:Name="EmptyText" Text="{DynamicResource Exams.Empty}" Visibility="Collapsed"
+                       FontSize="13" Foreground="{DynamicResource TextMutedBrush}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </DockPanel>
+</UserControl>

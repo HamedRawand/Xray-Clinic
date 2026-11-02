@@ -18,7 +18,15 @@ public partial class LoginWindow : Window
         {
             Loaded += (_, _) => OpenServerSettings();
         }
+        else
+        {
+            Loaded += (_, _) => RefreshClinicInfo();
+        }
     }
+
+    // Fetches the clinic's name/logo from the server (public endpoint) so the sign-in screen shows the right clinic.
+    private void RefreshClinicInfo() =>
+        _ = ClinicInfoService.RefreshAsync(_settings.ServerBaseUrl, _settings.ServerCertificateThumbprint);
 
     private void RefreshServerAddressText()
     {
@@ -29,12 +37,14 @@ public partial class LoginWindow : Window
 
     private void OpenServerSettings()
     {
-        var dialog = new ServerSettingsWindow(_settings.ServerBaseUrl) { Owner = this };
+        var dialog = new ServerSettingsWindow(_settings.ServerBaseUrl, _settings.ServerCertificateThumbprint) { Owner = this };
         if (dialog.ShowDialog() == true && dialog.SavedServerUrl is not null)
         {
             _settings.ServerBaseUrl = dialog.SavedServerUrl;
+            _settings.ServerCertificateThumbprint = dialog.SavedCertThumbprint;
             _settings.Save();
             RefreshServerAddressText();
+            RefreshClinicInfo();
         }
     }
 
@@ -69,10 +79,10 @@ public partial class LoginWindow : Window
         SignInButton.IsEnabled = false;
         try
         {
-            _apiClient = new ApiClient(_settings.ServerBaseUrl);
+            _apiClient = new ApiClient(_settings.ServerBaseUrl, _settings.ServerCertificateThumbprint);
             var login = await _apiClient.LoginAsync(username, password);
 
-            _apiClient.SetAccessToken(login.AccessToken);
+            _apiClient.SetSession(login.AccessToken, login.RefreshToken);
             SessionService.Start(login);
 
             if (login.MustChangePassword)
@@ -82,7 +92,7 @@ public partial class LoginWindow : Window
                 {
                     // User could not/would not complete the forced change — abandon this login attempt.
                     SessionService.End();
-                    _apiClient.SetAccessToken(null);
+                    _apiClient.ClearSession();
                     return;
                 }
             }

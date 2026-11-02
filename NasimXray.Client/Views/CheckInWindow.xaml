@@ -1,0 +1,256 @@
+<Window x:Class="NasimXray.Client.Views.CheckInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
+        xmlns:shared="clr-namespace:NasimXray.Client.Views.Shared"
+        Title="{DynamicResource CheckIn.Title}"
+        Height="760" Width="920" MinHeight="600" MinWidth="780"
+        WindowStartupLocation="CenterOwner"
+        FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
+    <Grid Margin="16">
+        <!-- ───────────── Form ───────────── -->
+        <DockPanel x:Name="FormPanel">
+            <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+                <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerBrush}"
+                           FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8" Visibility="Collapsed"/>
+                <Grid>
+                    <TextBlock x:Name="TotalText" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="{DynamicResource PatientEdit.Cancel}" Style="{StaticResource SecondaryButton}"
+                                Margin="0,0,8,0" IsCancel="True"/>
+                        <Button x:Name="SubmitButton" Content="{DynamicResource CheckIn.Submit}" Style="{StaticResource PrimaryButton}"
+                                Padding="28,0" Click="Submit_Click"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+
+                    <!-- 1. Patient -->
+                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource CheckIn.Step1}" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+
+                            <!-- search mode -->
+                            <StackPanel x:Name="SearchPanel">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="PatientSearchBox" Style="{StaticResource ModernTextBox}"
+                                             TextChanged="PatientSearchBox_TextChanged"/>
+                                    <Button x:Name="NewPatientButton" Grid.Column="1" Content="{DynamicResource CheckIn.NewPatient}"
+                                            Style="{StaticResource SecondaryButton}" Margin="8,0,0,0" Click="NewPatient_Click"/>
+                                </Grid>
+                                <TextBlock Text="{DynamicResource CheckIn.SearchHint}" FontSize="11" Margin="0,4,0,0"
+                                           Foreground="{DynamicResource TextMutedBrush}"/>
+                                <ListBox x:Name="PatientResults" MaxHeight="150" Margin="0,8,0,0" Visibility="Collapsed"
+                                         BorderBrush="{DynamicResource SeparatorBrush}"
+                                         SelectionChanged="PatientResults_SelectionChanged">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="2,3">
+                                                <TextBlock Text="{Binding PatientCode}" FontWeight="SemiBold" Width="80"
+                                                           Foreground="{DynamicResource AccentBrush}"/>
+                                                <TextBlock Text="{Binding FullName}" Width="260"/>
+                                                <TextBlock Text="{Binding PhoneNumber}" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <TextBlock x:Name="NoResultsText" Text="{DynamicResource CheckIn.NoResults}" FontSize="12"
+                                           Foreground="{DynamicResource TextMutedBrush}" Margin="0,8,0,0" Visibility="Collapsed"/>
+                            </StackPanel>
+
+                            <!-- selected patient -->
+                            <Border x:Name="SelectedPanel" Visibility="Collapsed" Background="{DynamicResource AccentBrush20}"
+                                    CornerRadius="8" Padding="12,10">
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock x:Name="SelectedCodeText" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,12,0"/>
+                                        <TextBlock x:Name="SelectedNameText" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,12,0"/>
+                                        <TextBlock x:Name="SelectedPhoneText" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                    <Button Content="{DynamicResource CheckIn.Change}" Style="{StaticResource SecondaryButton}"
+                                            Height="28" Padding="10,0" FontSize="11" HorizontalAlignment="Right" Click="ChangePatient_Click"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- new patient form -->
+                            <StackPanel x:Name="NewPanel" Visibility="Collapsed">
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{DynamicResource PatientEdit.FullName}" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <TextBox x:Name="FullNameBox" Style="{StaticResource ModernTextBox}" TextChanged="NewPatientField_Changed"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{DynamicResource Patients.Phone}" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <TextBox x:Name="PhoneBox" Style="{StaticResource ModernTextBox}" FlowDirection="LeftToRight"
+                                                 TextChanged="NewPatientField_Changed"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Text="{DynamicResource Patients.Sex}" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <ComboBox x:Name="SexBox" Style="{StaticResource ModernComboBox}"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{DynamicResource Patients.DateOfBirth}" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <Grid>
+                                            <DatePicker x:Name="DobPicker" Height="38"
+                                                        Visibility="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                                            <shared:AfghanShamsiDatePicker Height="38"
+                                                        SelectedDate="{Binding SelectedDate, ElementName=DobPicker, Mode=TwoWay}"
+                                                        Visibility="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{DynamicResource PatientEdit.Address}" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                        <TextBox x:Name="AddressBox" Style="{StaticResource ModernTextBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- possible duplicates -->
+                                <Border x:Name="DuplicatePanel" Visibility="Collapsed" Background="{DynamicResource BadgeWarnBg}" CornerRadius="8" Padding="12,10" Margin="0,0,0,10">
+                                    <StackPanel>
+                                        <TextBlock Text="{DynamicResource CheckIn.DuplicateWarning}" FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource BadgeWarnFg}" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                                        <ItemsControl x:Name="DuplicateList">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="0,2">
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                            <TextBlock Text="{Binding PatientCode}" FontWeight="SemiBold" Width="80" Foreground="{DynamicResource BadgeWarnFg}"/>
+                                                            <TextBlock Text="{Binding FullName}" Width="240" Foreground="{DynamicResource BadgeWarnFg}"/>
+                                                            <TextBlock Text="{Binding PhoneNumber}" Foreground="{DynamicResource BadgeWarnFg}"/>
+                                                        </StackPanel>
+                                                        <Button Content="{DynamicResource CheckIn.UseThisPatient}" Style="{StaticResource SecondaryButton}"
+                                                                Height="26" Padding="10,0" FontSize="11" HorizontalAlignment="Right"
+                                                                Click="UseDuplicate_Click"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <Button Content="{DynamicResource CheckIn.BackToSearch}" Style="{StaticResource SecondaryButton}"
+                                        Height="28" Padding="10,0" FontSize="11" HorizontalAlignment="Left" Click="BackToSearch_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 2. Exams -->
+                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource CheckIn.Step2}" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{DynamicResource CheckIn.FindExam}" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="ExamFilterBox" Style="{StaticResource ModernTextBox}" TextChanged="ExamFilterBox_TextChanged"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="{DynamicResource Exams.Referring}" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <ComboBox x:Name="PhysicianBox" Style="{StaticResource ModernComboBox}" DisplayMemberPath="Label"/>
+                                </StackPanel>
+                            </Grid>
+                            <Border BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="1" CornerRadius="6">
+                                <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel x:Name="ExamList" Margin="10,8"/>
+                                </ScrollViewer>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 3. Billing -->
+                    <Border x:Name="BillingCard" Style="{StaticResource CardBorder}" Margin="0,0,0,4">
+                        <StackPanel>
+                            <TextBlock Text="{DynamicResource CheckIn.Step3}" FontSize="15" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+                            <CheckBox x:Name="InvoiceCheck" Content="{DynamicResource CheckIn.CreateInvoice}" IsChecked="True"
+                                      FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"
+                                      Checked="Invoice_Toggled" Unchecked="Invoice_Toggled"/>
+                            <Grid x:Name="PaymentPanel">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{DynamicResource CheckIn.AmountNow}" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="AmountBox" Style="{StaticResource ModernTextBox}" FlowDirection="LeftToRight"
+                                             TextChanged="AmountBox_TextChanged"/>
+                                </StackPanel>
+                                <Button Grid.Column="2" Content="{DynamicResource CheckIn.FullAmount}" Style="{StaticResource SecondaryButton}"
+                                        VerticalAlignment="Bottom" Padding="12,0" Click="FullAmount_Click"/>
+                                <StackPanel Grid.Column="4">
+                                    <TextBlock Text="{DynamicResource RecordPayment.Method}" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4"/>
+                                    <ComboBox x:Name="MethodBox" Style="{StaticResource ModernComboBox}"/>
+                                </StackPanel>
+                                <TextBlock x:Name="BalanceText" Grid.Column="6" VerticalAlignment="Bottom" Margin="0,0,0,9"
+                                           FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+
+        <!-- ───────────── Result ───────────── -->
+        <Border x:Name="ResultPanel" Style="{StaticResource CardBorder}" Visibility="Collapsed" VerticalAlignment="Top" Padding="24">
+            <StackPanel>
+                <TextBlock Text="{DynamicResource CheckIn.Done}" FontSize="20" FontWeight="SemiBold"
+                           Foreground="{DynamicResource SuccessBrush}" Margin="0,0,0,12"/>
+                <TextBlock x:Name="ResultPatientText" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10"/>
+                <ItemsControl x:Name="ResultExams" Margin="0,0,0,10"/>
+                <TextBlock x:Name="ResultInvoiceText" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"
+                           TextWrapping="Wrap" Margin="0,0,0,20"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="PrintButton" Content="{DynamicResource CheckIn.PrintReceipt}" Style="{StaticResource PrimaryButton}"
+                            Margin="0,0,8,0" Click="Print_Click"/>
+                    <Button x:Name="OpenPatientButton" Content="{DynamicResource CheckIn.OpenPatient}" Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0" Click="OpenPatient_Click"/>
+                    <Button Content="{DynamicResource CheckIn.NewCheckIn}" Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0" Click="NewCheckIn_Click"/>
+                    <Button Content="{DynamicResource PatientDetail.Close}" Style="{StaticResource SecondaryButton}" Click="Close_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

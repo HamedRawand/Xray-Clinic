@@ -9,16 +9,23 @@ namespace NasimXray.Client.Views;
 
 public partial class PatientsView : UserControl
 {
+    private const int PageSize = 50;
+
     private readonly ApiClient _apiClient;
+    private int _page = 1;
+    private int _requestSeq;
     private readonly DispatcherTimer _searchDebounce;
 
     public PatientsView(ApiClient apiClient)
     {
         InitializeComponent();
         _apiClient = apiClient;
+        NewPatientButton.Visibility = SessionService.Can(NasimXray.Shared.Enums.Permission.ManagePatients) ? Visibility.Visible : Visibility.Collapsed;
 
         _searchDebounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
-        _searchDebounce.Tick += async (_, _) => { _searchDebounce.Stop(); await LoadAsync(); };
+        _searchDebounce.Tick += async (_, _) => { _searchDebounce.Stop(); _page = 1; await LoadAsync(); };
+
+        Pager.PageRequested += async page => { _page = page; await LoadAsync(); };
 
         _ = LoadAsync();
     }
@@ -31,11 +38,16 @@ public partial class PatientsView : UserControl
 
     private async Task LoadAsync()
     {
+        var seq = ++_requestSeq;
         try
         {
-            var patients = await _apiClient.GetPatientsAsync(SearchBox.Text);
-            Grid.ItemsSource = patients;
-            EmptyText.Visibility = patients.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            var result = await _apiClient.GetPatientsAsync(SearchBox.Text, _page, PageSize);
+            if (seq != _requestSeq) return; // a newer request is already on its way
+
+            _page = result.Page;
+            Grid.ItemsSource = result.Items;
+            EmptyText.Visibility = result.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            Pager.Update(result);
         }
         catch (ApiException ex)
         {
@@ -47,7 +59,10 @@ public partial class PatientsView : UserControl
     {
         var dialog = new PatientEditDialog(_apiClient) { Owner = Window.GetWindow(this) };
         if (dialog.ShowDialog() == true)
+        {
+            _page = 1; // newest patients are listed first
             await LoadAsync();
+        }
     }
 
     private void Grid_MouseDoubleClick(object sender, MouseButtonEventArgs e)

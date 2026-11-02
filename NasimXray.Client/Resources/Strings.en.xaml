@@ -2,15 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <system:String x:Key="App.Title">Nasim Diagnostic X-ray Clinic</system:String>
-
     <system:String x:Key="Login.Subtitle">Sign in to continue</system:String>
     <system:String x:Key="Login.Username">Username</system:String>
     <system:String x:Key="Login.Password">Password</system:String>
     <system:String x:Key="Login.SignIn">Sign In</system:String>
     <system:String x:Key="Login.ServerSettings">Server Settings</system:String>
     <system:String x:Key="Login.ServerNotConfigured">Server not configured</system:String>
-    <system:String x:Key="Login.ServerPrefix">Server: </system:String>
+    <system:String x:Key="Login.ServerPrefix" xml:space="preserve">Server: </system:String>
     <system:String x:Key="Login.ConfigureServerFirst">Configure the server address first (Server Settings).</system:String>
     <system:String x:Key="Login.EnterCredentials">Enter your username and password.</system:String>
     <system:String x:Key="Login.Language">دری</system:String>
@@ -23,6 +21,10 @@
     <system:String x:Key="ServerSettings.Connected">Connected successfully.</system:String>
     <system:String x:Key="ServerSettings.ConnectFailed">Could not reach the server at that address.</system:String>
     <system:String x:Key="ServerSettings.EnterAddressFirst">Enter a server address first.</system:String>
+    <system:String x:Key="ServerSettings.CertPresented">This server presented a certificate with fingerprint:</system:String>
+    <system:String x:Key="ServerSettings.CertTrustWarning">Only trust this if you know it belongs to your clinic's own server. Trusting the wrong certificate could expose your login and patient data to someone else.</system:String>
+    <system:String x:Key="ServerSettings.TrustCertificate">Trust This Certificate</system:String>
+    <system:String x:Key="ServerSettings.Trusted" xml:space="preserve">Trusted certificate: </system:String>
 
     <system:String x:Key="Common.SignOut">Sign Out</system:String>
 
@@ -47,6 +49,8 @@
     <system:String x:Key="Patients.Name">Name</system:String>
     <system:String x:Key="Patients.Phone">Phone</system:String>
     <system:String x:Key="Patients.Sex">Sex</system:String>
+    <system:String x:Key="Patients.ExamCount">Exams</system:String>
+    <system:String x:Key="Patients.LastVisit">Last visit</system:String>
     <system:String x:Key="Patients.DateOfBirth">Date of Birth</system:String>
     <system:String x:Key="Patients.Open">Open</system:String>
     <system:String x:Key="Patients.Empty">No patients yet — click "New Patient" to add one.</system:String>
@@ -61,7 +65,7 @@
     <system:String x:Key="Sex.Male">Male</system:String>
     <system:String x:Key="Sex.Female">Female</system:String>
 
-    <system:String x:Key="PatientDetail.TitlePrefix">Patient: </system:String>
+    <system:String x:Key="PatientDetail.TitlePrefix" xml:space="preserve">Patient: </system:String>
     <system:String x:Key="PatientDetail.NewExamOrder">+ New Exam Order</system:String>
     <system:String x:Key="PatientDetail.ExamType">Exam Type</system:String>
     <system:String x:Key="PatientDetail.Status">Status</system:String>
@@ -109,6 +113,7 @@
     <system:String x:Key="ExamTypes.Modality">Modality</system:String>
     <system:String x:Key="ExamTypes.BodyPart">Body Part</system:String>
     <system:String x:Key="ExamTypes.Price">Price</system:String>
+    <system:String x:Key="ExamTypes.PriceAfn">Price (AFN)</system:String>
     <system:String x:Key="ExamTypes.Active">Active</system:String>
     <system:String x:Key="ExamTypes.Edit">Edit</system:String>
     <system:String x:Key="ExamTypes.Fields">Measurement Fields</system:String>
@@ -150,7 +155,7 @@
     <system:String x:Key="NewInvoice.None">No un-invoiced exam orders for this patient.</system:String>
     <system:String x:Key="NewInvoice.Create">Create Invoice</system:String>
     <system:String x:Key="NewInvoice.SelectAtLeastOne">Select at least one exam order.</system:String>
-    <system:String x:Key="NewInvoice.Total">Total: </system:String>
+    <system:String x:Key="NewInvoice.Total" xml:space="preserve">Total: </system:String>
 
     <system:String x:Key="InvoiceDetail.TitlePrefix">Invoice #</system:String>
     <system:String x:Key="InvoiceDetail.Lines">Exam Orders</system:String>
@@ -163,9 +168,9 @@
     <system:String x:Key="InvoiceDetail.FullyPaid">This invoice is fully paid.</system:String>
 
     <system:String x:Key="RecordPayment.Title">Record Payment</system:String>
-    <system:String x:Key="RecordPayment.Amount">Amount</system:String>
+    <system:String x:Key="RecordPayment.Amount">Amount (AFN)</system:String>
     <system:String x:Key="RecordPayment.Method">Payment Method</system:String>
-    <system:String x:Key="RecordPayment.Balance">Remaining balance: </system:String>
+    <system:String x:Key="RecordPayment.Balance" xml:space="preserve">Remaining balance: </system:String>
     <system:String x:Key="RecordPayment.Submit">Record</system:String>
     <system:String x:Key="RecordPayment.InvalidAmount">Enter a valid amount greater than zero.</system:String>
 
@@ -243,13 +248,13 @@
     <system:String x:Key="Backup.Created">Created</system:String>
     <system:String x:Key="Backup.Restore">Restore</system:String>
     <system:String x:Key="Backup.Empty">No backups yet — click "Create Backup Now" or wait for the nightly scheduled backup.</system:String>
-    <system:String x:Key="Backup.LastBackup">Last backup: </system:String>
+    <system:String x:Key="Backup.LastBackup" xml:space="preserve">Last backup: </system:String>
     <system:String x:Key="Backup.Never">Never</system:String>
     <system:String x:Key="Backup.Created.Success">Backup created successfully.</system:String>
 
     <system:String x:Key="RestoreConfirm.Title">Restore Database</system:String>
     <system:String x:Key="RestoreConfirm.Warning">This will PERMANENTLY REPLACE all current data with the contents of this backup. This cannot be undone. Every user will need to reconnect.</system:String>
-    <system:String x:Key="RestoreConfirm.FileLabel">Backup file: </system:String>
+    <system:String x:Key="RestoreConfirm.FileLabel" xml:space="preserve">Backup file: </system:String>
     <system:String x:Key="RestoreConfirm.Password">Backup encryption password</system:String>
     <system:String x:Key="RestoreConfirm.TypeToConfirm">Type RESTORE (in capitals) to confirm:</system:String>
     <system:String x:Key="RestoreConfirm.ConfirmationMismatch">Type RESTORE exactly to confirm.</system:String>
@@ -257,12 +262,237 @@
     <system:String x:Key="RestoreConfirm.Success">Database restored. Please sign out and back in.</system:String>
 
     <system:String x:Key="Update.Title">Update Available</system:String>
-    <system:String x:Key="Update.NewVersion">A new version is available: </system:String>
-    <system:String x:Key="Update.CurrentVersion">You are running: </system:String>
+    <system:String x:Key="Update.NewVersion" xml:space="preserve">A new version is available: </system:String>
+    <system:String x:Key="Update.CurrentVersion" xml:space="preserve">You are running: </system:String>
     <system:String x:Key="Update.Notes">What's new</system:String>
     <system:String x:Key="Update.Later">Later</system:String>
     <system:String x:Key="Update.Now">Update Now</system:String>
     <system:String x:Key="Update.Downloading">Downloading update…</system:String>
     <system:String x:Key="Update.DownloadFailed">Could not download the update. Please try again later.</system:String>
 
+    <system:String x:Key="Calendar.ToShamsi">Shamsi Calendar</system:String>
+    <system:String x:Key="Calendar.ToGregorian">Gregorian Calendar</system:String>
+
+    <system:String x:Key="Session.Expired">Your session has expired. Please sign in again.</system:String>
+
+    <system:String x:Key="IdleLock.Title">Session Locked</system:String>
+    <system:String x:Key="IdleLock.Message">This session was locked due to inactivity.</system:String>
+    <system:String x:Key="IdleLock.Password">Enter your password to continue</system:String>
+    <system:String x:Key="IdleLock.Unlock">Unlock</system:String>
+    <system:String x:Key="IdleLock.SignOutInstead">Sign Out Instead</system:String>
+    <system:String x:Key="IdleLock.IncorrectPassword">Incorrect password.</system:String>
+
+    <!-- Exams register -->
+    <system:String x:Key="Nav.Exams">Exams</system:String>
+    <system:String x:Key="Exams.Title">Exams Register</system:String>
+    <system:String x:Key="Exams.Search">Search (name, patient ID, phone, exam no.)</system:String>
+    <system:String x:Key="Exams.DateRange">Period</system:String>
+    <system:String x:Key="Exams.From">From</system:String>
+    <system:String x:Key="Exams.To">To</system:String>
+    <system:String x:Key="Exams.Preset.Today">Today</system:String>
+    <system:String x:Key="Exams.Preset.Yesterday">Yesterday</system:String>
+    <system:String x:Key="Exams.Preset.Week">This week</system:String>
+    <system:String x:Key="Exams.Preset.Month">This month</system:String>
+    <system:String x:Key="Exams.Preset.All">All time</system:String>
+    <system:String x:Key="Exams.Preset.Custom">Custom</system:String>
+    <system:String x:Key="Exams.ExamType">Exam Type</system:String>
+    <system:String x:Key="Exams.Modality">Modality</system:String>
+    <system:String x:Key="Exams.Status">Status</system:String>
+    <system:String x:Key="Exams.Referring">Referring Physician</system:String>
+    <system:String x:Key="Exams.Billing">Billing</system:String>
+    <system:String x:Key="Exams.Billing.NotInvoiced">Not invoiced</system:String>
+    <system:String x:Key="Exams.Billing.Unpaid">Invoiced, not fully paid</system:String>
+    <system:String x:Key="Exams.Billing.Paid">Paid</system:String>
+    <system:String x:Key="Exams.NotInvoiced">Not invoiced</system:String>
+    <system:String x:Key="Exams.All">All</system:String>
+    <system:String x:Key="Exams.Clear">Reset</system:String>
+    <system:String x:Key="Exams.Number">Exam No.</system:String>
+    <system:String x:Key="Exams.DateTime">Date &amp; Time</system:String>
+    <system:String x:Key="Exams.Patient">Patient</system:String>
+    <system:String x:Key="Exams.PatientId">Patient ID</system:String>
+    <system:String x:Key="Exams.OpenPatient">Patient</system:String>
+    <system:String x:Key="Exams.SummaryFormat">{0} exams · {1} patients</system:String>
+    <system:String x:Key="Exams.ExamsWord">exams</system:String>
+    <system:String x:Key="Exams.PatientsWord">patients</system:String>
+    <system:String x:Key="Exams.PageFormat">Page {0} of {1}</system:String>
+    <system:String x:Key="Exams.Prev">‹ Previous</system:String>
+    <system:String x:Key="Exams.Next">Next ›</system:String>
+    <system:String x:Key="Exams.Empty">No exams match these filters.</system:String>
+
+    <!-- Exam workflow (step B) -->
+    <system:String x:Key="Exams.Actions">Actions</system:String>
+    <system:String x:Key="Exams.Start">Start</system:String>
+    <system:String x:Key="Exams.Complete">Complete</system:String>
+    <system:String x:Key="Exams.Reopen">Reopen</system:String>
+    <system:String x:Key="Exams.Cancel">Cancel exam</system:String>
+    <system:String x:Key="Exams.ConfirmReopen">Reopen this exam? It will go back to In Progress and the performed-by record will be cleared.</system:String>
+    <system:String x:Key="Exams.PerformedBy">Performed by</system:String>
+    <system:String x:Key="Exams.Refresh">Refresh</system:String>
+    <system:String x:Key="Exams.Queues">Queues:</system:String>
+    <system:String x:Key="Exams.Queue.Tech">Waiting for technician</system:String>
+    <system:String x:Key="Exams.Queue.Progress">In progress</system:String>
+    <system:String x:Key="Exams.Queue.Report">Waiting for report</system:String>
+    <system:String x:Key="Exams.Queue.Billing">Needs billing</system:String>
+    <system:String x:Key="Exams.Queue.Unpaid">Unpaid</system:String>
+    <system:String x:Key="CancelExam.Title">Cancel exam</system:String>
+    <system:String x:Key="CancelExam.Reason">Reason for cancelling</system:String>
+    <system:String x:Key="CancelExam.Note">A cancelled exam cannot be reopened, invoiced or reported. The reason is kept in the audit log.</system:String>
+    <system:String x:Key="CancelExam.ReasonRequired">Please enter a reason.</system:String>
+    <system:String x:Key="CancelExam.Keep">Keep exam</system:String>
+    <system:String x:Key="CancelExam.Submit">Cancel exam</system:String>
+
+    <!-- Check-in wizard (step C) -->
+    <system:String x:Key="Nav.CheckIn">+ New Check-in</system:String>
+    <system:String x:Key="CheckIn.Title">New Check-in</system:String>
+    <system:String x:Key="CheckIn.Step1">1. Patient</system:String>
+    <system:String x:Key="CheckIn.Step2">2. Exams</system:String>
+    <system:String x:Key="CheckIn.Step3">3. Billing &amp; payment</system:String>
+    <system:String x:Key="CheckIn.NewPatient">+ New patient</system:String>
+    <system:String x:Key="CheckIn.SearchHint">Search by name, patient ID or phone number.</system:String>
+    <system:String x:Key="CheckIn.NoResults">No matching patient. Use “+ New patient” to register them.</system:String>
+    <system:String x:Key="CheckIn.Change">Change</system:String>
+    <system:String x:Key="CheckIn.BackToSearch">← Back to search</system:String>
+    <system:String x:Key="CheckIn.DuplicateWarning">A patient with the same name or phone number already exists. Check before registering a duplicate:</system:String>
+    <system:String x:Key="CheckIn.UseThisPatient">Use this patient</system:String>
+    <system:String x:Key="CheckIn.FindExam">Find exam</system:String>
+    <system:String x:Key="CheckIn.CreateInvoice">Create an invoice for these exams</system:String>
+    <system:String x:Key="CheckIn.AmountNow">Amount received now (AFN)</system:String>
+    <system:String x:Key="CheckIn.FullAmount">Full amount</system:String>
+    <system:String x:Key="CheckIn.Total" xml:space="preserve">Total: </system:String>
+    <system:String x:Key="CheckIn.BalanceAfter" xml:space="preserve">Balance after payment: </system:String>
+    <system:String x:Key="CheckIn.Submit">Check in</system:String>
+    <system:String x:Key="CheckIn.ChoosePatient">Search for a patient, or register a new one.</system:String>
+    <system:String x:Key="CheckIn.ChooseExam">Select at least one exam.</system:String>
+    <system:String x:Key="CheckIn.InvalidAmount">Enter an amount between 0 and the total.</system:String>
+    <system:String x:Key="CheckIn.Done">Check-in complete</system:String>
+    <system:String x:Key="CheckIn.NewTag">new patient</system:String>
+    <system:String x:Key="CheckIn.InvoiceNo">Invoice #</system:String>
+    <system:String x:Key="CheckIn.InvTotal" xml:space="preserve">Total </system:String>
+    <system:String x:Key="CheckIn.InvPaid" xml:space="preserve">Paid </system:String>
+    <system:String x:Key="CheckIn.InvBalance" xml:space="preserve">Balance </system:String>
+    <system:String x:Key="CheckIn.NoInvoice">No invoice was created.</system:String>
+    <system:String x:Key="CheckIn.PrintReceipt">Print receipt</system:String>
+    <system:String x:Key="CheckIn.OpenPatient">Open patient</system:String>
+    <system:String x:Key="CheckIn.NewCheckIn">Next check-in</system:String>
+
+    <!-- Dashboard, statistics, export (step D) -->
+    <system:String x:Key="Nav.Dashboard">Dashboard</system:String>
+    <system:String x:Key="Nav.Statistics">Statistics</system:String>
+    <system:String x:Key="Dash.Title">Dashboard</system:String>
+    <system:String x:Key="Dash.TodayFormat">Today · {0}</system:String>
+    <system:String x:Key="Dash.UpdatedFormat">Updated {0}</system:String>
+    <system:String x:Key="Dash.ExamsToday">Exams today</system:String>
+    <system:String x:Key="Dash.PatientsToday">Patients today</system:String>
+    <system:String x:Key="Dash.NewPatients">New patients today</system:String>
+    <system:String x:Key="Dash.Collected">Collected today</system:String>
+    <system:String x:Key="Dash.Outstanding">Outstanding balance (all invoices)</system:String>
+    <system:String x:Key="Dash.Invoiced">Invoiced today</system:String>
+    <system:String x:Key="Dash.ByType">Exams by type today</system:String>
+    <system:String x:Key="Dash.ByStatus">Today's exams by status</system:String>
+    <system:String x:Key="Dash.Money">Money received today</system:String>
+    <system:String x:Key="Dash.NoExams">No exams yet today.</system:String>
+    <system:String x:Key="Stats.Title">Statistics</system:String>
+    <system:String x:Key="Stats.Preset.Last30">Last 30 days</system:String>
+    <system:String x:Key="Stats.Preset.Year">This year</system:String>
+    <system:String x:Key="Stats.Export">Export to Excel</system:String>
+    <system:String x:Key="Stats.ExamsTotal">Exams</system:String>
+    <system:String x:Key="Stats.Patients">Patients</system:String>
+    <system:String x:Key="Stats.NewPatients">New patients</system:String>
+    <system:String x:Key="Stats.Cancelled">Cancelled exams</system:String>
+    <system:String x:Key="Stats.Billed">Billed value</system:String>
+    <system:String x:Key="Stats.NotInvoiced">Not yet invoiced</system:String>
+    <system:String x:Key="Stats.Collected">Collected</system:String>
+    <system:String x:Key="Stats.ByType">By exam type</system:String>
+    <system:String x:Key="Stats.ByModality">By modality</system:String>
+    <system:String x:Key="Stats.ByDoctor">By referring physician</system:String>
+    <system:String x:Key="Stats.ByDay">By day</system:String>
+    <system:String x:Key="Stats.CashByUser">Payments by staff member</system:String>
+    <system:String x:Key="Stats.Col.Exams">Exams</system:String>
+    <system:String x:Key="Stats.Col.Patients">Patients</system:String>
+    <system:String x:Key="Stats.Col.Revenue">Billed value</system:String>
+    <system:String x:Key="Stats.Col.Date">Date</system:String>
+    <system:String x:Key="Stats.Col.Collected">Collected</system:String>
+    <system:String x:Key="Stats.Col.User">Staff member</system:String>
+    <system:String x:Key="Stats.Col.Payments">Payments</system:String>
+    <system:String x:Key="Stats.Col.Total">Total</system:String>
+    <system:String x:Key="Stats.NoDoctor">No referring physician</system:String>
+    <system:String x:Key="Stats.NoModality">(none)</system:String>
+    <system:String x:Key="Stats.Note">Exam counts exclude cancelled exams. Billed value is what invoiced exams were charged (booked price minus any discount); Collected is the money actually received in the period.</system:String>
+    <system:String x:Key="Stats.Summary">Summary</system:String>
+    <system:String x:Key="Stats.Period">Period</system:String>
+    <system:String x:Key="Stats.Item">Item</system:String>
+    <system:String x:Key="Stats.Value">Value</system:String>
+    <system:String x:Key="Stats.FileInUse">The file could not be saved — it may be open in Excel. Close it and try again.</system:String>
+    <system:String x:Key="Exams.ExportEmpty">There are no exams to export for these filters.</system:String>
+    <system:String x:Key="Exams.CancelReason">Cancel reason</system:String>
+
+    <!-- Discounts and free exams -->
+    <system:String x:Key="Exams.Charge">Charge</system:String>
+    <system:String x:Key="Exams.Discount">Discount</system:String>
+    <system:String x:Key="Exams.Billing.Discounted">Discounted (incl. free)</system:String>
+    <system:String x:Key="Exams.Billing.Free">Free exams</system:String>
+    <system:String x:Key="Exams.ListPrice">List price</system:String>
+    <system:String x:Key="Exams.DiscountReason">Discount reason</system:String>
+    <system:String x:Key="Exams.DiscountedBy">Discount given by</system:String>
+    <system:String x:Key="CheckIn.ChargeTip">What the patient pays for this exam. Lower than the list price = discount, 0 = free.</system:String>
+    <system:String x:Key="CheckIn.Free">Free</system:String>
+    <system:String x:Key="CheckIn.DiscountReason">Discount reason</system:String>
+    <system:String x:Key="CheckIn.DiscountReasonRequired">Enter a reason for the discount on {0}.</system:String>
+    <system:String x:Key="CheckIn.InvalidCharge">The charge for {0} must be between 0 and {1}.</system:String>
+    <system:String x:Key="CheckIn.DiscountedTag">discounted</system:String>
+    <system:String x:Key="ExamDiscount.Title">Discount / free exam</system:String>
+    <system:String x:Key="ExamDiscount.ListPrice" xml:space="preserve">List price: </system:String>
+    <system:String x:Key="ExamDiscount.Charge">Charge the patient (AFN)</system:String>
+    <system:String x:Key="ExamDiscount.Reason">Reason</system:String>
+    <system:String x:Key="ExamDiscount.Remove">Remove discount</system:String>
+    <system:String x:Key="ExamDiscount.InvalidCharge">Enter an amount between 0 and {0}.</system:String>
+    <system:String x:Key="ExamDiscount.ReasonRequired">A reason is required when the charge is below the list price.</system:String>
+    <system:String x:Key="ExamDiscount.CurrentFormat">Current discount: {0}, given by {1} on {2}.</system:String>
+    <system:String x:Key="InvoiceDetail.DiscountFormat">List {0} − discount {1} ({2})</system:String>
+    <system:String x:Key="Stats.Discounts">Discounts given</system:String>
+    <system:String x:Key="Stats.DiscountedExams">Discounted exams</system:String>
+    <system:String x:Key="Stats.FreeExams">Free exams</system:String>
+    <system:String x:Key="Stats.Col.Discount">Discounts</system:String>
+    <system:String x:Key="Stats.Col.FreeExams">Free exams</system:String>
+    <system:String x:Key="Stats.DiscountsByUser">Discounts by staff member</system:String>
+    <system:String x:Key="Dash.Discounts">Discounts today</system:String>
+    <system:String x:Key="Dash.FreeExams">Free exams today</system:String>
+
+    <!-- Paging -->
+    <system:String x:Key="Pager.Format">Page {0} of {1}  ·  {2} records</system:String>
+    <system:String x:Key="Invoices.Search">Search (patient name, patient ID, invoice no.)</system:String>
+    <system:String x:Key="Invoices.AllStatuses">All statuses</system:String>
+    <system:String x:Key="AuditLog.Search">Search (user, action, details)</system:String>
+    <system:String x:Key="AuditLog.AllActions">All actions</system:String>
+
+    <!-- Invoices totals / export -->
+    <system:String x:Key="Invoices.TotalsFormat">Totals for all {0} matching invoices</system:String>
+    <system:String x:Key="Invoices.Number">Invoice No.</system:String>
+    <system:String x:Key="Invoices.ListTotal">List price total</system:String>
+    <system:String x:Key="Invoices.ExportEmpty">There are no invoices to export for these filters.</system:String>
+
+    <!-- Clinic settings -->
+    <system:String x:Key="Nav.ClinicSettings">Clinic Settings</system:String>
+    <system:String x:Key="ClinicSettings.Title">Clinic Settings</system:String>
+    <system:String x:Key="ClinicSettings.Identity">Clinic identity</system:String>
+    <system:String x:Key="ClinicSettings.NameEnglish">Clinic name (English) *</system:String>
+    <system:String x:Key="ClinicSettings.NameDari">Clinic name (Dari)</system:String>
+    <system:String x:Key="ClinicSettings.Tagline">Line under the name on printouts</system:String>
+    <system:String x:Key="ClinicSettings.TaglineHint">For example the services you offer. It is printed under the clinic name on every report and receipt.</system:String>
+    <system:String x:Key="ClinicSettings.Contact">Contact details</system:String>
+    <system:String x:Key="ClinicSettings.Address">Address</system:String>
+    <system:String x:Key="ClinicSettings.Phone">Phone</system:String>
+    <system:String x:Key="ClinicSettings.Email">Email</system:String>
+    <system:String x:Key="ClinicSettings.Logo">Logo</system:String>
+    <system:String x:Key="ClinicSettings.NoLogo">No logo</system:String>
+    <system:String x:Key="ClinicSettings.ChooseLogo">Choose logo…</system:String>
+    <system:String x:Key="ClinicSettings.RemoveLogo">Remove logo</system:String>
+    <system:String x:Key="ClinicSettings.LogoHint">PNG or JPEG, up to 300 KB. Shown next to the clinic name and on printed reports and receipts.</system:String>
+    <system:String x:Key="ClinicSettings.Save">Save</system:String>
+    <system:String x:Key="ClinicSettings.Saved">Saved. This PC is updated now; the other PCs update within a couple of minutes.</system:String>
+    <system:String x:Key="ClinicSettings.NameRequired">Enter the clinic name in English.</system:String>
+    <system:String x:Key="ClinicSettings.LogoTooLarge">That image is too large. Choose a PNG or JPEG of up to 300 KB.</system:String>
+    <system:String x:Key="ClinicSettings.LogoBadType">That file could not be used as a logo. Choose a PNG or JPEG image.</system:String>
+    <system:String x:Key="ClinicSettings.SetupPrompt">Your clinic's name hasn't been set up yet. Enter it once and it appears on every screen, report and receipt.</system:String>
+    <system:String x:Key="ClinicSettings.OpenSettings">Open Clinic Settings</system:String>
 </ResourceDictionary>

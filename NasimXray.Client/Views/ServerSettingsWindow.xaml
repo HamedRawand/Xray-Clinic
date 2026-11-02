@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
         Title="{DynamicResource Login.ServerSettings}"
-        Height="260" Width="420"
+        Height="380" Width="440"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
@@ -16,9 +16,27 @@
                        TextWrapping="Wrap" Margin="0,0,0,16" FlowDirection="LeftToRight" TextAlignment="Left"/>
 
             <TextBox x:Name="ServerUrlBox" Style="{StaticResource ModernTextBox}" Margin="0,0,0,8"
-                     FlowDirection="LeftToRight" HorizontalContentAlignment="Left"/>
+                     FlowDirection="LeftToRight" HorizontalContentAlignment="Left" TextChanged="ServerUrlBox_TextChanged"/>
 
             <TextBlock x:Name="StatusText" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0"/>
+
+            <Border x:Name="CertPanel" Background="{DynamicResource InputBackgroundBrush}" CornerRadius="6"
+                    Padding="10" Margin="0,10,0,0" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource ServerSettings.CertPresented}" FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBlock x:Name="ThumbprintText" FontSize="11" FontFamily="Consolas" Margin="0,2,0,8"
+                               Foreground="{DynamicResource TextPrimaryBrush}" FlowDirection="LeftToRight" TextWrapping="Wrap"/>
+                    <TextBlock Text="{DynamicResource ServerSettings.CertTrustWarning}" FontSize="11"
+                               Foreground="{DynamicResource WarningBrush}" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                    <Button x:Name="TrustButton" Content="{DynamicResource ServerSettings.TrustCertificate}"
+                            Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left"
+                            Height="30" Padding="10,0" FontSize="12" Click="Trust_Click"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock x:Name="TrustedText" FontSize="11" Foreground="{DynamicResource SuccessBrush}"
+                       Margin="0,10,0,0" Visibility="Collapsed"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
                 <Button Content="{DynamicResource ServerSettings.TestConnection}" Style="{StaticResource SecondaryButton}"

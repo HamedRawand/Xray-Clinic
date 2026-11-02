@@ -11,7 +11,10 @@ public partial class NewExamOrderDialog : Window
     private readonly ApiClient _apiClient;
     private readonly int _patientId;
 
-    private record PhysicianOption(int? Id, string Name);
+    private record PhysicianOption(int? Id, string Name)
+    {
+        public override string ToString() => Name;
+    }
 
     public NewExamOrderDialog(ApiClient apiClient, int patientId)
     {
