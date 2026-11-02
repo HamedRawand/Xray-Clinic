@@ -9,9 +9,16 @@ public class ClientSettings
     public string Language { get; set; } = "English";
     public string CalendarType { get; set; } = "Gregorian";
 
+    // Trust-on-first-use pin for the server's self-signed HTTPS certificate — set once via
+    // ServerSettingsWindow's "Trust this certificate" step, then every connection is validated
+    // against this specific thumbprint instead of either (a) blind ServicePointManager bypass
+    // (accepts ANY server's self-signed cert — a real MITM risk) or (b) requiring every clinic
+    // PC to have the cert manually imported into its Windows trust store (an extra deployment
+    // step this avoids). Null/empty means HTTPS to this server has not been trusted yet.
+    public string? ServerCertificateThumbprint { get; set; }
+
     private static readonly string SettingsPath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "NasimXrayClinic", "client_settings.json");
+        NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.LocalApplicationData), "client_settings.json");
 
     public static ClientSettings Load()
     {

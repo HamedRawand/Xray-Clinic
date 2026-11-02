@@ -25,8 +25,7 @@ public static class UpdateService
     private const int CooldownHours = 24;
 
     private static string CooldownFilePath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "NasimXrayClinic", "last_update_check.txt");
+        NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.LocalApplicationData), "last_update_check.txt");
 
     public static async Task<UpdateInfo?> CheckForUpdateAsync(bool ignoreCooldown = false)
     {
@@ -35,7 +34,7 @@ public static class UpdateService
         try
         {
             using var http = new HttpClient();
-            http.DefaultRequestHeaders.UserAgent.ParseAdd("NasimXrayClinic-Updater");
+            http.DefaultRequestHeaders.UserAgent.ParseAdd("DiagnosticClinicManager-Updater");
             http.Timeout = TimeSpan.FromSeconds(10);
 
             var releases = await http.GetFromJsonAsync<List<GitHubRelease>>(
@@ -79,10 +78,10 @@ public static class UpdateService
     public static async Task<string> DownloadInstallerAsync(UpdateInfo info, IProgress<double>? progress = null)
     {
         using var http = new HttpClient();
-        http.DefaultRequestHeaders.UserAgent.ParseAdd("NasimXrayClinic-Updater");
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("DiagnosticClinicManager-Updater");
         http.Timeout = TimeSpan.FromMinutes(10);
 
-        var tempPath = Path.Combine(Path.GetTempPath(), $"NasimXrayClinic_Setup_{info.Version}.exe");
+        var tempPath = Path.Combine(Path.GetTempPath(), $"DiagnosticClinicManager_Setup_{info.Version}.exe");
 
         using var response = await http.GetAsync(info.DownloadUrl, HttpCompletionOption.ResponseHeadersRead);
         response.EnsureSuccessStatusCode();

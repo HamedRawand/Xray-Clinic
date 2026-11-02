@@ -1,10 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\NasimXray.Shared\NasimXray.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="QuestPDF" Version="2024.10.4" />
     <PackageReference Include="Serilog" Version="4.4.0" />
@@ -18,6 +19,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <!-- Product name shown in the exe's file properties / Task Manager; namespaces keep the original NasimXray.* names. -->
+    <AssemblyName>DiagnosticClinicManager</AssemblyName>
+    <RootNamespace>NasimXray.Client</RootNamespace>
+    <Product>Diagnostic Clinic Manager</Product>
+    <AssemblyTitle>Diagnostic Clinic Manager</AssemblyTitle>
+    <Description>Diagnostic Clinic Manager</Description>
+    <Company>Diagnostic Clinic Manager</Company>
     <Version>1.0.0</Version>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
