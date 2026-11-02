@@ -28,7 +28,12 @@ public class ClientSettings
         try
         {
             var json = File.ReadAllText(SettingsPath);
-            return JsonSerializer.Deserialize<ClientSettings>(json) ?? new ClientSettings();
+            var settings = JsonSerializer.Deserialize<ClientSettings>(json) ?? new ClientSettings();
+            // Self-heal an address saved with a pasted path (https://host:5443/api/system/clinic/): every request is made
+            // relative to it, so only scheme + host + port may remain.
+            if (!string.IsNullOrWhiteSpace(settings.ServerBaseUrl))
+                settings.ServerBaseUrl = Helpers.ServerAddress.Normalize(settings.ServerBaseUrl) ?? settings.ServerBaseUrl;
+            return settings;
         }
         catch
         {

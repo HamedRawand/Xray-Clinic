@@ -22,6 +22,7 @@
     <system:String x:Key="ServerSettings.Connected">اتصال موفقانه برقرار شد.</system:String>
     <system:String x:Key="ServerSettings.ConnectFailed">اتصال به سرور در این آدرس ممکن نشد.</system:String>
     <system:String x:Key="ServerSettings.EnterAddressFirst">ابتدا آدرس سرور را وارد کنید.</system:String>
+    <system:String x:Key="ServerSettings.InvalidAddress">این آدرس سرور معتبر نیست. مثال: https://CLINIC-SERVER:5443</system:String>
     <system:String x:Key="ServerSettings.CertPresented">این سرور گواهینامه‌ای با اثر انگشت ذیل ارائه کرد:</system:String>
     <system:String x:Key="ServerSettings.CertTrustWarning">این را فقط زمانی تأیید کنید که مطمئن هستید متعلق به سرور کلینیک خودتان است. تأیید گواهینامه اشتباه می‌تواند معلومات ورود و مریضان شما را در معرض خطر قرار دهد.</system:String>
     <system:String x:Key="ServerSettings.TrustCertificate">تأیید این گواهینامه</system:String>

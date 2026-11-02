@@ -1,5 +1,5 @@
 #define AppName "Diagnostic Clinic Manager"
-#define AppVersion "1.1.1"
+#define AppVersion "1.1.2"
 #define AppPublisher "Diagnostic Clinic Manager"
 #define AppExeName "DiagnosticClinicManager.exe"
 

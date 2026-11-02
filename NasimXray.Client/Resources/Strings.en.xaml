@@ -21,6 +21,7 @@
     <system:String x:Key="ServerSettings.Connected">Connected successfully.</system:String>
     <system:String x:Key="ServerSettings.ConnectFailed">Could not reach the server at that address.</system:String>
     <system:String x:Key="ServerSettings.EnterAddressFirst">Enter a server address first.</system:String>
+    <system:String x:Key="ServerSettings.InvalidAddress">That is not a valid server address. Example: https://CLINIC-SERVER:5443</system:String>
     <system:String x:Key="ServerSettings.CertPresented">This server presented a certificate with fingerprint:</system:String>
     <system:String x:Key="ServerSettings.CertTrustWarning">Only trust this if you know it belongs to your clinic's own server. Trusting the wrong certificate could expose your login and patient data to someone else.</system:String>
     <system:String x:Key="ServerSettings.TrustCertificate">Trust This Certificate</system:String>
