@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Renders the screenshots used in the PDF manual from the real client windows, with made-up sample data; no server needed.
+       Run from the repository root: dotnet run, project tools/ManualScreens, first argument = output folder. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\NasimXray.Client\NasimXray.Client.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

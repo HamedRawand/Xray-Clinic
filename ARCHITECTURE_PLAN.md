@@ -447,5 +447,17 @@ Multi-tenant hosting of several clinics in one database was considered and **rej
 
 ---
 
+## 26. Client polish release 1.1.3 (2026-11-02, after the first real-PC tests)
+
+- **Connection:** the "Clinic Server Address" box reduces anything pasted to `https://host:port/` (`Helpers/ServerAddress`) and repairs an already-saved bad address; the dialog sizes to its content (the Trust / Test / Save buttons were clipped while a certificate was being confirmed).
+- **Updates:** besides the once-a-day start-up check there is a manual **Check for updates** (`UpdateService.CheckAsync`, `ManualUpdateCheck`) in the sidebar; the installed version is shown at the bottom of the sidebar.
+- **Sidebar redesign (option A):** the header bar is gone. The sidebar holds the clinic logo/name, a user card (initials, name, role), the icon menu (Material Design paths in `Styles.xaml`, `NavIcon` follows the button's colour), a row of icon-only buttons (calendar, language, change password, manual, update check) with tooltips, Sign Out and the version. Mirrors correctly in Dari.
+- **Dashboard:** icon cards (today, clickable work queues, money), payment-method bar, exams-by-type data bars, status colour bar, empty state, more columns on wide windows; plus an **administrator backup reminder card** (last backup date, "N days ago", green ≤ 1 day / amber ≤ 7 / red beyond or none, "Back up now" and "Open Backup & Restore").
+- **App icon:** built from `Icon\clinic_symbol_icon_2.png` into `NasimXray.Client\Assets\AppIcon.ico` (10 BMP-format sizes with real alpha, so it also works on Windows 7) — used for both exes, the taskbar / shortcuts, every window's title bar and both installers.
+- **PDF manual:** `NasimXray.Client\Manual\DiagnosticClinicManager_Manual_EN.pdf` (20 pages, English) ships with the client (Manual folder, opened from the sidebar book icon) and with the server installer (`docs`). It is generated: `tools\ManualScreens` renders the screenshots from the real windows with sample data, `tools\ManualBuilder` (QuestPDF) builds the PDF — re-run both after UI or procedure changes (`-p:SkipManualCopy=true` avoids copying the PDF when a viewer has it open). A Dari manual is not done.
+- Small fixes: the Backup screen no longer labels a local time as "UTC".
+
+---
+
 *Phases 1–9 were built and live-verified on 2026-09-22; the workflow redesign, pricing/discounts, AFN, paging, reporting/export and the Clinical Teal theme were built and user-tested on 2026-11-01.
 What remains is deployment-specific (§24).*
