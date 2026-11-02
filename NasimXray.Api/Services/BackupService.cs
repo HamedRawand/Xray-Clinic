@@ -14,7 +14,7 @@ public class BackupService(IConfiguration config, IOptions<BackupSettings> setti
 
     private string ResolvedFolder =>
         string.IsNullOrWhiteSpace(_settings.Folder)
-            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "NasimXrayClinic", "Backups")
+            ? Path.Combine(NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.CommonApplicationData), "Backups")
             : _settings.Folder;
 
     public List<BackupFileInfo> ListBackups()

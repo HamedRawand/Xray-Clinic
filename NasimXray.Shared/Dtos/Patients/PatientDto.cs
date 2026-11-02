@@ -9,6 +9,10 @@ public class PatientDto
     public string? Sex { get; set; }
     public string? PhoneNumber { get; set; }
     public string? Address { get; set; }
+    // Exams booked for this patient, cancelled ones excluded. Filled in by the list and detail endpoints.
+    public int ExamCount { get; set; }
+    // When the most recent (non-cancelled) exam was booked; null if the patient has none yet.
+    public DateTime? LastVisitAt { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public uint RowVersion { get; set; }

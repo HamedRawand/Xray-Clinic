@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NasimXray.Api.Dtos;
 using NasimXray.Api.Services;
 using NasimXray.Shared.Dtos.Auth;
 using NasimXray.Shared.Dtos.Users;
@@ -38,5 +37,13 @@ public class AuthController(AuthService authService) : ControllerBase
     {
         var ok = await authService.ChangePasswordAsync(User.GetUserId(), request.CurrentPassword, request.NewPassword);
         return ok ? NoContent() : BadRequest(new { message = "Current password is incorrect." });
+    }
+
+    [HttpPost("verify-password")]
+    [Authorize]
+    public async Task<IActionResult> VerifyPassword(VerifyPasswordRequest request)
+    {
+        var ok = await authService.VerifyPasswordAsync(User.GetUserId(), request.Password);
+        return ok ? NoContent() : Unauthorized();
     }
 }

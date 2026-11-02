@@ -1,4 +1,4 @@
-namespace NasimXray.Api.Dtos;
+namespace NasimXray.Shared.Dtos.Auth;
 
 public class RefreshRequest
 {

@@ -22,5 +22,13 @@ public static class DbSeeder
             });
             await db.SaveChangesAsync();
         }
+
+        // Every installation has exactly one clinic profile. A fresh (or just-upgraded) install starts with a
+        // neutral placeholder; an admin replaces it in Clinic Settings (IsConfigured then becomes true).
+        if (!await db.ClinicProfiles.AnyAsync())
+        {
+            db.ClinicProfiles.Add(new ClinicProfile { Id = 1, NameEnglish = "My Clinic", IsConfigured = false });
+            await db.SaveChangesAsync();
+        }
     }
 }

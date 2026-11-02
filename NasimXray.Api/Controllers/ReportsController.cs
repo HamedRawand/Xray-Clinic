@@ -28,6 +28,8 @@ public class ReportsController(AppDbContext db, AuditService audit) : Controller
     {
         var order = await db.ExamOrders.FirstOrDefaultAsync(o => o.Id == examOrderId);
         if (order is null) return NotFound(new { message = "Exam order not found." });
+        if (order.Status == ExamOrderStatus.Cancelled)
+            return BadRequest(new { message = "This exam was cancelled, so it cannot have a report." });
 
         var report = await db.Reports.Include(r => r.Measurements)
             .FirstOrDefaultAsync(r => r.ExamOrderId == examOrderId);

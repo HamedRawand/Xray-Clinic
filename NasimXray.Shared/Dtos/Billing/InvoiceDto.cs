@@ -5,7 +5,12 @@ namespace NasimXray.Shared.Dtos.Billing;
 public class InvoiceLineDto
 {
     public int ExamOrderId { get; set; }
+    public string? ExamNumber { get; set; }
     public string ExamTypeName { get; set; } = string.Empty;
+    public decimal ListPrice { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public string? DiscountReason { get; set; }
+    // What was actually charged for this line (ListPrice - DiscountAmount).
     public decimal Price { get; set; }
 }
 

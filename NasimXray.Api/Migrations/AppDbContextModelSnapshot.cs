@@ -56,6 +56,63 @@ namespace NasimXray.Api.Migrations
                     b.ToTable("AuditLogs");
                 });
 
+            modelBuilder.Entity("NasimXray.Api.Models.ClinicProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsConfigured")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LogoContentType")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<byte[]>("LogoData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("NameDari")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("NameEnglish")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<string>("Tagline")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClinicProfiles");
+                });
+
             modelBuilder.Entity("NasimXray.Api.Models.CustomRole", b =>
                 {
                     b.Property<int>("Id")
@@ -96,8 +153,29 @@ namespace NasimXray.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CancelReason")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("numeric(10,2)");
+
+                    b.Property<string>("DiscountReason")
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<DateTime?>("DiscountedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("DiscountedById")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ExamNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int>("ExamTypeId")
                         .HasColumnType("integer");
@@ -107,6 +185,15 @@ namespace NasimXray.Api.Migrations
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("PerformedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("PerformedById")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric(10,2)");
 
                     b.Property<int?>("ReferringPhysicianId")
                         .HasColumnType("integer");
@@ -128,15 +215,26 @@ namespace NasimXray.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamTypeId");
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("DiscountedById");
+
+                    b.HasIndex("ExamNumber")
+                        .IsUnique();
 
                     b.HasIndex("InvoiceId");
 
                     b.HasIndex("PatientId");
 
+                    b.HasIndex("PerformedById");
+
                     b.HasIndex("ReferringPhysicianId");
 
                     b.HasIndex("RequestedById");
+
+                    b.HasIndex("ExamTypeId", "CreatedAt");
+
+                    b.HasIndex("Status", "CreatedAt");
 
                     b.ToTable("ExamOrders");
                 });
@@ -573,6 +671,11 @@ namespace NasimXray.Api.Migrations
 
             modelBuilder.Entity("NasimXray.Api.Models.ExamOrder", b =>
                 {
+                    b.HasOne("NasimXray.Api.Models.User", "DiscountedBy")
+                        .WithMany()
+                        .HasForeignKey("DiscountedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("NasimXray.Api.Models.ExamType", "ExamType")
                         .WithMany()
                         .HasForeignKey("ExamTypeId")
@@ -590,6 +693,11 @@ namespace NasimXray.Api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("NasimXray.Api.Models.User", "PerformedBy")
+                        .WithMany()
+                        .HasForeignKey("PerformedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("NasimXray.Api.Models.ReferringPhysician", "ReferringPhysician")
                         .WithMany()
                         .HasForeignKey("ReferringPhysicianId")
@@ -601,11 +709,15 @@ namespace NasimXray.Api.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("DiscountedBy");
+
                     b.Navigation("ExamType");
 
                     b.Navigation("Invoice");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("PerformedBy");
 
                     b.Navigation("ReferringPhysician");
 

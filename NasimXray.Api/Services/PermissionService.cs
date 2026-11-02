@@ -38,6 +38,7 @@ public static class PermissionService
             Permission.ManageBilling,
             Permission.ProcessPayment,
             Permission.ManageReferringPhysicians,
+            Permission.ApplyDiscount,
         },
     };
 

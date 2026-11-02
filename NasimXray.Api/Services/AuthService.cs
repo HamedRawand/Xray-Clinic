@@ -42,6 +42,15 @@ public class AuthService(AppDbContext db, IOptions<JwtSettings> jwtOptions)
         return await IssueTokensAsync(user);
     }
 
+    // Used by the client's idle-lock unlock screen — verifies identity without issuing new
+    // tokens or touching MustChangePassword/lockout state (unlike login, this never changes the
+    // existing session, it only confirms "yes, this is still the same person").
+    public async Task<bool> VerifyPasswordAsync(int userId, string password)
+    {
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        return user is not null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+    }
+
     public async Task<bool> ChangePasswordAsync(int userId, string currentPassword, string newPassword)
     {
         var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userId);

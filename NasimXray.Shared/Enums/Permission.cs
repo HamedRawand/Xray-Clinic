@@ -25,4 +25,10 @@ public enum Permission
 
     ManageBackup,
     ViewAuditLog,
+
+    // Lower an exam's charge (discount / free). Appended last so stored permission lists stay valid.
+    ApplyDiscount,
+
+    // Edit the clinic's name, contact details and logo. Appended last (see ApplyDiscount).
+    ManageClinicSettings,
 }
