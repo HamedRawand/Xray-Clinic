@@ -9,6 +9,14 @@
     <system:String x:Key="Login.SignIn">ورود</system:String>
     <system:String x:Key="Login.ServerSettings">تنظیمات سرور</system:String>
     <system:String x:Key="Login.ServerNotConfigured">سرور تنظیم نشده است</system:String>
+    <system:String x:Key="Login.VersionPrefix" xml:space="preserve">نسخه </system:String>
+    <system:String x:Key="Help.Manual">راهنمای استفاده</system:String>
+    <system:String x:Key="Help.ManualMissing">فایل راهنمای استفاده پیدا نشد:&#10;{0}&#10;&#10;با نصب دوباره برنامه این فایل بازگردانده می‌شود.</system:String>
+    <system:String x:Key="Help.ManualNoViewer">ویندوز نتوانست راهنما را باز کند. یک برنامهٔ نمایش PDF (مثلاً Microsoft Edge یا Adobe Reader) نصب کرده و دوباره تلاش کنید.&#10;&#10;{0}</system:String>
+    <system:String x:Key="Update.CheckButton">بررسی نسخه جدید</system:String>
+    <system:String x:Key="Update.Checking">در حال بررسی نسخه جدید…</system:String>
+    <system:String x:Key="Update.UpToDate">نسخه شما جدید است (نسخه {0}).</system:String>
+    <system:String x:Key="Update.CheckFailed">اتصال به سرویس به‌روزرسانی ممکن نشد. اتصال انترنت را بررسی کرده و دوباره تلاش کنید.</system:String>
     <system:String x:Key="Login.ServerPrefix" xml:space="preserve">سرور: </system:String>
     <system:String x:Key="Login.ConfigureServerFirst">لطفاً ابتدا آدرس سرور را تنظیم کنید (تنظیمات سرور).</system:String>
     <system:String x:Key="Login.EnterCredentials">نام کاربری و رمز عبور خود را وارد کنید.</system:String>
@@ -387,7 +395,7 @@
     <system:String x:Key="Dash.PatientsToday">مریضان امروز</system:String>
     <system:String x:Key="Dash.NewPatients">مریضان جدید امروز</system:String>
     <system:String x:Key="Dash.Collected">دریافتی امروز</system:String>
-    <system:String x:Key="Dash.Outstanding">باقیمانده (همه فاکتورها)</system:String>
+    <system:String x:Key="Dash.Outstanding">باقیمانده، همه فاکتورها</system:String>
     <system:String x:Key="Dash.Invoiced">فاکتور شده امروز</system:String>
     <system:String x:Key="Dash.ByType">معاینات امروز به تفکیک نوع</system:String>
     <system:String x:Key="Dash.ByStatus">معاینات امروز به تفکیک وضعیت</system:String>
@@ -457,6 +465,25 @@
     <system:String x:Key="Stats.Col.Discount">تخفیف‌ها</system:String>
     <system:String x:Key="Stats.Col.FreeExams">معاینات رایگان</system:String>
     <system:String x:Key="Stats.DiscountsByUser">تخفیف‌ها به تفکیک کارمند</system:String>
+    <system:String x:Key="Dash.Backup.Title">آخرین بکاپ دیتابیس</system:String>
+    <system:String x:Key="Dash.Backup.Ok">به‌روز</system:String>
+    <system:String x:Key="Dash.Backup.Due">وقت بکاپ</system:String>
+    <system:String x:Key="Dash.Backup.Overdue">عقب‌افتاده</system:String>
+    <system:String x:Key="Dash.Backup.Never">تا حال هیچ بکاپی گرفته نشده</system:String>
+    <system:String x:Key="Dash.Backup.Today">امروز</system:String>
+    <system:String x:Key="Dash.Backup.Yesterday">دیروز</system:String>
+    <system:String x:Key="Dash.Backup.DaysAgo">{0} روز پیش</system:String>
+    <system:String x:Key="Dash.Backup.Hint">پوشهٔ Backups را به‌طور منظم در یک دیسک بیرونی هم کاپی کنید تا با خراب شدن دیسک سرور، بکاپ‌ها هم از بین نروند.</system:String>
+    <system:String x:Key="Dash.Backup.Now">همین حالا بکاپ بگیرید</system:String>
+    <system:String x:Key="Dash.Backup.Working">در حال بکاپ…</system:String>
+    <system:String x:Key="Dash.Backup.Open">باز کردن بکاپ و بازیابی</system:String>
+    <system:String x:Key="Dash.SectionToday">امروز</system:String>
+    <system:String x:Key="Dash.SectionQueues">صف‌های کار - برای باز کردن کلیک کنید</system:String>
+    <system:String x:Key="Dash.SectionMoney">پول</system:String>
+    <system:String x:Key="Dash.Cancelled">لغو شده امروز</system:String>
+    <system:String x:Key="Dash.PaymentMix">دریافتی امروز به تفکیک روش پرداخت</system:String>
+    <system:String x:Key="Dash.PatientsFormat">{0} مریض</system:String>
+    <system:String x:Key="Dash.FreeExamsSub">{0} معاینهٔ رایگان</system:String>
     <system:String x:Key="Dash.Discounts">تخفیف‌های امروز</system:String>
     <system:String x:Key="Dash.FreeExams">معاینات رایگان امروز</system:String>
 

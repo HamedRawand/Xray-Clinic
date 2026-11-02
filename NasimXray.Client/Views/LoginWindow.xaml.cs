@@ -13,6 +13,7 @@ public partial class LoginWindow : Window
         InitializeComponent();
         _settings = ClientSettings.Load();
         RefreshServerAddressText();
+        RefreshVersionText();
 
         if (string.IsNullOrWhiteSpace(_settings.ServerBaseUrl))
         {
@@ -50,12 +51,16 @@ public partial class LoginWindow : Window
 
     private void ServerSettings_Click(object sender, RoutedEventArgs e) => OpenServerSettings();
 
+    private void RefreshVersionText() =>
+        VersionText.Text = $"{(string)FindResource("Login.VersionPrefix")}{UpdateService.CurrentVersionText()}";
+
     private void LanguageToggle_Click(object sender, RoutedEventArgs e)
     {
         LanguageService.Toggle();
         _settings.Language = Helpers.AppSession.Language.ToString();
         _settings.Save();
         RefreshServerAddressText();
+        RefreshVersionText();
     }
 
     private async void SignInButton_Click(object sender, RoutedEventArgs e)

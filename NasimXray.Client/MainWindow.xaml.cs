@@ -18,7 +18,10 @@ public partial class MainWindow : Window
         _apiClient = apiClient;
 
         var user = SessionService.Current;
-        UserText.Text = user is null ? string.Empty : $"{user.FullName} ({user.RoleDisplayName})";
+        UserNameText.Text = user?.FullName ?? string.Empty;
+        UserRoleText.Text = user?.RoleDisplayName ?? string.Empty;
+        UserInitialsText.Text = Initials(user?.FullName);
+        VersionNumberRun.Text = UpdateService.CurrentVersionText();
 
         NavDashboard.Visibility = SessionService.Can(Permission.ViewExamOrders) ? Visibility.Visible : Visibility.Collapsed;
         NavStatistics.Visibility = SessionService.Can(Permission.ViewExamOrders) ? Visibility.Visible : Visibility.Collapsed;
@@ -56,7 +59,7 @@ public partial class MainWindow : Window
 
         // Admins land on the dashboard, technicians/radiologists on their work queue, reception on Patients.
         if (SessionService.Can(Permission.ViewExamOrders) && SessionService.Can(Permission.ViewAuditLog))
-            ShowContent(new DashboardView(_apiClient, OpenExamQueue));
+            ShowContent(new DashboardView(_apiClient, OpenExamQueue, OpenBackup));
         else if (SessionService.Can(Permission.ViewExamOrders) && ExamsView.HasRoleQueue)
             ShowContent(new ExamsView(_apiClient));
         else if (SessionService.Can(Permission.ViewPatients))
@@ -103,12 +106,14 @@ public partial class MainWindow : Window
 
     private void ShowPatients() => ShowContent(new PatientsView(_apiClient));
 
-    private void NavDashboard_Click(object sender, RoutedEventArgs e) => ShowContent(new DashboardView(_apiClient, OpenExamQueue));
+    private void NavDashboard_Click(object sender, RoutedEventArgs e) => ShowContent(new DashboardView(_apiClient, OpenExamQueue, OpenBackup));
 
     private void NavStatistics_Click(object sender, RoutedEventArgs e) => ShowContent(new StatisticsView(_apiClient));
 
     // Dashboard queue cards jump straight to that queue on the Exams screen.
     private void OpenExamQueue(string queue) => ShowContent(new ExamsView(_apiClient, queue));
+
+    private void OpenBackup() => ShowContent(new BackupView(_apiClient));
 
     private void NavCheckIn_Click(object sender, RoutedEventArgs e)
     {
@@ -149,8 +154,41 @@ public partial class MainWindow : Window
 
     private void NavBackup_Click(object sender, RoutedEventArgs e) => ShowContent(new BackupView(_apiClient));
 
+    // "Ahmad Karimi" -> "AK", "Administrator" -> "A": the letters shown in the user's avatar circle.
+    private static string Initials(string? fullName)
+    {
+        var words = (fullName ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (words.Length == 0) return "?";
+        var first = char.ToUpperInvariant(words[0][0]).ToString();
+        return words.Length == 1 ? first : first + char.ToUpperInvariant(words[^1][0]);
+    }
+
+    private void Manual_Click(object sender, RoutedEventArgs e) => ManualService.Open(this);
+
+    private async void CheckUpdates_Click(object sender, RoutedEventArgs e)
+    {
+        CheckUpdatesButton.IsEnabled = false;
+        try
+        {
+            await ManualUpdateCheck.RunAsync(this, (message, error) =>
+            {
+                if (message is null) { UpdateStatusText.Visibility = Visibility.Collapsed; return; }
+                UpdateStatusText.Text = message;
+                UpdateStatusText.Foreground = error
+                    ? new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xFC, 0xA5, 0xA5)) // readable on the dark sidebar
+                    : (System.Windows.Media.Brush)FindResource("SidebarAccentBrush");
+                UpdateStatusText.Visibility = Visibility.Visible;
+            });
+        }
+        finally
+        {
+            CheckUpdatesButton.IsEnabled = true;
+        }
+    }
+
     private void LanguageToggle_Click(object sender, RoutedEventArgs e)
     {
+        UpdateStatusText.Visibility = Visibility.Collapsed; // the message would still be in the old language
         LanguageService.Toggle();
         var settings = ClientSettings.Load();
         settings.Language = Helpers.AppSession.Language.ToString();

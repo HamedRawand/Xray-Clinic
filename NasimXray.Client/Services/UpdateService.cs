@@ -27,9 +27,14 @@ public static class UpdateService
     private static string CooldownFilePath => Path.Combine(
         NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.LocalApplicationData), "last_update_check.txt");
 
-    public static async Task<UpdateInfo?> CheckForUpdateAsync(bool ignoreCooldown = false)
+    public static async Task<UpdateInfo?> CheckForUpdateAsync(bool ignoreCooldown = false) =>
+        (await CheckAsync(ignoreCooldown)).Update;
+
+    // Same check, but tells "nothing newer" apart from "could not reach GitHub" (Failed) — the manual
+    // "Check for updates" button needs to say which.
+    public static async Task<(UpdateInfo? Update, bool Failed)> CheckAsync(bool ignoreCooldown)
     {
-        if (!ignoreCooldown && !CooldownElapsed()) return null;
+        if (!ignoreCooldown && !CooldownElapsed()) return (null, false);
 
         try
         {
@@ -43,7 +48,7 @@ public static class UpdateService
             WriteCooldownStamp();
 
             var currentVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            if (currentVersion is null) return null;
+            if (currentVersion is null) return (null, false);
 
             // Walk candidates newest-first and take the first one that's both newer than the
             // current install AND has an installer asset attached — a release published via
@@ -58,21 +63,28 @@ public static class UpdateService
                 .Select(x => (x.Release, x.Version, Asset: x.Release.Assets.FirstOrDefault(a => a.Name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))))
                 .FirstOrDefault(x => x.Asset is not null);
 
-            if (candidate is null || candidate.Value.Asset is null) return null;
+            if (candidate is null || candidate.Value.Asset is null) return (null, false);
 
-            return new UpdateInfo
+            return (new UpdateInfo
             {
                 Version = candidate.Value.Version!,
                 TagName = candidate.Value.Release.TagName,
                 ReleaseNotes = candidate.Value.Release.Body,
                 DownloadUrl = candidate.Value.Asset.BrowserDownloadUrl,
-            };
+            }, false);
         }
         catch
         {
             // GitHub unreachable / rate-limited / network hiccup should never block app startup.
-            return null;
+            return (null, true);
         }
+    }
+
+    // The version of this installed copy, as shown on the sign-in screen (e.g. "1.1.2").
+    public static string CurrentVersionText()
+    {
+        var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        return v is null ? "?" : $"{v.Major}.{v.Minor}.{v.Build}";
     }
 
     public static async Task<string> DownloadInstallerAsync(UpdateInfo info, IProgress<double>? progress = null)

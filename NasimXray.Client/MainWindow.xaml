@@ -8,102 +8,225 @@
         WindowStartupLocation="CenterScreen"
         FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
     <DockPanel>
-        <Border DockPanel.Dock="Top" Background="{DynamicResource CardBackgroundBrush}"
-                BorderBrush="{DynamicResource SeparatorBrush}" BorderThickness="0,0,0,1" Padding="24,0">
-            <Grid Height="56">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <shared:ClinicLogoImage Height="34" Margin="0,0,10,0"/>
-                    <TextBlock Text="{DynamicResource App.Title}" FontSize="16" FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+        <!-- One sidebar holds everything: clinic + signed-in user on top, the menu in the middle,
+             account / language / calendar / help icons and sign-out at the bottom. -->
+        <Border DockPanel.Dock="Left" Width="220" Background="{DynamicResource SidebarBrush}">
+          <DockPanel>
+
+            <!-- Top: clinic identity and the signed-in user -->
+            <StackPanel DockPanel.Dock="Top" Margin="12,12,12,2">
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="White" CornerRadius="7" Padding="3" Margin="0,0,10,0" VerticalAlignment="Center"
+                            Visibility="{Binding Visibility, ElementName=BrandLogo}">
+                        <shared:ClinicLogoImage x:Name="BrandLogo" Height="28"/>
+                    </Border>
+                    <TextBlock Text="{DynamicResource App.Title}" FontSize="13" FontWeight="SemiBold" Foreground="White"
+                               TextWrapping="Wrap" VerticalAlignment="Center" MaxWidth="160"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <TextBlock x:Name="UserText" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"
-                               VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <Button x:Name="CalendarButton" Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,0"
-                            Click="CalendarToggle_Click">
+
+                <Border Background="{DynamicResource SidebarHoverBrush}" CornerRadius="9" Padding="8,6" Margin="0,10,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Width="30" Height="30" CornerRadius="15" Background="{DynamicResource SidebarAccentBrush}">
+                            <TextBlock x:Name="UserInitialsText" FontSize="12" FontWeight="SemiBold" Foreground="#083344"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="9,0,0,0" VerticalAlignment="Center">
+                            <TextBlock x:Name="UserNameText" FontSize="12" FontWeight="SemiBold" Foreground="White"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock x:Name="UserRoleText" FontSize="11" Foreground="{DynamicResource SidebarTextBrush}"
+                                       Opacity="0.85" TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- Bottom: small icon buttons (hover for the name), sign out, version -->
+            <StackPanel DockPanel.Dock="Bottom" Margin="10,0,10,8">
+                <Separator Margin="6,0,6,8" Background="{DynamicResource SidebarLineBrush}"/>
+
+                <UniformGrid Rows="1" Margin="0,0,0,4">
+                    <Button x:Name="CalendarButton" Click="CalendarToggle_Click">
                         <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
-                                <Setter Property="Content" Value="{DynamicResource Calendar.ToShamsi}"/>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarIconButton}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi}" Value="True">
-                                        <Setter Property="Content" Value="{DynamicResource Calendar.ToGregorian}"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource SidebarAccentBrush}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
+                        <Button.ToolTip>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{DynamicResource Calendar.ToShamsi}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=IsShamsi}" Value="True">
+                                                <Setter Property="Text" Value="{DynamicResource Calendar.ToGregorian}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Button.ToolTip>
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Calendar}"/>
                     </Button>
-                    <Button x:Name="LanguageButton" Content="{DynamicResource Login.Language}"
-                            Style="{StaticResource SecondaryButton}"
-                            Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,0"
-                            Click="LanguageToggle_Click"/>
-                    <Button Content="{DynamicResource ChangePassword.MenuItem}" Style="{StaticResource SecondaryButton}"
-                            Height="32" Padding="12,0" FontSize="12" Margin="0,0,8,0"
-                            Click="ChangePassword_Click"/>
-                    <Button Content="{DynamicResource Common.SignOut}" Style="{StaticResource SecondaryButton}"
-                            Height="32" Padding="12,0" FontSize="12" Click="SignOut_Click"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+                    <Button x:Name="LanguageButton" Style="{StaticResource SidebarIconButton}"
+                            ToolTip="{DynamicResource Login.Language}" Click="LanguageToggle_Click">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Language}"/>
+                    </Button>
+                    <Button Style="{StaticResource SidebarIconButton}"
+                            ToolTip="{DynamicResource ChangePassword.MenuItem}" Click="ChangePassword_Click">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Key}"/>
+                    </Button>
+                    <Button x:Name="ManualButton" Style="{StaticResource SidebarIconButton}"
+                            ToolTip="{DynamicResource Help.Manual}" Click="Manual_Click">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Manual}"/>
+                    </Button>
+                    <Button x:Name="CheckUpdatesButton" Style="{StaticResource SidebarIconButton}"
+                            ToolTip="{DynamicResource Update.CheckButton}" Click="CheckUpdates_Click">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Refresh}"/>
+                    </Button>
+                </UniformGrid>
 
-        <!-- Shown to admins until the clinic's own name has been saved once -->
-        <Border x:Name="SetupBanner" DockPanel.Dock="Top" Visibility="Collapsed"
-                Background="{DynamicResource BadgeWarnBg}" Padding="24,8">
-            <Grid>
-                <TextBlock Text="{DynamicResource ClinicSettings.SetupPrompt}" FontSize="13" TextWrapping="Wrap"
-                           Foreground="{DynamicResource BadgeWarnFg}" VerticalAlignment="Center" Margin="0,0,200,0"/>
-                <Button Content="{DynamicResource ClinicSettings.OpenSettings}" Style="{StaticResource SecondaryButton}"
-                        Height="30" Padding="14,0" FontSize="12" HorizontalAlignment="Right" Click="SetupBanner_Click"/>
-            </Grid>
-        </Border>
+                <TextBlock x:Name="UpdateStatusText" FontSize="11" TextWrapping="Wrap" Margin="8,0,6,6"
+                           Foreground="{DynamicResource SidebarAccentBrush}" Visibility="Collapsed"/>
 
-        <Border DockPanel.Dock="Left"
-                Width="212" Background="{DynamicResource SidebarBrush}">
-            <StackPanel Margin="10,12">
-                <Button x:Name="NavDashboard" Content="{DynamicResource Nav.Dashboard}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavDashboard_Click"/>
-                <Button x:Name="NavCheckIn" Content="{DynamicResource Nav.CheckIn}"
-                        Style="{StaticResource NavPrimaryButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2,0,14" Click="NavCheckIn_Click"/>
-                <Button x:Name="NavExams" Content="{DynamicResource Nav.Exams}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavExams_Click"/>
-                <Button x:Name="NavStatistics" Content="{DynamicResource Nav.Statistics}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavStatistics_Click"/>
-                <Button x:Name="NavPatients" Content="{DynamicResource Nav.Patients}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavPatients_Click"/>
-                <Button x:Name="NavInvoices" Content="{DynamicResource Nav.Invoices}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavInvoices_Click"/>
-                <Button x:Name="NavExamTypes" Content="{DynamicResource Nav.ExamTypes}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavExamTypes_Click"/>
-                <Button x:Name="NavReferringPhysicians" Content="{DynamicResource Nav.ReferringPhysicians}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavReferringPhysicians_Click"/>
+                <Button x:Name="SignOutButton" Style="{StaticResource NavButton}" Height="32"
+                        HorizontalAlignment="Stretch" Click="SignOut_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.SignOut}"/>
+                        <TextBlock Text="{DynamicResource Common.SignOut}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
-                <Separator Margin="6,10" Background="{DynamicResource SidebarLineBrush}"/>
-
-                <Button x:Name="NavUsers" Content="{DynamicResource Nav.Users}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavUsers_Click" Visibility="Collapsed"/>
-                <Button x:Name="NavCustomRoles" Content="{DynamicResource Nav.CustomRoles}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavCustomRoles_Click" Visibility="Collapsed"/>
-                <Button x:Name="NavAuditLog" Content="{DynamicResource Nav.AuditLog}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavAuditLog_Click" Visibility="Collapsed"/>
-                <Button x:Name="NavBackup" Content="{DynamicResource Nav.Backup}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavBackup_Click" Visibility="Collapsed"/>
-                <Button x:Name="NavClinicSettings" Content="{DynamicResource Nav.ClinicSettings}"
-                        Style="{StaticResource NavButton}"
-                        HorizontalAlignment="Stretch" Margin="0,2" Click="NavClinicSettings_Click" Visibility="Collapsed"/>
+                <TextBlock FontSize="11" Margin="14,2,0,0" Foreground="{DynamicResource SidebarTextBrush}" Opacity="0.7">
+                    <Run Text="{DynamicResource Login.VersionPrefix}"/><Run x:Name="VersionNumberRun"/>
+                </TextBlock>
             </StackPanel>
+
+            <!-- Middle: the menu -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinScrollBar}"/>
+            </ScrollViewer.Resources>
+            <StackPanel Margin="10,8,10,8">
+                <Button x:Name="NavDashboard" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavDashboard_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Dashboard}"/>
+                        <TextBlock Text="{DynamicResource Nav.Dashboard}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavCheckIn" Style="{StaticResource NavPrimaryButton}" Height="36"
+                        HorizontalAlignment="Stretch" Margin="0,3,0,8" Click="NavCheckIn_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.CheckIn}"/>
+                        <TextBlock Text="{DynamicResource Nav.CheckIn}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavExams" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavExams_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Exams}"/>
+                        <TextBlock Text="{DynamicResource Nav.Exams}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavStatistics" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavStatistics_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Statistics}"/>
+                        <TextBlock Text="{DynamicResource Nav.Statistics}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavPatients" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavPatients_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Patients}"/>
+                        <TextBlock Text="{DynamicResource Nav.Patients}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavInvoices" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavInvoices_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Invoices}"/>
+                        <TextBlock Text="{DynamicResource Nav.Invoices}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavExamTypes" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavExamTypes_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.ExamTypes}"/>
+                        <TextBlock Text="{DynamicResource Nav.ExamTypes}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavReferringPhysicians" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavReferringPhysicians_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Physicians}"/>
+                        <TextBlock Text="{DynamicResource Nav.ReferringPhysicians}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Separator Margin="6,8" Background="{DynamicResource SidebarLineBrush}"/>
+
+                <Button x:Name="NavUsers" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavUsers_Click" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Users}"/>
+                        <TextBlock Text="{DynamicResource Nav.Users}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavCustomRoles" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavCustomRoles_Click" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Roles}"/>
+                        <TextBlock Text="{DynamicResource Nav.CustomRoles}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavAuditLog" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavAuditLog_Click" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Audit}"/>
+                        <TextBlock Text="{DynamicResource Nav.AuditLog}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavBackup" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavBackup_Click" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Backup}"/>
+                        <TextBlock Text="{DynamicResource Nav.Backup}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NavClinicSettings" Style="{StaticResource NavButton}"
+                        HorizontalAlignment="Stretch" Margin="0,1" Click="NavClinicSettings_Click" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Style="{StaticResource NavIcon}" Data="{StaticResource Icon.Settings}"/>
+                        <TextBlock Text="{DynamicResource Nav.ClinicSettings}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            </ScrollViewer>
+          </DockPanel>
         </Border>
 
-        <Grid x:Name="ContentHost" Background="{DynamicResource PrimaryBrush}"/>
+        <DockPanel>
+            <!-- Shown to admins until the clinic's own name has been saved once -->
+            <Border x:Name="SetupBanner" DockPanel.Dock="Top" Visibility="Collapsed"
+                    Background="{DynamicResource BadgeWarnBg}" Padding="24,8">
+                <Grid>
+                    <TextBlock Text="{DynamicResource ClinicSettings.SetupPrompt}" FontSize="13" TextWrapping="Wrap"
+                               Foreground="{DynamicResource BadgeWarnFg}" VerticalAlignment="Center" Margin="0,0,200,0"/>
+                    <Button Content="{DynamicResource ClinicSettings.OpenSettings}" Style="{StaticResource SecondaryButton}"
+                            Height="30" Padding="14,0" FontSize="12" HorizontalAlignment="Right" Click="SetupBanner_Click"/>
+                </Grid>
+            </Border>
+
+            <Grid x:Name="ContentHost" Background="{DynamicResource PrimaryBrush}"/>
+        </DockPanel>
     </DockPanel>
 </Window>

@@ -4,7 +4,7 @@
         xmlns:helpers="clr-namespace:NasimXray.Client.Helpers"
         xmlns:shared="clr-namespace:NasimXray.Client.Views.Shared"
         Title="{DynamicResource App.Title}"
-        Height="540" Width="420"
+        Height="560" Width="420"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         FlowDirection="{Binding Source={x:Static helpers:AppSessionProxy.Instance}, Path=FlowDirection}">
@@ -55,6 +55,9 @@
                     <Button Grid.Column="2" Content="{DynamicResource Login.ServerSettings}" Style="{StaticResource SecondaryButton}"
                             Height="30" Padding="10,0" FontSize="11" Click="ServerSettings_Click"/>
                 </Grid>
+
+                <TextBlock x:Name="VersionText" FontSize="11" Margin="0,10,0,0"
+                           Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Left"/>
             </StackPanel>
         </Border>
     </Grid>

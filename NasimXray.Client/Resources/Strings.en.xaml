@@ -8,6 +8,14 @@
     <system:String x:Key="Login.SignIn">Sign In</system:String>
     <system:String x:Key="Login.ServerSettings">Server Settings</system:String>
     <system:String x:Key="Login.ServerNotConfigured">Server not configured</system:String>
+    <system:String x:Key="Login.VersionPrefix" xml:space="preserve">Version </system:String>
+    <system:String x:Key="Help.Manual">User manual</system:String>
+    <system:String x:Key="Help.ManualMissing">The user manual file could not be found:&#10;{0}&#10;&#10;Reinstalling the program restores it.</system:String>
+    <system:String x:Key="Help.ManualNoViewer">Windows could not open the manual. Install a PDF reader (for example Microsoft Edge or Adobe Reader) and try again.&#10;&#10;{0}</system:String>
+    <system:String x:Key="Update.CheckButton">Check for updates</system:String>
+    <system:String x:Key="Update.Checking">Checking for updates…</system:String>
+    <system:String x:Key="Update.UpToDate">You are up to date (version {0}).</system:String>
+    <system:String x:Key="Update.CheckFailed">Could not reach the update service. Check the internet connection and try again.</system:String>
     <system:String x:Key="Login.ServerPrefix" xml:space="preserve">Server: </system:String>
     <system:String x:Key="Login.ConfigureServerFirst">Configure the server address first (Server Settings).</system:String>
     <system:String x:Key="Login.EnterCredentials">Enter your username and password.</system:String>
@@ -456,6 +464,25 @@
     <system:String x:Key="Stats.Col.Discount">Discounts</system:String>
     <system:String x:Key="Stats.Col.FreeExams">Free exams</system:String>
     <system:String x:Key="Stats.DiscountsByUser">Discounts by staff member</system:String>
+    <system:String x:Key="Dash.Backup.Title">Last database backup</system:String>
+    <system:String x:Key="Dash.Backup.Ok">Up to date</system:String>
+    <system:String x:Key="Dash.Backup.Due">Backup due</system:String>
+    <system:String x:Key="Dash.Backup.Overdue">Overdue</system:String>
+    <system:String x:Key="Dash.Backup.Never">No backup has been made yet</system:String>
+    <system:String x:Key="Dash.Backup.Today">today</system:String>
+    <system:String x:Key="Dash.Backup.Yesterday">yesterday</system:String>
+    <system:String x:Key="Dash.Backup.DaysAgo">{0} days ago</system:String>
+    <system:String x:Key="Dash.Backup.Hint">Also copy the Backups folder to an external disk regularly, so a failed server disk cannot take the backups with it.</system:String>
+    <system:String x:Key="Dash.Backup.Now">Back up now</system:String>
+    <system:String x:Key="Dash.Backup.Working">Backing up…</system:String>
+    <system:String x:Key="Dash.Backup.Open">Open Backup &amp; Restore</system:String>
+    <system:String x:Key="Dash.SectionToday">Today</system:String>
+    <system:String x:Key="Dash.SectionQueues">Work queues - click to open</system:String>
+    <system:String x:Key="Dash.SectionMoney">Money</system:String>
+    <system:String x:Key="Dash.Cancelled">Cancelled today</system:String>
+    <system:String x:Key="Dash.PaymentMix">Collected today by payment method</system:String>
+    <system:String x:Key="Dash.PatientsFormat">{0} patients</system:String>
+    <system:String x:Key="Dash.FreeExamsSub">{0} free exams</system:String>
     <system:String x:Key="Dash.Discounts">Discounts today</system:String>
     <system:String x:Key="Dash.FreeExams">Free exams today</system:String>
 
