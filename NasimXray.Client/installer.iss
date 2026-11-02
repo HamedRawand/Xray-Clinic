@@ -1,5 +1,5 @@
 #define AppName "Diagnostic Clinic Manager"
-#define AppVersion "1.1.2"
+#define AppVersion "1.1.3"
 #define AppPublisher "Diagnostic Clinic Manager"
 #define AppExeName "DiagnosticClinicManager.exe"
 
@@ -18,6 +18,8 @@ Compression=lzma2
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64compatible
 WizardStyle=modern
+SetupIconFile=Assets\AppIcon.ico
+UninstallDisplayIcon={app}\{#AppExeName}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

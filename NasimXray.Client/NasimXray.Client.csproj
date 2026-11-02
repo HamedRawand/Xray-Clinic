@@ -5,6 +5,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Also embedded as a resource: it is the default icon in the title bar of every window (see App.xaml.cs). -->
+    <Resource Include="Assets\AppIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The PDF guide (built by tools/ManualBuilder) ships next to the program and opens from the Help / User manual button. -->
+    <Content Include="Manual\*.pdf" Condition="'$(SkipManualCopy)' != 'true'" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.3" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="QuestPDF" Version="2024.10.4" />
@@ -21,14 +31,16 @@
     <UseWPF>true</UseWPF>
     <!-- Product name shown in the exe's file properties / Task Manager; namespaces keep the original NasimXray.* names. -->
     <AssemblyName>DiagnosticClinicManager</AssemblyName>
+    <!-- Icon of the exe, the taskbar, shortcuts and the installer (built from the Icon folder; BMP entries so it also works on Windows 7). -->
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <RootNamespace>NasimXray.Client</RootNamespace>
     <Product>Diagnostic Clinic Manager</Product>
     <AssemblyTitle>Diagnostic Clinic Manager</AssemblyTitle>
     <Description>Diagnostic Clinic Manager</Description>
     <Company>Diagnostic Clinic Manager</Company>
-    <Version>1.1.2</Version>
-    <AssemblyVersion>1.1.2.0</AssemblyVersion>
-    <FileVersion>1.1.2.0</FileVersion>
+    <Version>1.1.3</Version>
+    <AssemblyVersion>1.1.3.0</AssemblyVersion>
+    <FileVersion>1.1.3.0</FileVersion>
   </PropertyGroup>
 
 </Project>

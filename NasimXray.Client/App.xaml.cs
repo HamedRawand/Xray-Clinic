@@ -14,6 +14,17 @@ public partial class App : Application
 
         QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
+        // The app icon in the title bar of every window and dialog (the taskbar / exe icon comes from <ApplicationIcon>).
+        try
+        {
+            var icon = System.Windows.Media.Imaging.BitmapFrame.Create(new Uri("pack://application:,,,/Assets/AppIcon.ico", UriKind.Absolute));
+            Window.IconProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(icon));
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Could not load the window icon");
+        }
+
         var logPath = System.IO.Path.Combine(
             NasimXray.Shared.AppFolders.Resolve(Environment.SpecialFolder.LocalApplicationData), "Logs", "client_.log");
 

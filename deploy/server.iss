@@ -22,6 +22,8 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
 WizardStyle=modern
+SetupIconFile=..\NasimXray.Client\Assets\AppIcon.ico
+UninstallDisplayIcon={app}\DiagnosticClinicManager.Server.exe
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -31,6 +33,8 @@ Source: "..\NasimXray.Api\publish\server-x64\*"; DestDir: "{app}"; Flags: ignore
 Source: "Install-Server.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 Source: "Uninstall-Server.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 Source: "..\DEPLOYMENT.md"; DestDir: "{app}"; Flags: ignoreversion
+; The PDF installation and configuration guide (built by tools\ManualBuilder), kept with the server for the administrator.
+Source: "..\NasimXray.Client\Manual\*.pdf"; DestDir: "{app}\docs"; Flags: ignoreversion skipifsourcedoesntexist
 ; Optional: drop a postgresql-17*-windows-x64.exe into deploy\prereq before compiling to make the installer work offline.
 Source: "prereq\*"; DestDir: "{app}\prereq"; Flags: ignoreversion skipifsourcedoesntexist
 
