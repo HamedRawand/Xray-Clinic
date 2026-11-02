@@ -19,7 +19,7 @@ One server PC per clinic runs PostgreSQL and the API as a Windows service; every
    - creates the `clinic` database and its own login with a generated password,
    - generates the JWT signing secret and the **backup encryption password**,
    - issues a 5-year self-signed HTTPS certificate for the PC's name and addresses,
-   - registers the **Diagnostic Clinic Manager Server** Windows service (starts automatically with Windows, after PostgreSQL, restarts itself after a crash, runs as the low-privilege *Local Service* account),
+   - registers the **Diagnostic Clinic Manager Server** Windows service (starts automatically with Windows, after PostgreSQL, restarts itself after a crash, runs as the low-privilege *Local Service* account; on a PC where Windows refuses that account access to the HTTPS certificate, setup **switches to the Windows System account by itself** and says so),
    - opens inbound TCP **5443** to the local subnet only,
    - starts the service, waits until it answers, and prints the address, the certificate fingerprint and the first sign-in. **The very first start can take a few minutes** (antivirus scans the newly installed files) — wait for "Server is running".
 3. **Save the secrets.** The window and `C:\ProgramData\DiagnosticClinicManager\INSTALL-SECRETS.txt` show the first admin password and the backup encryption password. Copy them somewhere safe that is *not* this PC (printed copy in the safe, password manager), then delete the file.
@@ -71,6 +71,8 @@ Upgrade the **server first, then the clients** — a newer client may need the n
 | Is the server running? | Services → *Diagnostic Clinic Manager Server* → Running. Or open `https://<server-name>:5443/api/system/clinic` in a browser (shows the clinic name; the certificate warning is expected). |
 | Restart it | Services → right-click → Restart. |
 | Something is wrong | Read `C:\ProgramData\DiagnosticClinicManager\Logs\api_<date>.log` and Event Viewer → Windows Logs → Application. |
+| Setup says the service "cannot be started" (server older than 1.1.2) | Event Viewer showed `CryptographicException: Access denied` while loading the certificate. Run `sc.exe config DiagnosticClinicManagerServer obj= LocalSystem` then `Start-Service DiagnosticClinicManagerServer`, and install server 1.1.2 or newer (it does this by itself). |
+| Lost the first-run passwords | They stay in `server.settings.json` (`Seed` → `InitialAdminPassword`, `Backup` → `EncryptionPassword`) until the first successful start; setup 1.1.2+ also re-creates `INSTALL-SECRETS.txt` from them. |
 | Nightly backup | Runs automatically at about 02:00 local time and keeps the newest 14 files. Copy `Backups\` to an external disk regularly — a backup on the same disk does not protect against disk failure. |
 | Certificate expires | After 5 years. Re-run the setup script with `-ReissueCertificate`, then every PC must **Trust This Certificate** again. |
 | Server's name or address changed | Clients pinned to the certificate keep working if they reach the server; update their address in Server Settings. Only re-issue the certificate if you want the new name inside it. |

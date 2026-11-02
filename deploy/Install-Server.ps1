@@ -118,6 +118,25 @@ function Get-LanAddresses {
         Select-Object -ExpandProperty IPAddress
 }
 
+# Written as soon as the secrets exist (not at the very end), so a setup that fails half-way can never leave the
+# administrator without the passwords that were generated.
+function Write-SecretsFile([string]$AdminPassword, [string]$BackupPassword, [string]$SuperPassword, [string]$Thumbprint) {
+    $lines = @(
+        "$ProductName - server install secrets ($(Get-Date -Format 'yyyy-MM-dd HH:mm'))",
+        'Move this file to safe storage (e.g. a printed copy in the clinic safe or a password manager) and then DELETE it from this PC.',
+        ''
+    )
+    if ($AdminPassword) { $lines += "First sign-in to the app   user: admin   password: $AdminPassword   (you must change it at first sign-in)" }
+    $lines += @(
+        "Backup encryption password: $BackupPassword",
+        '   WITHOUT this password the encrypted backups can never be restored. Keep a copy somewhere other than this PC.',
+        "Database login: $DatabaseUser (the app's own - password is inside $SettingsPath)"
+    )
+    if ($SuperPassword) { $lines += "PostgreSQL 'postgres' superuser password: $SuperPassword" }
+    $lines += @('', "HTTPS certificate thumbprint: $Thumbprint", "Server settings file: $SettingsPath")
+    Write-Utf8NoBom $SecretsPath ($lines -join [Environment]::NewLine)
+}
+
 # ------------------------------------------------------------------------------------------- pre-flight
 $summaryAdminPassword = $null
 try {
@@ -210,6 +229,8 @@ try {
     if ($isUpgrade) {
         $settings = Get-Content $SettingsPath -Raw | ConvertFrom-Json
         $connection = [string]$settings.ConnectionStrings.Default
+        # An earlier run that failed before the first successful start still has its initial admin password here.
+        if ($settings.PSObject.Properties.Name -contains 'Seed') { $summaryAdminPassword = [string]$settings.Seed.InitialAdminPassword }
     }
     elseif ($ExistingConnectionString) {
         # Advanced / test use: point the server at a database that already exists instead of creating one.
@@ -293,12 +314,19 @@ try {
         }
         Write-Utf8NoBom $SettingsPath ($newSettings | ConvertTo-Json -Depth 6)
         Write-Ok "Settings written to $SettingsPath"
+        Write-SecretsFile $summaryAdminPassword $backupPassword $generatedSuperPassword $thumbprint
+        Write-Ok "Passwords saved to $SecretsPath"
     }
     elseif ($needCert) {
         # Upgrade with a new certificate: only the certificate password changes.
         $settings.Https.PfxPassword = $certPassword
         $settings.Https.Port = $HttpsPort
         Write-Utf8NoBom $SettingsPath ($settings | ConvertTo-Json -Depth 6)
+    }
+    if ($isUpgrade -and $summaryAdminPassword -and -not (Test-Path $SecretsPath)) {
+        # The earlier run failed before it could show the passwords (and a pre-1.1.2 setup never saved them).
+        Write-SecretsFile $summaryAdminPassword ([string]$settings.Backup.EncryptionPassword) $null $thumbprint
+        Write-Ok "Passwords recovered from the settings file and saved to $SecretsPath"
     }
 
     # ------------------------------------------------------------------------------ safety backup (upgrade)
@@ -322,12 +350,20 @@ try {
     $binPath = "`"$ServiceExe`""
     $displayName = "$ProductName Server"
     $dependency = $pgService.Name
-    if (-not (Get-Service -Name $ServiceName -ErrorAction SilentlyContinue)) {
-        & sc.exe create $ServiceName binPath= $binPath start= delayed-auto obj= 'NT AUTHORITY\LocalService' DisplayName= $displayName depend= $dependency | Out-Null
+    # Preferred account: Local Service (least privilege). Some PCs refuse to let it use the HTTPS certificate's key
+    # store; the start step below then falls back to the System account, and later runs keep that choice.
+    $serviceAccount = 'NT AUTHORITY\LocalService'
+    $registered = Get-CimInstance Win32_Service -Filter "Name='$ServiceName'" -ErrorAction SilentlyContinue
+    if ($registered -and $registered.StartName -eq 'LocalSystem') {
+        $serviceAccount = 'LocalSystem'
+        Write-Note "Keeping the service on the Windows System account (chosen earlier because Local Service could not start on this PC)."
+    }
+    if (-not $registered) {
+        & sc.exe create $ServiceName binPath= $binPath start= delayed-auto obj= $serviceAccount DisplayName= $displayName depend= $dependency | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "sc create failed (exit code $LASTEXITCODE)." }
     }
     else {
-        & sc.exe config $ServiceName binPath= $binPath start= delayed-auto obj= 'NT AUTHORITY\LocalService' DisplayName= $displayName depend= $dependency | Out-Null
+        & sc.exe config $ServiceName binPath= $binPath start= delayed-auto obj= $serviceAccount DisplayName= $displayName depend= $dependency | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "sc config failed (exit code $LASTEXITCODE)." }
     }
     & sc.exe description $ServiceName "Database access, login and reporting service for $ProductName." | Out-Null
@@ -353,7 +389,23 @@ try {
     # ----------------------------------------------------------------------------------------- start + check
     Write-Step 'Starting the server (the database is created / upgraded on first start)'
     Write-Note 'The very first start can take a few minutes: antivirus scans the newly installed files. Please wait...'
-    Start-Service -Name $ServiceName
+    $started = $false
+    $startError = $null
+    try { Start-Service -Name $ServiceName; $started = $true } catch { $startError = $_.Exception.Message }
+    if (-not $started -and $serviceAccount -ne 'LocalSystem') {
+        Write-Note "The service could not start as 'Local Service': $startError"
+        Write-Note 'Switching it to the Windows System account (works on more PCs) and trying again...'
+        & sc.exe config $ServiceName obj= LocalSystem | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "Could not switch the service account (sc exit code $LASTEXITCODE)." }
+        $serviceAccount = 'LocalSystem'
+        try { Start-Service -Name $ServiceName; $started = $true } catch { $startError = $_.Exception.Message }
+    }
+    if (-not $started) {
+        throw "The service could not start: $startError  Open Event Viewer > Windows Logs > Application and look for the newest error from '.NET Runtime' or 'Application Error', and check $(Join-Path $DataDir 'Logs')."
+    }
+    if ($serviceAccount -eq 'LocalSystem') {
+        Write-Note "The service runs as the Windows System account on this PC (Local Service could not use the certificate's key store)."
+    }
     $healthy = $false
     $url = "https://localhost:$HttpsPort/api/system/clinic"
     # The certificate callback runs on a .NET thread that has no PowerShell runspace, so a script block cannot be
@@ -401,21 +453,6 @@ public static class DcmLocalCertCheck
     # ----------------------------------------------------------------------------------------- secrets file
     $hostForClients = [Net.Dns]::GetHostName()
     $lanList = @(Get-LanAddresses)
-    if (-not $isUpgrade) {
-        $lines = @(
-            "$ProductName - server install secrets ($(Get-Date -Format 'yyyy-MM-dd HH:mm'))",
-            "Move this file to safe storage (e.g. a printed copy in the clinic safe or a password manager) and then DELETE it from this PC.",
-            '',
-            "First sign-in to the app   user: admin   password: $summaryAdminPassword   (you must change it at first sign-in)",
-            "Backup encryption password: $((Get-Content $SettingsPath -Raw | ConvertFrom-Json).Backup.EncryptionPassword)",
-            "   WITHOUT this password the encrypted backups can never be restored. Keep a copy somewhere other than this PC.",
-            "Database login: $DatabaseUser (the app's own - password is inside $SettingsPath)"
-        )
-        if ($installedPgNow) { $lines += "PostgreSQL 'postgres' superuser password: $generatedSuperPassword" }
-        $lines += @('', "HTTPS certificate thumbprint: $thumbprint", "Server settings file: $SettingsPath")
-        Write-Utf8NoBom $SecretsPath ($lines -join [Environment]::NewLine)
-    }
-
     Write-Host ''
     Write-Host ('=' * 60) -ForegroundColor Green
     Write-Host ' Server is running.' -ForegroundColor Green
@@ -425,7 +462,7 @@ public static class DcmLocalCertCheck
     foreach ($ip in $lanList) { Write-Host "     https://${ip}:$HttpsPort/   (same server, by IP address)" }
     Write-Host " Then click 'Trust This Certificate' and check the fingerprint matches:"
     Write-Host "     $thumbprint" -ForegroundColor White
-    if (-not $isUpgrade) {
+    if ($summaryAdminPassword) {
         Write-Host ''
         Write-Host " First sign-in:  admin  /  $summaryAdminPassword   (you will be asked to change it)" -ForegroundColor White
         Write-Host " Saved, together with the backup password, in: $SecretsPath" -ForegroundColor Yellow

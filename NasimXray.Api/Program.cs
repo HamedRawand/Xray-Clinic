@@ -41,7 +41,7 @@ builder.WebHost.ConfigureKestrel(options =>
             throw new InvalidOperationException($"Https:Enabled is true but Https:PfxPath ('{httpsSettings.PfxPath}') was not found.");
 
         options.ListenAnyIP(httpsSettings.Port, listenOptions =>
-            listenOptions.UseHttps(httpsSettings.PfxPath, httpsSettings.PfxPassword));
+            listenOptions.UseHttps(ServerCertificate.Load(httpsSettings.PfxPath, httpsSettings.PfxPassword)));
     }
 });
 
@@ -55,6 +55,14 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .CreateLogger();
 builder.Host.UseSerilog();
+
+// A server that dies while starting (for example a certificate it cannot load) would otherwise leave nothing but a
+// Windows Event Log entry; put the reason into the server's own log file as well.
+AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    Log.Fatal(e.ExceptionObject as Exception, "The server stopped because of an unhandled exception");
+    Log.CloseAndFlush();
+};
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
